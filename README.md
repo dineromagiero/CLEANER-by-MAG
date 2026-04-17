@@ -1,34 +1,51 @@
-# 🚀 CLEANER by MAG
+# 🛠️ CLEANER by MAG
 
-**Cleaner PC by Mag** to zaawansowany skrypt automatyzujący (.bat) przeznaczony do kompleksowej optymalizacji, czyszczenia oraz naprawy systemów Windows. Narzędzie łączy w sobie systemowe polecenia z zewnętrznymi skanerami bezpieczeństwa, aby przywrócić responsywność komputera.
+**CLEANER by MAG** to potężny, zautomatyzowany skrypt wsadowy (.bat) zaprojektowany do głębokiego oczyszczania, naprawy i optymalizacji systemów Windows. 
 
----
-
-## 🛡️ Bezpieczeństwo i Naprawa
-
-* **Punkt Przywracania:** Automatyczne tworzenie kopii zapasowej stanu systemu przed wprowadzeniem zmian.
-* **Skanowanie Malware:** Integracja z systemowym Windows Defender oraz automatyczne pobieranie i uruchamianie **AdwCleaner** oraz (opcjonalnie) **Malwarebytes**.
-* **Naprawa Plików:** Wykonywanie pełnej procedury `sfc /scannow` oraz naprawa obrazu systemu za pomocą `DISM`.
-* **Naprawa WMI:** Resetowanie i przebudowa repozytorium Windows Management Instrumentation (WMI).
+Narzędzie inteligentnie dopasowuje ustawienia do Twojego sprzętu, dbając o maksymalną wydajność i prywatność.
 
 ---
 
-## 🧹 Czyszczenie Systemu
+## 🚀 Kluczowe Funkcje wersji v1.02
 
-* **Pliki Tymczasowe:** Usuwanie śmieci z folderów `%TEMP%`, `C:\Windows\Temp` oraz `Prefetch`.
-* **Windows Update:** Czyszczenie pamięci podręcznej (SoftwareDistribution) i optymalizacja bazy składników.
-* **Przeglądarki:** Usuwanie cache z popularnych przeglądarek: Chrome, Edge, Firefox, Brave, Opera oraz Opera GX.
-* **Dzienniki Zdarzeń:** Czyszczenie logów Event Viewer w celu odzyskania miejsca na dysku.
+### 🧠 Inteligentna Optymalizacja Sprzętowa
+
+* **Detekcja Typu Dysku:** Automatycznie rozpoznaje dyski SSD/NVMe i optymalizuje ich pracę (m.in. wyłączając zbędną hibernację).
+* **Analiza Urządzenia:** Rozróżnia PC stacjonarny od laptopa. Dla komputerów stacjonarnych automatycznie aktywuje plan zasilania **"Wysoka Wydajność"**.
+* **Zarządzanie Pamięcią:** Dynamicznie oblicza i ustawia optymalny rozmiar **pliku stronicowania (PageFile)** na podstawie posiadanej ilości pamięci RAM.
+
+---
+
+### 🛡️ Bezpieczeństwo i Diagnostyka
+
+* **Restore Point:** Tworzy punkt przywracania systemu przed rozpoczęciem jakichkolwiek zmian.
+* **Anty-Malware:** Integracja z Windows Defender, **AdwCleaner** oraz opcjonalny skan **Malwarebytes** (automatyczne pobieranie najnowszych wersji).
+* **Naprawa Systemu:** Wykonuje pełną procedurę naprawczą: `SFC /scannow`, `DISM /RestoreHealth` oraz naprawę repozytorium **WMI**.
 
 ---
 
-## ⚙️ Optymalizacja i Wydajność
+### 🧹 Głębokie Czyszczenie
 
-* **Telemetria i Prywatność:** Wyłączanie usług śledzących, Cortany oraz zbierania danych przez rejestr.
-* **Usługi Systemowe:** Wyłączanie zbędnych usług (np. SysMain, Mapy, Fax).
-* **Sieć:** Odświeżanie DNS (`flushdns`) oraz optymalizacja ustawień TCP.
-* **Interfejs:** Przyspieszenie animacji menu i wyłączenie zbędnych efektów wizualnych.
-* **Autostart:** Blokowanie uruchamiania niepotrzebnych aplikacji w tle (Skype, Spotify, Discord itp.).
+* **Browser Cleaner:** Czyści cache i pliki tymczasowe Chrome, Edge, Firefox, Brave, Opera oraz Opera GX.
+* **System Trash:** Usuwa minidumpy, raporty błędów (WER), pliki Prefetch, Downloaded Program Files oraz cache ikon.
+* **Windows Update:** Czyści folder `SoftwareDistribution`, usuwając pozostałości po starych aktualizacjach.
 
 ---
-*Autor: Mag* | *Wersja: 1.01*
+
+### ⚙️ Prywatność i Tuning
+
+* **Debloat:** Usuwa zbędne aplikacje systemowe (Solitaire, Bing, Skype itp.).
+* **Telemetria:** Blokuje śledzenie, Cortanę oraz wyłącza zbędne harmonogramy zadań zbierające dane o użytkowniku.
+* **Network Tweak:** Resetuje stos TCP/IP, czyści DNS i optymalizuje parametry sieciowe dla niższego opóźnienia.
+
+---
+
+## 📋 Wymagania i Uruchomienie
+
+1. **Uprawnienia:** Skrypt **musi** być uruchomiony jako Administrator.
+2. **Internet:** Wymagany do pobrania zewnętrznych skanerów przez narzędzie `curl`.
+3. **Restart:** Po zakończeniu pracy skrypt zaplanuje sprawdzanie dysku `chkdsk` i poprosi o restart systemu.
+
+---
+
+**Autor:** Mag | **Wersja:** 1.02 (17/04/2026)
