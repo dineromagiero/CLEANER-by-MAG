@@ -1,51 +1,54 @@
 # 🛠️ CLEANER by MAG
 
-**CLEANER by MAG** to potężny, zautomatyzowany skrypt wsadowy (.bat) zaprojektowany do głębokiego oczyszczania, naprawy i optymalizacji systemów Windows. 
-
-Narzędzie inteligentnie dopasowuje ustawienia do Twojego sprzętu, dbając o maksymalną wydajność i prywatność.
+**CLEANER by MAG** to zaawansowane, w pełni zautomatyzowane narzędzie serwisowe w formie skryptu `.bat`. Zostało zaprojektowane, aby przywrócić system Windows do szczytowej formy poprzez głębokie czyszczenie, inteligentną optymalizację sprzętową oraz naprawę kluczowych komponentów systemowych.
 
 ---
 
-## 🚀 Kluczowe Funkcje wersji v1.02
+## 💎 Co wyróżnia wersję 1.03?
 
-### 🧠 Inteligentna Optymalizacja Sprzętowa
+Najnowsza aktualizacja wprowadza inteligentne raportowanie oraz dedykowane moduły dla często zaniedbywanych obszarów systemu:
 
-* **Detekcja Typu Dysku:** Automatycznie rozpoznaje dyski SSD/NVMe i optymalizuje ich pracę (m.in. wyłączając zbędną hibernację).
-* **Analiza Urządzenia:** Rozróżnia PC stacjonarny od laptopa. Dla komputerów stacjonarnych automatycznie aktywuje plan zasilania **"Wysoka Wydajność"**.
-* **Zarządzanie Pamięcią:** Dynamicznie oblicza i ustawia optymalny rozmiar **pliku stronicowania (PageFile)** na podstawie posiadanej ilości pamięci RAM.
-
----
-
-### 🛡️ Bezpieczeństwo i Diagnostyka
-
-* **Restore Point:** Tworzy punkt przywracania systemu przed rozpoczęciem jakichkolwiek zmian.
-* **Anty-Malware:** Integracja z Windows Defender, **AdwCleaner** oraz opcjonalny skan **Malwarebytes** (automatyczne pobieranie najnowszych wersji).
-* **Naprawa Systemu:** Wykonuje pełną procedurę naprawczą: `SFC /scannow`, `DISM /RestoreHealth` oraz naprawę repozytorium **WMI**.
+* **📊 Inteligentny System Raportowania:** Po zakończeniu pracy skrypt generuje szczegółowy log `C:\CLEANER by MAG - WYNIKI.txt` oraz wyświetla podsumowanie z szacunkową ilością odzyskanego miejsca na dysku.
+* **🖨️ Serwis Drukowania:** Automatyczne czyszczenie kolejki wydruku oraz usuwanie zbędnych, starych sterowników drukarek.
+* **🛍️ Microsoft Store Fix:** Kompleksowe odświeżanie pamięci podręcznej Sklepu Windows i naprawa usług zależnych.
+* **🖼️ Naprawa Interfejsu:** Czyszczenie baz danych ikon i miniatur (`IconCache` / `ThumbCache`) dla płynniejszego działania Eksploratora.
 
 ---
 
-### 🧹 Głębokie Czyszczenie
+## 🚀 Kluczowe Funkcje
 
-* **Browser Cleaner:** Czyści cache i pliki tymczasowe Chrome, Edge, Firefox, Brave, Opera oraz Opera GX.
-* **System Trash:** Usuwa minidumpy, raporty błędów (WER), pliki Prefetch, Downloaded Program Files oraz cache ikon.
-* **Windows Update:** Czyści folder `SoftwareDistribution`, usuwając pozostałości po starych aktualizacjach.
+### 🧠 Optymalizacja Sprzętowa (Hardware-Aware)
+* **Wykrywanie Typu PC:** Skrypt rozpoznaje czy pracujesz na laptopie, czy komputerze stacjonarnym, dopasowując plan zasilania (**Wysoka Wydajność** dla PC).
+* **SSD/NVMe Tuning:** Rozpoznaje model dysku i optymalizuje jego pracę (np. wyłączając zbędną hibernację).
+* **Dynamiczny RAM & PageFile:** Oblicza rozmiar pliku stronicowania na podstawie realnej ilości pamięci RAM w Twoim komputerze.
 
----
+### 🛡️ Bezpieczeństwo i Naprawa
+* **System Restore:** Automatyczne tworzenie punktu przywracania przed zmianami.
+* **Multi-Scanner:** Integracja z Windows Defender oraz automatyczne pobieranie/skanowanie za pomocą **AdwCleaner** i (opcjonalnie) **Malwarebytes**.
+* **Deep Repair:** Wykonywanie procedur `SFC /scannow`, `DISM /RestoreHealth` oraz naprawa repozytorium **WMI**.
 
-### ⚙️ Prywatność i Tuning
-
-* **Debloat:** Usuwa zbędne aplikacje systemowe (Solitaire, Bing, Skype itp.).
-* **Telemetria:** Blokuje śledzenie, Cortanę oraz wyłącza zbędne harmonogramy zadań zbierające dane o użytkowniku.
-* **Network Tweak:** Resetuje stos TCP/IP, czyści DNS i optymalizuje parametry sieciowe dla niższego opóźnienia.
-
----
-
-## 📋 Wymagania i Uruchomienie
-
-1. **Uprawnienia:** Skrypt **musi** być uruchomiony jako Administrator.
-2. **Internet:** Wymagany do pobrania zewnętrznych skanerów przez narzędzie `curl`.
-3. **Restart:** Po zakończeniu pracy skrypt zaplanuje sprawdzanie dysku `chkdsk` i poprosi o restart systemu.
+### 🧹 Totalne Oczyszczanie
+* **Browser Cleaner:** Obsługa Chrome, Edge, Firefox, Brave, Opera oraz Opera GX.
+* **Windows Update:** Czyszczenie bazy `SoftwareDistribution` i naprawa usług Windows Update.
+* **System Trash:** Usuwanie logów CBS, plików tymczasowych, zrzutów pamięci (Minidump) i raportów błędów WER.
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.02 (17/04/2026)
+## 📋 Instrukcja Uruchomienia
+
+1.  Pobierz plik `CLEANER.by.MAG.v.1.03.bat`.
+2.  Kliknij Prawym Przyciskiem Myszy i wybierz **"Uruchom jako administrator"** (wymagane do zmian w rejestrze i usługach).
+3.  Podążaj za instrukcjami w kolorowej konsoli.
+4.  Po zakończeniu zapoznaj się z **Raportem Czyszczenia** i zrestartuj komputer.
+
+---
+
+## ⚠️ Ostrzeżenie
+
+> **Używasz na własną odpowiedzialność.** Narzędzie dokonuje głębokich zmian w konfiguracji usług i rejestru systemowego. Skrypt automatycznie tworzy punkt przywracania, jednak zawsze zaleca się posiadanie kopii zapasowej ważnych danych.
+
+---
+
+**Autor:** Mag  
+**Wersja:** 1.03 (19/04/2026)  
+**Status:** Stabilna
