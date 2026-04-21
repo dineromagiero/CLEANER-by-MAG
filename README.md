@@ -1,65 +1,169 @@
-# 🛠️ CLEANER by MAG
+# 🧹 CLEANER by MAG
 
-**CLEANER by MAG** to zaawansowane, w pełni zautomatyzowane narzędzie serwisowe w formie skryptu `.bat`. Zostało zaprojektowane, aby przywrócić system Windows do szczytowej formy poprzez głębokie czyszczenie, inteligentną optymalizację sprzętową oraz naprawę kluczowych komponentów systemowych.
+> Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
----
-
-## 💎 Co nowego w wersji 1.05?
-
-Najnowsza aktualizacja skupia się na bezpieczeństwie procesów i stabilności:
-
-* **🔄 Inteligentny Auto-Updater:** Skrypt przy każdym uruchomieniu automatycznie sprawdza dostępność nowej wersji na serwerze, dbając o to, byś zawsze korzystał z najnowszych poprawek.
-
-* **🛡️ Fail-Safe Engine:** Nowy mechanizm sprawdzający dostępność usług przed naprawą DISM/SFC, zapobiegający zawieszaniu się skryptu.
-
-* **☕ Wsparcie Projektu:** Dodano możliwość dobrowolnego wsparcia twórcy poprzez system "Postaw Kawę".
-
-* **⚡ Optymalizacja Środowiska:** Ulepszone zarządzanie zmiennymi systemowymi, co eliminuje konflikty i przyspiesza działanie o ok. 15%.
+![Version](https://img.shields.io/badge/wersja-1.05-blue)
+![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
+![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
+![License](https://img.shields.io/badge/licencja-MIT-green)
 
 ---
 
-## 🚀 Kluczowe Funkcje
+## 📋 Opis
 
-### ⚙️ Optymalizacja Hardware-Aware
-* **Wykrywanie Laptop vs PC:** Automatyczne dopasowanie planów zasilania i ustawień oszczędzania energii.
-* **SSD/NVMe Tuning:** Rozpoznaje typ dysku i stosuje odpowiednią metodę konserwacji (TRIM).
-* **Zawsze Aktualny:** Wbudowany moduł aktualizacji sprawdza repozytorium przed startem głównego procesu.
-
-### 🛡️ Bezpieczeństwo i Naprawa
-* **System Restore:** Tworzenie punktu przywracania przed wprowadzeniem jakichkolwiek zmian.
-* **Deep Repair:** Trzystopniowa naprawa: SFC -> DISM -> SFC oraz kompletna przebudowa repozytorium **WMI**.
-* **Multi-Scanner:** Integracja z Windows Defender oraz opcjonalne skanowanie za pomocą **AdwCleaner** i **Malwarebytes**.
-
-### 🧹 Totalne Oczyszczanie
-* **Browser Cleaner:** Kompleksowe czyszczenie cache oraz blokada procesów w tle dla Chrome, Edge, Firefox, Brave i Opery.
-* **Windows Debloater:** Usuwanie zbędnych aplikacji systemowych (Solitaire, Skype, Bing itp.).
-* **System Trash:** Usuwanie logów CBS, plików tymczasowych, zrzutów pamięci i raportów błędów.
+**CLEANER by MAG** to zaawansowany skrypt `.bat` do optymalizacji systemu Windows. Automatyzuje dziesiątki żmudnych zadań konserwacyjnych — od usuwania śmieciowych plików, przez naprawę systemu, aż po konfigurację sieci i rejestru. Działa w trybie w pełni interaktywnym z kolorowym interfejsem konsolowym i generuje szczegółowy raport po zakończeniu.
 
 ---
 
-## 📋 Instrukcja Uruchomienia
+## ✨ Co robi skrypt?
 
-1. Pobierz plik `CLEANER.by.MAG.v.1.05.bat`.
+### 🔒 Bezpieczeństwo i antywirusy
+- Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian
+- Aktualizuje i uruchamia **szybki skan Windows Defender**
+- Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie)
+- Opcjonalny skan i usunięcie **Malwarebytes** po zakończeniu
 
-2. Kliknij Prawym Przyciskiem Myszy i wybierz **"Uruchom jako administrator"**.
+### 🗑️ Czyszczenie plików
+- Pliki tymczasowe użytkownika i systemu (`%TEMP%`, `C:\Windows\Temp`)
+- Folder **Prefetch**
+- **Minidumpy** i raporty błędów Windows (WER)
+- Cache **ikon** i czcionek
+- Cache przeglądarek: **Chrome, Edge, Brave, Opera, Opera GX**
+- Cache **Microsoft Store** (`wsreset`)
+- Kolejka **drukarki (Spooler)**
+- Logi **CBS** i Windows Update (`SoftwareDistribution`)
+- Cache miniatur (`Thumbnail Cache`)
 
-3. Podążaj za instrukcjami w kolorowej konsoli.
+### 🔧 Naprawa systemu
+- **SFC** (System File Checker) — dwukrotnie: przed i po DISM
+- **DISM RestoreHealth** — naprawa obrazu systemu
+- **CHKDSK** zaplanowany na następny restart
+- Naprawa repozytorium **WMI**
 
-4. Po zakończeniu sprawdź **Raport Czyszczenia** (`C:\CLEANER by MAG - WYNIKI.txt`) i zrestartuj komputer.
+### ⚡ Optymalizacja wydajności
+- Ustawienie **planu zasilania** (Wysoka Wydajność dla PC, bez zmian dla laptopa)
+- Wyłączenie **hibernacji** (dla SSD/NVMe)
+- Wyłączenie **Fast Startup**
+- Optymalizacja **pliku stronicowania** (PageFile) — automatycznie dopasowana do ilości RAM
+- Priorytety **procesora** i zarządzanie **pamięcią** (tweaki rejestru)
+- **Defragmentacja** (HDD) lub **TRIM** (SSD)
+
+### 🌐 Sieć
+- **Reset proxy** systemowego i IE/WinHTTP
+- Flush i rejestracja **DNS**
+- Reset **stosu TCP/IP** i Winsock
+- Ustawienie serwerów DNS na **Cloudflare (1.1.1.1)** i **Google (8.8.8.8)**
+- Optymalizacja parametrów **TCP** (autotuninglevel, RSS, chimney)
+
+### 🛡️ Prywatność i telemetria
+- Wyłączenie zbierania danych diagnostycznych (**telemetria**)
+- Wyłączenie **Cortany**
+- Wyłączenie spersonalizowanych doświadczeń
+- Wyłączenie raportowania błędów Windows (WER)
+
+### ⚙️ Usługi i harmonogramy
+- Dezaktywacja zbędnych usług: `SysMain`, `DiagTrack`, `WSearch`, `MapsBroker`, `Fax`, `RetailDemo`
+- Wyłączenie zbędnych harmonogramów systemowych (CEIP, feedback, Xbox, dysk)
+- Blokada procesów **przeglądarek w tle** i ich autoaktualizacji
+
+### 🖥️ Interfejs i UX
+- Kolorowy, czytelny interfejs konsolowy (ANSI)
+- Dynamiczne dopasowanie rozmiaru okna konsoli do ekranu
+- **Sprawdzanie aktualizacji** skryptu przez GitHub API
+- Interaktywne pytania (restart, Malwarebytes, wsparcie projektu)
+- Szczegółowy **raport tekstowy** zapisany do `C:\CLEANER by MAG 1.05 - WYNIKI.txt`
 
 ---
 
-## ☕ Wsparcie Projektu
+## 🚀 Wymagania
 
-Jeśli skrypt Ci pomógł i chcesz wesprzeć jego dalszy rozwój, możesz postawić mi symboliczną kawę. Każde wsparcie motywuje do dodawania nowych funkcji i utrzymywania projektu!
-
-👉 **[Postaw kawę przez Suppi.pl](https://suppi.pl/cleanerbymag)**
+| Wymaganie | Szczegóły |
+|-----------|-----------|
+| System | Windows 10 / Windows 11 |
+| Uprawnienia | **Administrator** (wymagane) |
+| Połączenie | Opcjonalne (dla aktualizacji, AdwCleaner, Malwarebytes) |
+| .NET / PS | PowerShell 5.x (wbudowany w Windows) |
 
 ---
 
-## ⚠️ Ostrzeżenie
+## 📥 Instalacja i uruchomienie
 
-> **Używasz na własną odpowiedzialność.** Narzędzie dokonuje głębokich zmian w konfiguracji usług i rejestru systemowego. Skrypt automatycznie tworzy punkt przywracania, jednak zawsze zaleca się posiadanie kopii zapasowej ważnych danych.
+1. Pobierz najnowszą wersję ze strony [Releases](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest)
+2. Kliknij prawym przyciskiem myszy na plik `.bat`
+3. Wybierz **„Uruchom jako administrator"**
+4. Postępuj zgodnie z instrukcjami na ekranie
+
+> ⚠️ **Uwaga:** Skrypt **musi** być uruchomiony jako administrator. Bez uprawnień administratora zakończy pracę z komunikatem błędu.
+
+---
+
+## 📊 Raport wynikowy
+
+Po zakończeniu działania skrypt automatycznie zapisuje plik tekstowy:
+
+```
+C:\CLEANER by MAG 1.05 - WYNIKI.txt
+```
+
+Raport zawiera:
+- datę i czas wykonania
+- ilość zwolnionego miejsca na dysku
+- wykryte parametry systemu (RAM, pagefile, model dysku)
+- listę wykonanych operacji ze statusem `[ OK ]` lub `[----]`
+
+---
+
+## 🗂️ Wykonywane operacje — podsumowanie
+
+| Operacja | Opis |
+|----------|------|
+| Punkt przywracania | Tworzy przed jakimikolwiek zmianami |
+| Windows Defender | Aktualizacja sygnatur + szybki skan |
+| AdwCleaner | Skan i czyszczenie adware |
+| Reset proxy | Usuwa proxy systemowe i IE |
+| Pliki tymczasowe | Temp użytkownika i systemu |
+| Prefetch | Czyści folder prefetch |
+| DNS / Sieć | Flush, reset, Cloudflare + Google DNS |
+| Dzienniki zdarzeń | Czyści Event Viewer |
+| Usługi systemowe | Wyłącza zbędne usługi |
+| Optymalizacja rejestru | Tweaki wydajności i prywatności |
+| Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX |
+| Kolejka drukarki | Czyści spooler |
+| Microsoft Store cache | Uruchamia wsreset |
+| SFC (wstępny) | Sprawdza integralność plików |
+| DISM RestoreHealth | Naprawia obraz systemu |
+| SFC (końcowy) | Ponowna weryfikacja po DISM |
+| Logi CBS | Usuwa duże logi CBS |
+| Windows Update cache | Czyści SoftwareDistribution |
+| Defragmentacja / TRIM | Zależnie od typu dysku |
+| Thumbnail Cache | Czyści cache miniatur |
+| Naprawa WMI | Przebudowuje repozytorium WMI |
+| Pliki Minidump | Usuwa zrzuty awaryjne |
+| Raporty WER | Czyści raporty błędów Windows |
+
+---
+
+## ⚠️ Uwagi
+
+- **Kosz NIE jest opróżniany** — musisz zrobić to ręcznie po zakończeniu
+- Skrypt **planuje CHKDSK** na następny restart — wymagane ponowne uruchomienie komputera
+- Wyłączona jest **hibernacja** (plik hiberfil.sys zostaje usunięty) — dotyczy głównie dysków SSD
+- Usługa **Windows Search (WSearch)** zostaje wyłączona — wpływa na wyszukiwanie w menu Start
+- Skrypt usuwa wybrane **wbudowane aplikacje** (Solitaire, Bing, People, Skype, Office Hub, 3D Builder)
+
+---
+
+## 💛 Wsparcie projektu
+
+Jeśli skrypt Ci pomógł, możesz postawić twórcy kawę:
+
+👉 [suppi.pl/cleanerbymag](https://suppi.pl/cleanerbymag)
+
+---
+
+## 📄 Licencja
+
+Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować i dystrybuować z zachowaniem informacji o autorze.
 
 ---
 
