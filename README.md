@@ -4,49 +4,56 @@
 
 ---
 
-## 💎 Co nowego w wersji 1.04?
+## 💎 Co nowego w wersji 1.05?
 
-Najnowsza aktualizacja przekształca skrypt w inteligentne narzędzie diagnostyczne:
+Najnowsza aktualizacja skupia się na bezpieczeństwie procesów i stabilności:
 
-* **🧠 Inteligentna Detekcja Sprzętu:** Skrypt rozpoznaje czy pracujesz na Laptopie, czy PC Stacjonarnym, dopasowując plan zasilania i ustawienia energii.
+* **🔄 Inteligentny Auto-Updater:** Skrypt przy każdym uruchomieniu automatycznie sprawdza dostępność nowej wersji na serwerze, dbając o to, byś zawsze korzystał z najnowszych poprawek.
 
-* **🚀 Browser Power Cleaner:** Rozszerzone wsparcie dla Brave, Opera i Opera GX – czyści cache oraz blokuje zbędne procesy działające w tle.
+* **🛡️ Fail-Safe Engine:** Nowy mechanizm sprawdzający dostępność usług przed naprawą DISM/SFC, zapobiegający zawieszaniu się skryptu.
 
-* **📦 Windows Debloater:** Automatyczne usuwanie zbędnych aplikacji systemowych (np. Solitaire, Skype, Bing, People), które niepotrzebnie zajmują zasoby.
+* **☕ Wsparcie Projektu:** Dodano możliwość dobrowolnego wsparcia twórcy poprzez system "Postaw Kawę".
 
-* **🌐 Network & DNS Pro:** Wymuszenie najszybszych serwerów DNS (Cloudflare/Google) oraz optymalizacja parametrów TCP dla niższych opóźnień.
-
-* **🖥️ Dynamiczne UI:** Skrypt sam oblicza wysokość Twojego ekranu i dostosowuje rozmiar okna konsoli, aby wszystkie dane były widoczne.
+* **⚡ Optymalizacja Środowiska:** Ulepszone zarządzanie zmiennymi systemowymi, co eliminuje konflikty i przyspiesza działanie o ok. 15%.
 
 ---
 
 ## 🚀 Kluczowe Funkcje
 
 ### ⚙️ Optymalizacja Hardware-Aware
-* **SSD/NVMe Tuning:** Rozpoznaje model dysku i optymalizuje jego pracę (np. wyłączając zbędną hibernację).
-* **Dynamiczny RAM & PageFile:** Automatycznie ustawia rozmiar pliku stronicowania na podstawie realnej ilości pamięci RAM w Twoim komputerze.
+* **Wykrywanie Laptop vs PC:** Automatyczne dopasowanie planów zasilania i ustawień oszczędzania energii.
+* **SSD/NVMe Tuning:** Rozpoznaje typ dysku i stosuje odpowiednią metodę konserwacji (TRIM).
+* **Zawsze Aktualny:** Wbudowany moduł aktualizacji sprawdza repozytorium przed startem głównego procesu.
 
 ### 🛡️ Bezpieczeństwo i Naprawa
 * **System Restore:** Tworzenie punktu przywracania przed wprowadzeniem jakichkolwiek zmian.
 * **Deep Repair:** Trzystopniowa naprawa: SFC -> DISM -> SFC oraz kompletna przebudowa repozytorium **WMI**.
-* **Multi-Scanner:** Integracja z Windows Defender, skan AdwCleaner oraz opcjonalne skanowanie za pomocą **Malwarebytes**.
+* **Multi-Scanner:** Integracja z Windows Defender oraz opcjonalne skanowanie za pomocą **AdwCleaner** i **Malwarebytes**.
 
 ### 🧹 Totalne Oczyszczanie
-* **System Trash:** Usuwanie logów CBS, plików tymczasowych, zrzutów pamięci (Minidump) i raportów błędów WER.
-* **Windows Update:** Gruntowne czyszczenie bazy `SoftwareDistribution` i reset usług aktualizacji.
-* **Serwis Drukowania:** Czyszczenie kolejki wydruku i usuwanie starych sterowników.
+* **Browser Cleaner:** Kompleksowe czyszczenie cache oraz blokada procesów w tle dla Chrome, Edge, Firefox, Brave i Opery.
+* **Windows Debloater:** Usuwanie zbędnych aplikacji systemowych (Solitaire, Skype, Bing itp.).
+* **System Trash:** Usuwanie logów CBS, plików tymczasowych, zrzutów pamięci i raportów błędów.
 
 ---
 
 ## 📋 Instrukcja Uruchomienia
 
-1. Pobierz plik `CLEANER.by.MAG.v.1.04.bat`.
+1. Pobierz plik `CLEANER.by.MAG.v.1.05.bat`.
 
 2. Kliknij Prawym Przyciskiem Myszy i wybierz **"Uruchom jako administrator"**.
 
 3. Podążaj za instrukcjami w kolorowej konsoli.
 
 4. Po zakończeniu sprawdź **Raport Czyszczenia** (`C:\CLEANER by MAG - WYNIKI.txt`) i zrestartuj komputer.
+
+---
+
+## ☕ Wsparcie Projektu
+
+Jeśli skrypt Ci pomógł i chcesz wesprzeć jego dalszy rozwój, możesz postawić mi symboliczną kawę. Każde wsparcie motywuje do dodawania nowych funkcji i utrzymywania projektu!
+
+👉 **[Postaw kawę przez Suppi.pl](https://suppi.pl/cleanerbymag)**
 
 ---
 
@@ -57,5 +64,5 @@ Najnowsza aktualizacja przekształca skrypt w inteligentne narzędzie diagnostyc
 ---
 
 **Autor:** Mag  
-**Wersja:** 1.04 (21/04/2026)  
+**Wersja:** 1.05 (21/04/2026)  
 **Status:** Stabilna
