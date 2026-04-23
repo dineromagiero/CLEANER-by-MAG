@@ -200,6 +200,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag
-**Wersja:** 1.06 (23/04/2026)
-**Status:** Stabilna
+**Autor:** Mag | **Wersja:** 1.06 (23/04/2026) | **Status:** Stabilna
