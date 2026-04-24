@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.06-blue)
+![Version](https://img.shields.io/badge/wersja-1.07-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -28,19 +28,19 @@
 - Folder **Prefetch**
 - **Minidumpy** i raporty błędów Windows (WER)
 - Cache **ikon** i czcionek
-- Cache przeglądarek: **Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox** *(nowe w v1.06)*
-- Cache **Microsoft Teams** *(nowe w v1.06)*
+- Cache przeglądarek: **Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox**
+- Cache **Microsoft Teams**
 - Cache **Microsoft Store**
-- Kolejka **drukarki (Spooler)** + stare sterowniki drukarek *(nowe w v1.06)*
+- Kolejka **drukarki (Spooler)** + stare sterowniki drukarek
 - Logi **CBS** i Windows Update (`SoftwareDistribution`)
 - Cache miniatur z restartem Eksploratora
-- Folder **Windows.old** (stara instalacja systemu) *(nowe w v1.06)*
-- Narzędzie **Oczyszczanie dysku** (`cleanmgr /sagerun:99`) *(nowe w v1.06)*
+- Folder **Windows.old** (stara instalacja systemu)
+- Narzędzie **Oczyszczanie dysku** (`cleanmgr /sagerun:99`)
 
 ### 🔧 Naprawa systemu
-- **SFC** (System File Checker) — dwukrotnie: przed i po DISM
-- **DISM RestoreHealth** — naprawa obrazu systemu
-- **DISM StartComponentCleanup** — czyszczenie bazy składników po aktualizacjach *(nowe w v1.06)*
+- **SFC** (System File Checker) — dwukrotnie: przed i po DISM, z **paskiem postępu** w konsoli
+- **DISM RestoreHealth** — naprawa obrazu systemu, z **paskiem postępu** w konsoli
+- **DISM StartComponentCleanup** — czyszczenie bazy składników po aktualizacjach, z **paskiem postępu**
 - **CHKDSK** zaplanowany na następny restart
 - Naprawa repozytorium **WMI**
 - Pełny reset **Windows Update** (zatrzymanie usług, usunięcie SoftwareDistribution i catroot2, rejestracja DLL)
@@ -53,7 +53,7 @@
 - Optymalizacja **pliku stronicowania** (PageFile) — automatycznie dopasowana do ilości RAM
 - Tweaki rejestru: priorytety **procesora**, zarządzanie **pamięcią**, animacje UI
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
-- Wyłączenie wybranych programów **startowych**: Skype, OneDrive, Spotify, Discord, Steam, Epic Games, Teams, GOG Galaxy, EA App, Ubisoft Connect, Overwolf, Zoom, Viber *(nowe w v1.06)*
+- Wyłączenie wybranych programów **startowych**: Skype, OneDrive, Spotify, Discord, Steam, Epic Games, Teams, GOG Galaxy, EA App, Ubisoft Connect, Overwolf, Zoom, Viber
 
 ### 🌐 Sieć
 - **Reset proxy** systemowego (WinHTTP i rejestr IE)
@@ -65,9 +65,9 @@
 ### 🛡️ Prywatność i telemetria
 - Wyłączenie zbierania danych diagnostycznych (**telemetria**)
 - Wyłączenie **Cortany**
-- Wyłączenie **Bing Search** w menu Start *(nowe w v1.06)*
-- Wyłączenie śledzenia wpisów i kolekcji danych wejściowych *(nowe w v1.06)*
-- Wyłączenie sugestii i powiadomień systemowych (ContentDeliveryManager) *(nowe w v1.06)*
+- Wyłączenie **Bing Search** w menu Start
+- Wyłączenie śledzenia wpisów i kolekcji danych wejściowych (InputPersonalization)
+- Wyłączenie sugestii i powiadomień systemowych (ContentDeliveryManager)
 - Wyłączenie raportowania błędów Windows (WER)
 
 ### ⚙️ Usługi i harmonogramy
@@ -76,13 +76,15 @@
 - Blokada procesów **przeglądarek w tle** i ich autoaktualizacji (Chrome, Edge, Brave, Opera, Firefox, Adobe)
 
 ### 🖥️ Interfejs i UX
-- Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu *(nowe w v1.06)*
+- Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu
 - Kolorowy, czytelny interfejs konsolowy (ANSI: aqua / biały / żółty)
-- Dynamiczne dopasowanie rozmiaru okna konsoli do rozdzielczości ekranu
-- **Sprawdzanie aktualizacji** przez GitHub API — możliwość pobrania nowej wersji przed startem
-- Dźwiękowe **powiadomienie o zakończeniu** optymalizacji *(nowe w v1.06)*
+- **Nagłówek z linkiem do GitHub** widoczny od pierwszego uruchomienia
+- Dynamiczne dopasowanie rozmiaru okna i **bufora konsoli (200 linii)** do rozdzielczości ekranu
+- **Sprawdzanie aktualizacji** przez GitHub API — możliwość pobrania nowej wersji przed startem, jeszcze przed sprawdzaniem uprawnień
+- SFC, DISM i inne długie operacje wyświetlają teraz czytelny **pasek postępu** zamiast surowego tekstu systemowego
+- Dźwiękowe **powiadomienie o zakończeniu** optymalizacji
 - Interaktywne pytania na koniec: Malwarebytes, wsparcie projektu, restart
-- Szczegółowy **raport tekstowy** zapisany do `C:\CLEANER by MAG 1.06 - WYNIKI.txt`
+- Szczegółowy **raport tekstowy** zapisany do `C:\CLEANER by MAG 1.07 - WYNIKI.txt`
 
 ---
 
@@ -104,7 +106,7 @@
 3. Wybierz **„Uruchom jako administrator"**
 4. Postępuj zgodnie z instrukcjami na ekranie
 
-> ⚠️ **Uwaga:** Skrypt **musi** być uruchomiony jako administrator. Bez uprawnień administratora zakończy pracę z komunikatem błędu. Skrypt automatycznie odblokuje się, jeśli Windows zablokował go po pobraniu z internetu.
+> ⚠️ **Uwaga:** Skrypt **musi** być uruchomiony jako administrator. Bez uprawnień administratora wyświetli czytelny komunikat z instrukcją i zamknie się po 10 sekundach. Skrypt automatycznie odblokuje się, jeśli Windows zablokował go po pobraniu z internetu.
 
 ---
 
@@ -113,7 +115,7 @@
 Po zakończeniu działania skrypt automatycznie zapisuje plik tekstowy:
 
 ```
-C:\CLEANER by MAG 1.06 - WYNIKI.txt
+C:\CLEANER by MAG 1.07 - WYNIKI.txt
 ```
 
 Raport zawiera:
@@ -127,40 +129,40 @@ Raport zawiera:
 
 ## 🗂️ Wykonywane operacje — podsumowanie
 
-| Operacja | Opis | Nowość v1.06 |
-|----------|------|:------------:|
-| Punkt przywracania systemu | Tworzy przed jakimikolwiek zmianami (z weryfikacją) | |
-| Windows Defender | Aktualizacja sygnatur + szybki skan | |
-| AdwCleaner | Skan i czyszczenie adware, auto-deinstalacja | |
-| Reset proxy | Usuwa proxy systemowe i IE/WinHTTP | |
-| Pliki tymczasowe | `%TEMP%` i `C:\Windows\Temp` | |
-| Prefetch | Czyści folder prefetch | |
-| DNS / Sieć | Flush, reset TCP/IP, Cloudflare + Google DNS | |
-| Dzienniki zdarzeń | Czyści cały Event Viewer | |
-| Usługi systemowe | Wyłącza 6 zbędnych usług | |
-| Optymalizacja rejestru | Tweaki wydajności, prywatności i UI | |
-| Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, **Firefox, Vivaldi, Waterfox** | ✅ |
-| Cache Microsoft Teams | Cache, blob_storage, GPUCache, tmp | ✅ |
-| Kolejka drukarki | Czyści spooler + usuwa stare sterowniki | ✅ |
-| Microsoft Store cache | Czyści cache paczek AppX | |
-| SFC (wstępny) | Sprawdza integralność plików systemowych | |
-| DISM RestoreHealth | Naprawia obraz systemu | |
-| SFC (końcowy) | Ponowna weryfikacja po DISM | |
-| DISM StartComponentCleanup | Czyści stare składniki aktualizacji | ✅ |
-| Logi CBS | Usuwa duże logi CBS | |
-| Windows Update cache | Pełny reset usług i SoftwareDistribution | |
-| Usunięcie Windows.old | Odzyskuje miejsce po starych wersjach Windows | ✅ |
-| Defragmentacja / TRIM | `defrag /O` — zależnie od typu dysku | |
-| Thumbnail Cache | Czyści cache miniatur, restartuje Eksplorator | |
-| Naprawa WMI | Przebudowuje repozytorium WMI | |
-| Pliki Minidump | Usuwa zrzuty awaryjne | |
-| Raporty WER | Czyści raporty błędów Windows | |
+| Operacja | Opis |
+|----------|------|
+| Punkt przywracania systemu | Tworzy przed jakimikolwiek zmianami (z weryfikacją) |
+| Windows Defender | Aktualizacja sygnatur + szybki skan |
+| AdwCleaner | Skan i czyszczenie adware, auto-deinstalacja |
+| Reset proxy | Usuwa proxy systemowe i IE/WinHTTP |
+| Pliki tymczasowe | `%TEMP%` i `C:\Windows\Temp` |
+| Prefetch | Czyści folder prefetch |
+| DNS / Sieć | Flush, reset TCP/IP, Cloudflare + Google DNS (IPv4 + IPv6) |
+| Dzienniki zdarzeń | Czyści cały Event Viewer |
+| Usługi systemowe | Wyłącza 6 zbędnych usług |
+| Optymalizacja rejestru | Tweaki wydajności, prywatności i UI |
+| Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox |
+| Cache Microsoft Teams | Cache, blob_storage, GPUCache, tmp |
+| Kolejka drukarki | Czyści spooler + usuwa stare sterowniki |
+| Microsoft Store cache | Czyści cache paczek AppX |
+| SFC (wstępny) | Sprawdza integralność plików — pasek postępu |
+| DISM RestoreHealth | Naprawia obraz systemu — pasek postępu |
+| SFC (końcowy) | Ponowna weryfikacja po DISM — pasek postępu |
+| DISM StartComponentCleanup | Czyści stare składniki aktualizacji — pasek postępu |
+| Logi CBS | Usuwa duże logi CBS |
+| Windows Update cache | Pełny reset usług i SoftwareDistribution |
+| Usunięcie Windows.old | Odzyskuje miejsce po starych wersjach Windows |
+| Defragmentacja / TRIM | `defrag /O` — zależnie od typu dysku, działa w tle |
+| Thumbnail Cache | Czyści cache miniatur, restartuje Eksplorator |
+| Naprawa WMI | Przebudowuje repozytorium WMI |
+| Pliki Minidump | Usuwa zrzuty awaryjne |
+| Raporty WER | Czyści raporty błędów Windows |
 
 ---
 
 ## ⚠️ Ważne uwagi
 
-- Skrypt **planuje CHKDSK** na następny restart — wymagane ponowne uruchomienie, aby wszystkie zmiany weszły w życie
+- Skrypt **planuje CHKDSK** na następny restart — komputer musi zostać uruchomiony ponownie, aby wszystkie zmiany weszły w życie
 - Wyłączona jest **hibernacja** — plik `hiberfil.sys` zostaje usunięty (dotyczy systemów z SSD)
 - Usługa **Windows Search (WSearch)** zostaje wyłączona — może wpłynąć na wyszukiwanie w menu Start
 - Skrypt usuwa wybrane **wbudowane aplikacje** Windows: Solitaire, Bing, People, Skype, Office Hub, 3D Builder, Get Started
@@ -169,20 +171,16 @@ Raport zawiera:
 
 ---
 
-## 🔄 Co nowego w v1.06?
+## 🔄 Co nowego w v1.07?
 
-- ✅ Automatyczne odblokowanie skryptu po pobraniu z internetu (`Unblock-File`)
-- ✅ Rozszerzony cache przeglądarek: **Firefox, Vivaldi, Waterfox**
-- ✅ Czyszczenie cache **Microsoft Teams**
-- ✅ Usuwanie **starych sterowników drukarek** (zachowuje aktywne)
-- ✅ Usuwanie folderu **Windows.old** z odzyskiem miejsca
-- ✅ Uruchamianie graficznego **Oczyszczania dysku** (`cleanmgr`)
-- ✅ **DISM StartComponentCleanup** — czyszczenie bazy starych składników aktualizacji
-- ✅ Wyłączanie **programów startowych** (Discord, Steam, Epic, Teams, Zoom i inne)
-- ✅ Rozszerzone wyłączanie **śledzenia i sugestii** systemowych (Bing, InputPersonalization, ContentDelivery)
-- ✅ Dźwiękowe **powiadomienie o zakończeniu** optymalizacji
-- ✅ Ulepszona weryfikacja punktu przywracania z komunikatem błędu gdy ochrona systemu jest wyłączona
-- ✅ Czystszy interfejs konsolowy
+- ✅ **Paski postępu** dla SFC, DISM RestoreHealth i DISM StartComponentCleanup — koniec ze ścianą niezrozumiałego tekstu podczas naprawy systemu
+- ✅ **Nagłówek z linkiem do GitHub** (`github.com/dineromagiero`) widoczny od pierwszego uruchomienia
+- ✅ **Sprawdzanie wersji** przeniesione przed weryfikację uprawnień — informacja o aktualizacji pojawia się natychmiast
+- ✅ **Bufor konsoli ustawiony na 200 linii** — możliwość przewijania historii operacji bez ucinania tekstu
+- ✅ **Defragmentacja** działa w tle bez zaśmiecania konsoli
+- ✅ Pobieranie AdwCleaner przez `Invoke-WebRequest` (PowerShell) zamiast `curl`
+- ✅ Komunikat braku uprawnień administratora z **10-sekundowym odliczaniem** zamiast natychmiastowego zamknięcia
+- ✅ Ogólne poprawki czytelności komunikatów i separatorów w interfejsie
 
 ---
 
@@ -200,4 +198,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.06 (23/04/2026) | **Status:** Stabilna
+**Autor:** Mag | **Wersja:** 1.07 (24/04/2026)
