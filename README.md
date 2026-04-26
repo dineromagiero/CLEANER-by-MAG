@@ -168,7 +168,6 @@ Raport zawiera:
 
 ## ⚠️ Ważne uwagi
 
-- **Kosz NIE jest opróżniany** — zrób to ręcznie po zakończeniu
 - Skrypt **planuje CHKDSK** na następny restart — wymagane ponowne uruchomienie, aby wszystkie zmiany weszły w życie
 - Wyłączona jest **hibernacja** — ale tylko na SSD/NVMe; na HDD hibernacja pozostaje aktywna
 - Usługa **Windows Search (WSearch)** zostaje wyłączona — może wpłynąć na wyszukiwanie w menu Start
