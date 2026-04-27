@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.09-blue)
+![Version](https://img.shields.io/badge/wersja-1.10-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -11,7 +11,7 @@
 
 ## 📋 Opis
 
-**CLEANER by MAG** to zaawansowany skrypt `.bat` do kompleksowej optymalizacji systemu Windows. Automatyzuje dziesiątki żmudnych zadań konserwacyjnych — od skanowania antywirusowego i usuwania śmieciowych plików, przez naprawę plików systemowych, aż po konfigurację sieci i rejestru. Skrypt **inteligentnie dostosowuje się do sprzętu** — inne decyzje podejmuje na SSD, inne na HDD, inne na laptopie, inne na PC stacjonarnym.
+**CLEANER by MAG** to zaawansowany skrypt `.bat` do kompleksowej optymalizacji systemu Windows. Automatyzuje dziesiątki żmudnych zadań konserwacyjnych — od skanowania antywirusowego i usuwania śmieciowych plików, przez naprawę plików systemowych, aż po konfigurację sieci i rejestru. Skrypt **inteligentnie dostosowuje się do sprzętu** — inne decyzje podejmuje na SSD, inne na HDD, inne na laptopie, inne na PC stacjonarnym. Od wersji 1.10 czyści cache przeglądarek dla **wszystkich kont użytkowników** na komputerze.
 
 ---
 
@@ -20,30 +20,30 @@
 ### 🔒 Bezpieczeństwo i antywirusy
 - Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian (z weryfikacją powodzenia)
 - Aktualizuje i uruchamia **szybki skan Windows Defender** z raportowaniem kodu błędu
-- Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie adware); pobieranie z limitem czasowym 30 sekund — jeśli brak internetu, operacja oznaczana jako `[ SKIP ]`
+- Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie adware); pobieranie z limitem 30 sekund — brak internetu oznacza `[ SKIP ]`
 - Opcjonalne pobranie, skan i deinstalacja **Malwarebytes** po zakończeniu; brak połączenia sygnalizowany komunikatem
 
 ### 🗑️ Czyszczenie plików
 - Pliki tymczasowe użytkownika i systemu (`%TEMP%`, `C:\Windows\Temp`)
 - Folder **Downloaded Program Files**
-- **Folder Prefetch** — czyszczony **tylko na HDD**; na SSD Windows zarządza nim automatycznie i operacja jest oznaczana jako `[ SKIP ]`
+- **Folder Prefetch** — czyszczony tylko na HDD; na SSD zarządzany automatycznie przez system (`[ SKIP ]`)
 - **Minidumpy** i raporty błędów Windows (WER)
 - Cache **ikon** i czcionek
-- Cache przeglądarek: **Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox** (domyślny profil + wszystkie `Profile *`)
-- Cache **Microsoft Teams**
+- Cache przeglądarek — **dla każdego konta użytkownika na komputerze** (pętla po `C:\Users\*`, z pominięciem kont systemowych): **Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser** (domyślny profil + wszystkie `Profile *`)
+- Cache **Microsoft Teams** — obsługa obu wersji: klasycznej (`%APPDATA%\Microsoft\Teams`) i nowej UWP (`MSTeams_*\LocalCache`)
 - Cache **Microsoft Store** (LocalCache, INetCache, Temp dla wszystkich pakietów AppX)
 - Kolejka **drukarki (Spooler)** + stare sterowniki drukarek (W32X86, x64, ia64; aktywne zachowane)
 - Logi **CBS** i Windows Update (`SoftwareDistribution`, `catroot2`)
 - Cache miniatur z restartem Eksploratora
-- Folder **Windows.old** z weryfikacją powodzenia usunięcia; `[ SKIP ]` jeśli nie istnieje
-- **Oczyszczanie dysku** (`cleanmgr`) z konfiguracją 34 kategorii przez rejestr; `[ SKIP ]` jeśli `cleanmgr` jest niedostępny w danej wersji systemu
+- Folder **Windows.old** — podawany jest rozmiar przed usunięciem; `[ SKIP ]` jeśli nie istnieje
+- **Oczyszczanie dysku** (`cleanmgr`) z konfiguracją 34 kategorii przez rejestr; `[ SKIP ]` jeśli `cleanmgr` niedostępny
 
 ### 🔧 Naprawa systemu
 - **SFC** (System File Checker) — dwukrotnie: przed i po DISM, z paskiem postępu i kodem błędu w raporcie
 - **DISM RestoreHealth** — naprawa obrazu systemu, z paskiem postępu i kodem błędu w raporcie
 - **DISM StartComponentCleanup** — czyszczenie bazy składników po aktualizacjach
 - **CHKDSK** zaplanowany na następny restart
-- Naprawa repozytorium **WMI** z bezpieczną obsługą katalogu (`pushd/popd`)
+- **Inteligentna naprawa WMI** — najpierw weryfikacja (`verifyrepository`); jeśli baza jest zdrowa → `[ SKIP ]`; jeśli nie → próba naprawy Salvage; jeśli dalej błąd → pełny Reset z rejestracją DLL i plikami MOF
 - Pełny reset **Windows Update** (zatrzymanie usług, usunięcie SoftwareDistribution i catroot2, rejestracja DLL)
 
 ### ⚡ Optymalizacja wydajności
@@ -54,7 +54,7 @@
 - Wyłączenie **Fast Startup**
 - **SysMain (Superfetch)** — wyłączany tylko na SSD; na HDD pozostaje aktywny
 - **DisablePagingExecutive** — włączany tylko przy ≥ 8 GB RAM
-- Optymalizacja **pliku stronicowania** (PageFile) — automatycznie dopasowana do ilości RAM
+- Optymalizacja **pliku stronicowania** (PageFile) przez `CimInstance` — automatycznie dopasowana do ilości RAM
 - Tweaki rejestru: priorytety **procesora**, zarządzanie **pamięcią**, animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
 - Wyłączenie wybranych programów **startowych**: Skype, OneDrive, Spotify, Discord, Steam, Epic Games, Teams, GOG Galaxy, EA App, Ubisoft Connect, Overwolf, Zoom, Viber
@@ -83,13 +83,14 @@
 - Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu
 - Kolorowy, czytelny interfejs konsolowy (ANSI: aqua / biały / żółty)
 - Nagłówek z linkiem do GitHub widoczny od pierwszego uruchomienia
-- Dynamiczne dopasowanie rozmiaru okna i **buforu konsoli (200 linii)**
-- **Sprawdzanie aktualizacji** przez GitHub API przed sprawdzaniem uprawnień
+- Dynamiczne dopasowanie rozmiaru okna i **bufor konsoli (240 linii)**
+- **Sprawdzanie aktualizacji** przez GitHub API — inteligentne porównanie wersji (obsługa prefiksu `v` i suffiksu `.0` w tagach)
 - Trójstanowy system statusów: `[ OK ]` / `[SKIP]` / `[----]`
 - SFC, DISM i inne długie operacje wyświetlają czytelny **pasek postępu**
+- **Czas trwania** optymalizacji mierzony i wyświetlany w formacie `HH:MM:SS`
 - Dźwiękowe **powiadomienie o zakończeniu** optymalizacji
 - Interaktywne pytania na koniec: Malwarebytes, wsparcie projektu, restart
-- Szczegółowy **raport tekstowy** zapisany do `C:\CLEANER by MAG 1.09 - WYNIKI.txt`
+- Raport zapisywany na **Pulpicie** użytkownika: `CLEANER by MAG - WYNIKI.txt`
 
 ---
 
@@ -117,14 +118,14 @@
 
 ## 📊 Raport wynikowy
 
-Po zakończeniu działania skrypt automatycznie zapisuje plik tekstowy:
+Po zakończeniu działania skrypt automatycznie zapisuje plik tekstowy na **Pulpicie**:
 
 ```
-C:\CLEANER by MAG 1.09 - WYNIKI.txt
+%USERPROFILE%\Desktop\CLEANER by MAG - WYNIKI.txt
 ```
 
 Raport zawiera:
-- datę i czas wykonania (start i koniec)
+- datę i czas wykonania (start, koniec, **łączny czas trwania w formacie HH:MM:SS**)
 - ilość zwolnionego miejsca na dysku C:
 - parametry systemu (RAM, pagefile, model dysku, rozmiar kolejki drukarki, rozmiar CBS.log)
 - listę wszystkich wykonanych operacji z trójstanowym statusem: `[ OK ]`, `[ SKIP ]`, `[----]`
@@ -146,8 +147,8 @@ Raport zawiera:
 | Dzienniki zdarzeń | Czyści cały Event Viewer |
 | Usługi systemowe | SysMain (tylko SSD), DiagTrack, WSearch, MapsBroker, Fax, RetailDemo |
 | Optymalizacja rejestru | Tweaki wydajności, prywatności, UI i Windows Update |
-| Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox |
-| Cache Microsoft Teams | Cache, blob_storage, GPUCache, tmp |
+| Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser — **dla każdego konta użytkownika** |
+| Cache Microsoft Teams | Klasyczny + nowy UWP (MSTeams_*) |
 | Kolejka drukarki | Czyści spooler + usuwa stare sterowniki (aktywne zachowane) |
 | Microsoft Store cache | Czyści cache paczek AppX |
 | Oczyszczanie dysku | cleanmgr z 34 kategoriami; `SKIP` jeśli niedostępny w systemie |
@@ -157,10 +158,10 @@ Raport zawiera:
 | DISM StartComponentCleanup | Czyści stare składniki aktualizacji |
 | Logi CBS | Usuwa duże logi CBS |
 | Windows Update cache | Pełny reset usług i SoftwareDistribution |
-| Usunięcie Windows.old | Odzyskuje miejsce; `SKIP` jeśli folder nie istnieje |
+| Usunięcie Windows.old | Odzyskuje miejsce z podaniem rozmiaru; `SKIP` jeśli nie istnieje |
 | Defragmentacja / TRIM | `defrag /O` — zależnie od wykrytego typu dysku |
 | Thumbnail Cache | Czyści cache miniatur, restartuje Eksplorator |
-| Naprawa WMI | Przebudowuje repozytorium WMI (pushd/popd) |
+| Naprawa WMI | Weryfikacja → Salvage → Reset; `SKIP` jeśli baza jest zdrowa |
 | Pliki Minidump | Usuwa zrzuty awaryjne |
 | Raporty WER | Czyści raporty błędów Windows |
 
@@ -171,21 +172,26 @@ Raport zawiera:
 - Skrypt **planuje CHKDSK** na następny restart — wymagane ponowne uruchomienie, aby wszystkie zmiany weszły w życie
 - Wyłączona jest **hibernacja** — ale tylko na SSD/NVMe; na HDD hibernacja pozostaje aktywna
 - Usługa **Windows Search (WSearch)** zostaje wyłączona — może wpłynąć na wyszukiwanie w menu Start
-- Usługa **SysMain (Superfetch)** wyłączana jest tylko na SSD; na HDD pozostaje aktywna, bo faktycznie poprawia wydajność
-- Folder **Prefetch** jest czyszczony tylko na HDD — na SSD Windows zarządza nim automatycznie i ręczne czyszczenie jest zbędne
+- Usługa **SysMain (Superfetch)** wyłączana jest tylko na SSD; na HDD pozostaje aktywna
+- Folder **Prefetch** jest czyszczony tylko na HDD — na SSD Windows zarządza nim automatycznie
 - Skrypt usuwa wybrane **wbudowane aplikacje** Windows: Solitaire, Bing, Zune, People, Skype, Office Hub, 3D Builder, Get Started
 - Wyłączane są wpisy autostartu popularnych aplikacji (Spotify, Discord, Steam, Epic, Teams itd.) — można je ponownie włączyć ręcznie
 - Folder **Windows.old** jest usuwany trwale — po tej operacji nie ma możliwości cofnięcia do poprzedniej wersji Windows przez ustawienia systemowe
 
 ---
 
-## 🔄 Co nowego w v1.09?
+## 🔄 Co nowego w v1.10?
 
-- ✅ **Prefetch inteligentnie pomijany na SSD** — na dyskach SSD/NVMe folder Prefetch jest zarządzany automatycznie przez system; skrypt oznacza tę operację jako `[ SKIP ]` zamiast niepotrzebnie czyścić
-- ✅ **Sprawdzanie dostępności `cleanmgr`** przez `where` przed uruchomieniem — jeśli narzędzie nie jest dostępne (np. okrojone wydania Windows), operacja jest oznaczana `[ SKIP ]` zamiast cicho zawiesić
-- ✅ **Limit czasowy pobierania AdwCleaner** — dodano `-TimeoutSec 30` do `Invoke-WebRequest`, co zapobiega zawieszeniu skryptu na słabym lub niestabilnym łączu
-- ✅ **Obsługa braku połączenia dla Malwarebytes** — wyraźny komunikat zamiast cichego pominięcia, gdy nie udało się pobrać instalatora
-- ✅ **Poprawka `!errorlevel!`** — konsekwentne użycie opóźnionego rozwijania zmiennych (`delayed expansion`) zamiast `%errorlevel%` w miejscach, gdzie wartość mogłaby być odczytana nieprawidłowo wewnątrz bloków warunkowych
+- ✅ **Cache przeglądarek dla wszystkich kont użytkowników** — pętla po `C:\Users\*` czyści cache każdego profilu na komputerze; każda operacja w konsoli pokazuje nazwę konta `[NazwaUżytkownika]`
+- ✅ **Nowe przeglądarki: LibreWolf i Zen Browser** — dołączyły do listy obsługiwanych przeglądarek
+- ✅ **Teams nowy UWP** — osobna obsługa nowego Microsoft Teams z pakietu `MSTeams_*` (EBWebView) obok wersji klasycznej
+- ✅ **Inteligentna naprawa WMI** — dwuetapowa: najpierw Salvage, dopiero jeśli to nie wystarczy — pełny Reset; jeśli baza jest zdrowa od razu, operacja oznaczana jako `[ SKIP ]`
+- ✅ **Raport na Pulpicie** — plik wynikowy trafia do `%USERPROFILE%\Desktop\` zamiast `C:\`
+- ✅ **Czas trwania optymalizacji** — mierzony od startu do końca za pomocą `(Get-Date).Ticks`, wyświetlany w formacie `HH:MM:SS` w konsoli i raporcie
+- ✅ **Bufor konsoli zwiększony do 240 linii** — więcej historii operacji bez przycinania
+- ✅ **PageFile przez `CimInstance`** zamiast przestarzałego `wmic` — nowocześniejsze i pewniejsze API
+- ✅ **Inteligentne porównanie wersji z GitHub** — obsługa tagów z prefiksem `v` (np. `v1.10`) i sufiksem `.0` (np. `1.10.0`) bez fałszywych alertów o aktualizacji
+- ✅ **`endlocal` przed wyjściem** — poprawka wycieku zmiennych środowiskowych przy zamknięciu skryptu
 
 ---
 
@@ -203,4 +209,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.09 (26/04/2026)
+**Autor:** Mag | **Wersja:** 1.10 (27/04/2026)
