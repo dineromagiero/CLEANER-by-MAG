@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.11-blue)
+![Version](https://img.shields.io/badge/wersja-1.12-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -196,7 +196,7 @@ Raport zawiera:
 
 ---
 
-## 🔄 Co nowego w v1.11?
+## 🔄 Co nowego w v1.12?
 
 - ✅ **Pomiar temperatury CPU i GPU** — automatyczne pobranie OpenHardwareMonitor, odczyt przez WMI, wyniki w raporcie; OHM usuwany natychmiast po pomiarze
 - ✅ **Cache OneDrive** — nowa sekcja: logi, setup/logs i `.deadLetterQueue`; własna pozycja w raporcie
@@ -225,4 +225,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.11 (28/04/2026)
+**Autor:** Mag | **Wersja:** 1.12 (29/04/2026)
