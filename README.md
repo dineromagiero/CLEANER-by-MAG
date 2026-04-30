@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.12-blue)
+![Version](https://img.shields.io/badge/wersja-1.13-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -11,11 +11,17 @@
 
 ## 📋 Opis
 
-**CLEANER by MAG** to zaawansowany skrypt `.bat` do kompleksowej optymalizacji systemu Windows. Automatyzuje dziesiątki żmudnych zadań konserwacyjnych — od skanowania antywirusowego i usuwania śmieciowych plików, przez naprawę plików systemowych, aż po konfigurację sieci i rejestru. Skrypt **inteligentnie dostosowuje się do sprzętu i systemu** — inne decyzje podejmuje na SSD vs HDD, na laptopie vs PC, na Windows 10 vs Windows 11.
+**CLEANER by MAG** to zaawansowany skrypt `.bat` do kompleksowej optymalizacji systemu Windows. Automatyzuje dziesiątki żmudnych zadań konserwacyjnych — od skanowania antywirusowego i usuwania śmieciowych plików, przez naprawę plików systemowych, aż po konfigurację sieci i rejestru. Skrypt **inteligentnie dostosowuje się do sprzętu i systemu** — inne decyzje podejmuje na SSD vs HDD, na laptopie vs PC, na Windows 10 vs Windows 11. Od wersji 1.13 posiada **w pełni automatyczny mechanizm aktualizacji** i instaluje się w Menu Start.
 
 ---
 
 ## ✨ Co robi skrypt?
+
+### 🔄 Automatyczna aktualizacja i instalacja
+- Przy starcie sprawdza dostępność nowej wersji przez **GitHub API**
+- Jeśli dostępna aktualizacja — pobiera plik `.bat` bezpośrednio z GitHub Releases, podmieniają bieżący plik i **automatycznie uruchamia nową wersję** bez konieczności otwierania przeglądarki
+- Przy pierwszym uruchomieniu **instaluje się w Menu Start** (`%ProgramData%\Microsoft\Windows\Start Menu\Programs\CLEANER by MAG\`) ze skrótem uruchamiającym jako administrator
+- Tworzy **skrót do folderu raportów** w Menu Start prowadzący do `Dokumenty\CLEANER by MAG`
 
 ### 🔒 Bezpieczeństwo i antywirusy
 - Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian (z weryfikacją powodzenia)
@@ -36,7 +42,7 @@
 - Cache **Java** (`AppData\LocalLow\Sun\Java\Deployment\cache`)
 - Pliki tymczasowe **ASP.NET** (`Temporary ASP.NET Files`)
 - Cache **Microsoft Store** (LocalCache, INetCache, Temp dla wszystkich pakietów AppX)
-- Kolejka **drukarki (Spooler)** + stare sterowniki drukarek (W32X86, x64, ia64; aktywne zachowane)
+- Kolejka **drukarki (Spooler)** + stare sterowniki drukarek (W32X86, x64, ia64; aktywne zachowane); `[ SKIP ]` jeśli kolejka pusta
 - Logi **CBS** i Windows Update (`SoftwareDistribution`, `catroot2` — z fallbackiem na zmianę nazwy)
 - Cache miniatur z restartem Eksploratora
 - Folder **Windows.old** — `takeown` + `icacls` przed usunięciem; `[ SKIP ]` jeśli nie istnieje
@@ -60,7 +66,7 @@
 - Wyłączenie **hibernacji** — tylko na SSD/NVMe; na HDD pozostaje bez zmian
 - Wyłączenie **Fast Startup**
 - **SysMain (Superfetch)** — wyłączany tylko na SSD; na HDD pozostaje aktywny
-- **DisablePagingExecutive** — włączany tylko przy ≥ 8 GB RAM
+- **DisablePagingExecutive** — włączany przy ≥ 8000 MB RAM (tolerancja dla systemów raportujących 8 GB jako 7,9 GB)
 - Optymalizacja **pliku stronicowania** (PageFile) — automatycznie dopasowana do ilości RAM przez `CimInstance`
 - Tweaki rejestru: priorytety **procesora**, zarządzanie **pamięcią**, animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
@@ -109,9 +115,9 @@
 - Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu
 - Kolorowy, czytelny interfejs konsolowy (ANSI: aqua / biały / żółty)
 - Nagłówek z linkiem do GitHub widoczny od pierwszego uruchomienia
-- **Pozycja okna konsoli dostosowywana do DPI monitora** przez `System.Drawing`
+- **Pozycja okna konsoli skalowana do DPI monitora** przez `System.Drawing`
 - Dynamiczne dopasowanie rozmiaru okna i **bufor konsoli (240 linii)**
-- **Sprawdzanie aktualizacji** przez GitHub API przed sprawdzaniem uprawnień
+- **Automatyczna aktualizacja jednym kliknięciem** — pobieranie i podmiana pliku bez otwierania przeglądarki
 - Trójstanowy system statusów: `[ OK ]` / `[SKIP]` / `[BŁĄD]`
 - SFC, DISM i inne długie operacje wyświetlają czytelny **pasek postępu**
 - **Czas trwania** mierzony i wyświetlany w formacie `HH:MM:SS`
@@ -127,7 +133,7 @@
 |-----------|-----------|
 | System | Windows 10 / Windows 11 |
 | Uprawnienia | **Administrator** (wymagane) |
-| Połączenie | Opcjonalne — potrzebne dla sprawdzania wersji, AdwCleaner, Malwarebytes, OHM |
+| Połączenie | Opcjonalne — potrzebne dla aktualizacji, AdwCleaner, Malwarebytes, OHM |
 | PowerShell | 5.x (wbudowany w Windows) |
 
 ---
@@ -138,6 +144,8 @@
 2. Kliknij **prawym przyciskiem myszy** na plik `.bat`
 3. Wybierz **„Uruchom jako administrator"**
 4. Postępuj zgodnie z instrukcjami na ekranie
+
+> Po pierwszym uruchomieniu skrypt instaluje się w Menu Start — kolejne uruchomienia możliwe są bezpośrednio stamtąd bez potrzeby szukania pliku `.bat`.
 
 > ⚠️ **Uwaga:** Skrypt **musi** być uruchomiony jako administrator. Bez uprawnień administratora wyświetli czytelny komunikat z instrukcją i zamknie się po 10 sekundach. Skrypt automatycznie odblokuje się, jeśli Windows zablokował go po pobraniu z internetu.
 
@@ -218,18 +226,12 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 
 ---
 
-## 🔄 Co nowego w v1.12?
+## 🔄 Co nowego w v1.13?
 
-- ✅ **HPET / Timer Resolution** — nowa sekcja optymalizacji latencji: `useplatformclock=false`, `tscsyncpolicy=enhanced`, `disabledynamictick=yes`, `GlobalTimerResolutionRequests`; szczególnie przydatne dla graczy i producentów audio
-- ✅ **Narrator i ułatwienia dostępu** — wyłączenie Narratora przez IFEO, dezaktywacja StickyKeys / ToggleKeys / FilterKeys i dźwięków dostępności
-- ✅ **Logi instalatorów** — nowa sekcja czyszcząca CBS, DISM, MeasuredBoot, NetSetup, waasmedic i INF (`*.log`, `*.pnf`)
-- ✅ **Inteligentny plan zasilania dla laptopa** — na Windows 11 używa nakładki **Tryb Zasilania** zamiast klasycznego planu; automatyczne rozróżnienie podłączony/na baterii z odpowiednim profilem
-- ✅ **Raport w Dokumentach z unikatową nazwą** — `Raport_YYYY-MM-DD_HH-mm-ss.txt` w folderze `Dokumenty\CLEANER by MAG\`; każde uruchomienie tworzy nowy plik
-- ✅ **Pozycja okna konsoli skalowana do DPI** — `System.Drawing.Graphics.DpiX` zapewnia prawidłowe pozycjonowanie na ekranach HiDPI/4K
-- ✅ **Czyszczenie klucza konsoli** przed startem (`reg delete`) — brak konfliktów ze starymi ustawieniami z poprzednich wersji
-- ✅ **CHKDSK** — sprawdza czy już zaplanowany przed dodaniem nowego wpisu; `[ SKIP ]` jeśli tak
-- ✅ **cleanmgr** — podczas oczyszczania Win32 API centruje kursor myszy i wysuwa okno na pierwszy plan, żeby nie zginęło za innymi oknami
-- ✅ **catroot2** — jeśli nie można usunąć (plik zajęty), automatycznie zmienia nazwę z losowym sufiksem zamiast cicho pomijać operację
+- ✅ **Automatyczna aktualizacja** — po wykryciu nowej wersji skrypt pobiera plik `.bat` bezpośrednio z GitHub Releases przez API, podmieniają bieżący plik i natychmiast uruchamia nową wersję; nie trzeba otwierać przeglądarki ani pobierać niczego ręcznie
+- ✅ **Instalacja w Menu Start** — skrypt kopiuje się do `%ProgramData%\Microsoft\Windows\Start Menu\Programs\CLEANER by MAG\` i tworzy skrót `.lnk` z ustawionym bitem „Uruchom jako administrator" (przez manipulację bajtami pliku skrótu)
+- ✅ **Skrót do raportów w Menu Start** — osobny skrót `.lnk` otwierający folder `Dokumenty\CLEANER by MAG` bezpośrednio z Menu Start
+- ✅ **Poprawka progu `DisablePagingExecutive`** — obniżony z ≥ 8192 MB na ≥ 8000 MB, żeby tweak działał też na systemach gdzie Windows zgłasza 8 GB RAM jako 7 900 MB
 
 ---
 
@@ -247,4 +249,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.12 (29/04/2026)
+**Autor:** Mag | **Wersja:** 1.13 (1/05/2026)
