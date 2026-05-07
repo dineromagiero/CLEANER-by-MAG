@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.17-blue)
+![Version](https://img.shields.io/badge/wersja-1.18-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -19,7 +19,7 @@
 
 ### 🔄 Automatyczna aktualizacja i instalacja
 - Przy starcie sprawdza dostępność nowej wersji przez **GitHub API**
-- Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy uruchamiany w tle (`updater_helper.bat`), co eliminuje konflikt blokady pliku podczas podmiany
+- Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy uruchamiany w tle (`updater_helper.bat`), eliminując konflikt blokady pliku podczas podmiany
 - Przy pierwszym uruchomieniu **instaluje się w Menu Start** ze skrótem uruchamiającym jako administrator
 - Tworzy **skrót do folderu raportów** w Menu Start
 
@@ -85,8 +85,9 @@
 - Wyłączenie **Dynamic Tick** (`disabledynamictick yes`)
 - Aktywacja **GlobalTimerResolutionRequests** w rejestrze
 
-### 🔕 Narrator i ułatwienia dostępu
+### 🔕 Narrator, OneNote i ułatwienia dostępu
 - Wyłączenie **Narratora** przez IFEO i klucze polityk
+- Blokada autostartu **OneNote** (`ONENOTEM.EXE`) przez IFEO oraz usunięcie wpisów `Run` z rejestru (HKCU i HKLM, x86 i x64)
 - Wyłączenie **StickyKeys, ToggleKeys, FilterKeys**
 - Wyciszenie **dźwięków dostępności** i wyłączenie autostartu Narratora przy logowaniu
 
@@ -96,7 +97,7 @@
 - Reset **stosu TCP/IP** i Winsock
 - Ustawienie serwerów DNS: **Cloudflare (1.1.1.1 / 1.0.0.1)** i **Google (8.8.8.8)** dla IPv4 i IPv6 — dla każdego aktywnego interfejsu sieciowego
 - Optymalizacja parametrów **TCP** (autotuninglevel, RSS, chimney)
-- **Wyłączenie trybu P2P Delivery Optimization** (`DODownloadMode=0`) — aktualizacje Windows nie są udostępniane innym komputerom w sieci
+- **Wyłączenie trybu P2P Delivery Optimization** (`DODownloadMode=0`)
 
 ### 🛡️ Prywatność i telemetria
 - Wyłączenie zbierania danych diagnostycznych (**telemetria**)
@@ -110,7 +111,7 @@
 - Dezaktywacja zbędnych usług: `DiagTrack`, `WSearch`, `MapsBroker`, `Fax`, `RetailDemo`, `dmwappushservice`; `SysMain` — tylko na SSD
 - Wyłączenie zbędnych harmonogramów systemowych (CEIP, feedback, Xbox, dysk, WER)
 - Blokada procesów **przeglądarek w tle** (Chrome, Edge, Brave, Opera, Firefox, Adobe)
-- **Blokowanie automatycznych aktualizacji Microsoft Office** — wyłączenie `enableautomaticupdates`, zatrzymanie i wyłączenie `ClickToRunSvc`
+- **Blokowanie automatycznych aktualizacji Microsoft Office** — wyłączenie `enableautomaticupdates`, zatrzymanie `ClickToRunSvc`
 - **Blokowanie automatycznych aktualizacji Microsoft Store** — `AutoDownload=2`, `AutoUpdateFrequencyEnabled=0`, wyłączenie harmonogramów `WindowsUpdate\Automatic App Update`
 
 ### 🌡️ Pomiar temperatury sprzętu
@@ -126,7 +127,7 @@
 ### 🖥️ Interfejs i UX
 - Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu
 - Kolorowy, czytelny interfejs konsolowy (ANSI: aqua / biały / żółty)
-- **Ponumerowane kroki** w separatorach: `[01/31]` do `[31/31]` — wiadomo dokładnie ile zostało
+- **Ponumerowane kroki** w separatorach: `[01/31]` do `[31/31]`
 - Nagłówek z linkiem do GitHub widoczny od pierwszego uruchomienia
 - **Pozycja okna konsoli skalowana do DPI monitora** przez `System.Drawing`
 - Dynamiczne dopasowanie rozmiaru okna i **bufor konsoli (280 linii)**
@@ -200,7 +201,7 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 | 12 | Usługi systemowe | SysMain (SSD), DiagTrack, WSearch, MapsBroker, Fax, RetailDemo |
 | 13 | HPET / Timer Resolution | useplatformclock=false, tscsync=enhanced, dynamictick=off |
 | 14 | Narrator / Ease of Access | Wyłączenie Narratora, StickyKeys, ToggleKeys, FilterKeys |
-| 15 | Blokada autoaktualizacji | Przeglądarki, Office, Microsoft Store — procesy tła |
+| 15 | Blokada autoaktualizacji i autostartu | Przeglądarki, Office, Store, **OneNote** |
 | 16 | Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser, Floorp, Thunderbird — dla każdego konta |
 | 17 | Cache Microsoft Teams | Klasyczny + nowy UWP (MSTeams_*) |
 | 18 | Cache OneDrive | Logi, setup/logs, .deadLetterQueue |
@@ -228,26 +229,21 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 - Usługa **SysMain (Superfetch)** wyłączana jest tylko na SSD; na HDD pozostaje aktywna
 - Folder **Prefetch** jest czyszczony tylko na HDD — na SSD Windows zarządza nim automatycznie
 - Tweaki **HPET/Timer Resolution** modyfikują ustawienia bootloadera (`bcdedit`) — zmiany wymagają restartu
-- Wyłączenie **Narratora** realizowane jest przez IFEO (przekierowanie procesu) — można cofnąć ręcznie w rejestrze
+- Wyłączenie **Narratora** realizowane jest przez IFEO — można cofnąć ręcznie w rejestrze
+- Blokada **OneNote** (`ONENOTEM.EXE`) przez IFEO uniemożliwia uruchomienie samego procesu szybkich notatek; główna aplikacja OneNote (Store) działa normalnie
 - Czyszczenie **sterowników PnP** usuwa wyłącznie starsze wersje; najnowszy sterownik każdego urządzenia zawsze zostaje zachowany
-- **Delivery Optimization** zostaje wyłączone w trybie P2P — Windows Update działa normalnie, ale nie udostępnia danych innym komputerom
+- **Delivery Optimization** zostaje wyłączone w trybie P2P — Windows Update działa normalnie
 - Blokowanie **aktualizacji Office** (`ClickToRunSvc`) — aktualizacje Office można uruchomić ręcznie z poziomu aplikacji
-- Skrypt usuwa wybrane **wbudowane aplikacje** Windows: Solitaire, Bing News/Finance/Sports/Weather, People, Skype, Office Hub, 3D Builder, Get Started, Get Help, Feedback Hub, Mapy, Mixed Reality Portal, Power Automate, Quick Assist, Clipchamp, Family Features, Microsoft To Do
+- Skrypt usuwa wybrane **wbudowane aplikacje** Windows: Solitaire, Bing News/Finance/Sports/Weather, People, Skype, Office Hub, 3D Builder, Get Started, Get Help, Feedback Hub, Mapy, Mixed Reality Portal, Power Automate, Quick Assist, Clipchamp, Family Features, Microsoft To Do, **Sticky Notes**
 - Wyłączane są wpisy autostartu popularnych aplikacji (Spotify, Discord, Steam, Epic, Teams itd.) — można je ponownie włączyć ręcznie
 - Folder **Windows.old** jest usuwany trwale — nie ma możliwości cofnięcia do poprzedniej wersji Windows przez ustawienia systemowe
 
 ---
 
-## 🔄 Co nowego w v1.17?
+## 🔄 Co nowego w v1.18?
 
-- ✅ **Ponumerowane kroki** — każdy separator pokazuje numer bieżącego kroku `[01/31]` do `[31/31]`; 31 kroków łącznie; wiadomo dokładnie ile zostało do końca
-- ✅ **Rozszerzona lista usuniętych aplikacji** — dodane: Get Help, Feedback Hub, Mapy, Bing News/Weather/Finance/Sports, Mixed Reality Portal, Power Automate Desktop, Quick Assist, Clipchamp, Family Features, Microsoft To Do, Microsoft Solitaire Collection; usunięty Zune (niedostępny w nowszych wersjach Windows)
-- ✅ **Blokowanie automatycznych aktualizacji Microsoft Office** — wyłączenie `enableautomaticupdates` i `hideenabledisableupdates` w rejestrze + zatrzymanie i wyłączenie usługi `ClickToRunSvc`
-- ✅ **Blokowanie automatycznych aktualizacji Microsoft Store** — `AutoDownload=2`, `AutoUpdateFrequencyEnabled=0`, wyłączenie harmonogramów `Automatic App Update` i `Scheduled Start`
-- ✅ **Naprawa Delivery Optimization** — nowa sekcja: `DODownloadMode=0` wyłącza tryb P2P (aktualizacje nie są rozsyłane do innych komputerów w sieci ani internecie), restart `DoSvc`
-- ✅ **Niezawodny mechanizm aktualizacji** — podmiana pliku przez zewnętrzny `updater_helper.bat` uruchamiany jako zminimalizowane okno (`start /min`), co eliminuje błąd blokady pliku gdy stary proces skryptu jeszcze działa
-- ✅ **Bufor konsoli zwiększony do 280 linii**
-- ✅ **Historia optymalizacji — inline PS** — zamiast zakodowanego Base64, historia to czytelna jednolinijkowa komenda PowerShell; wyświetla ostatnie 20 sesji z tabeli plików raportów
+- ✅ **Blokada autostartu OneNote** — `ONENOTEM.EXE` (szybkie notatki uruchamiane przy logowaniu) blokowane przez IFEO (`debugger=debug.exe`) oraz usunięcie wpisów `OneNote`/`OneNoteM` z rejestrów autostartu HKCU i HKLM (zarówno x64 jak i WOW6432Node)
+- ✅ **Sticky Notes usunięte z systemu** — `*MicrosoftStickyNotes*` dodane do listy usuwanych wbudowanych aplikacji AppX
 
 ---
 
@@ -265,4 +261,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.17 (6/05/2026)
+**Autor:** Mag | **Wersja:** 1.18 (8/05/2026)
