@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.18-blue)
+![Version](https://img.shields.io/badge/wersja-1.19-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -61,7 +61,7 @@
 - Grupowanie według urządzenia i producenta, sortowanie według numeru wersji
 - Usunięcie przez `pnputil /delete-driver` wszystkich starszych wersji — **najnowsza zawsze zachowana**
 - Windows automatycznie blokuje usunięcie sterowników aktywnie używanych
-- Raport w konsoli i pliku: liczba zachowanych / usuniętych / błędów; `[ SKIP ]` jeśli brak przestarzałych
+- Raport: liczba zachowanych / usuniętych / błędów; `[ SKIP ]` jeśli brak przestarzałych
 
 ### ⚡ Optymalizacja wydajności
 - Automatyczne wykrywanie urządzenia: **laptop vs PC stacjonarny**
@@ -79,6 +79,14 @@
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
 - Wyłączenie wybranych programów **startowych**: Skype, OneDrive, Spotify, Discord, Steam, Epic Games, Teams, GOG Galaxy, EA App, Ubisoft Connect, Overwolf, Zoom, Viber
 
+### 🧩 Wyłączanie zbędnych funkcji Windows
+- Automatyczne wyłączenie przez DISM z **paskiem postępu**, bez restartu:
+  - **Usługi XPS** (`Printing-XPSServices-Features`)
+  - **Klasyczny Windows Media Player** (`WindowsMediaPlayer`)
+  - **Klient Folderów Roboczych** (`WorkFolders-Client`)
+  - **Drukuj do PDF** (`Printing-PrintToPDFServices-Features`)
+  - **Protokół SMB 1.0** (`SMB1Protocol`) — usunięcie przestarzałego i niebezpiecznego protokołu sieciowego
+
 ### ⏱️ Optymalizacja latencji (HPET / Timer Resolution)
 - Wyłączenie **platform clock** (`bcdedit /set useplatformclock false`)
 - Ustawienie **TSC sync policy** na `enhanced`
@@ -87,7 +95,7 @@
 
 ### 🔕 Narrator, OneNote i ułatwienia dostępu
 - Wyłączenie **Narratora** przez IFEO i klucze polityk
-- Blokada autostartu **OneNote** (`ONENOTEM.EXE`) przez IFEO oraz usunięcie wpisów `Run` z rejestru (HKCU i HKLM, x86 i x64)
+- Blokada autostartu **OneNote** (`ONENOTEM.EXE`) przez IFEO oraz usunięcie wpisów `Run` z rejestru
 - Wyłączenie **StickyKeys, ToggleKeys, FilterKeys**
 - Wyciszenie **dźwięków dostępności** i wyłączenie autostartu Narratora przy logowaniu
 
@@ -201,7 +209,7 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 | 12 | Usługi systemowe | SysMain (SSD), DiagTrack, WSearch, MapsBroker, Fax, RetailDemo |
 | 13 | HPET / Timer Resolution | useplatformclock=false, tscsync=enhanced, dynamictick=off |
 | 14 | Narrator / Ease of Access | Wyłączenie Narratora, StickyKeys, ToggleKeys, FilterKeys |
-| 15 | Blokada autoaktualizacji i autostartu | Przeglądarki, Office, Store, **OneNote** |
+| 15 | Blokada autoaktualizacji i autostartu | Przeglądarki, Office, Store, OneNote; wyłączanie funkcji Windows (XPS, WMP, WorkFolders, Drukuj do PDF, SMB 1.0) |
 | 16 | Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser, Floorp, Thunderbird — dla każdego konta |
 | 17 | Cache Microsoft Teams | Klasyczny + nowy UWP (MSTeams_*) |
 | 18 | Cache OneDrive | Logi, setup/logs, .deadLetterQueue |
@@ -230,20 +238,21 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 - Folder **Prefetch** jest czyszczony tylko na HDD — na SSD Windows zarządza nim automatycznie
 - Tweaki **HPET/Timer Resolution** modyfikują ustawienia bootloadera (`bcdedit`) — zmiany wymagają restartu
 - Wyłączenie **Narratora** realizowane jest przez IFEO — można cofnąć ręcznie w rejestrze
-- Blokada **OneNote** (`ONENOTEM.EXE`) przez IFEO uniemożliwia uruchomienie samego procesu szybkich notatek; główna aplikacja OneNote (Store) działa normalnie
+- Blokada **OneNote** (`ONENOTEM.EXE`) uniemożliwia uruchomienie procesu szybkich notatek; główna aplikacja OneNote działa normalnie
+- Wyłączenie **SMB 1.0** jest zalecane ze względów bezpieczeństwa; może wpłynąć na komunikację ze starszymi urządzeniami sieciowymi (drukarki sieciowe, NAS sprzed 2012 roku)
+- Wyłączenie **Klasycznego Windows Media Player** i **Drukowania do PDF** może wymagać ponownej aktywacji jeśli są potrzebne
 - Czyszczenie **sterowników PnP** usuwa wyłącznie starsze wersje; najnowszy sterownik każdego urządzenia zawsze zostaje zachowany
 - **Delivery Optimization** zostaje wyłączone w trybie P2P — Windows Update działa normalnie
-- Blokowanie **aktualizacji Office** (`ClickToRunSvc`) — aktualizacje Office można uruchomić ręcznie z poziomu aplikacji
-- Skrypt usuwa wybrane **wbudowane aplikacje** Windows: Solitaire, Bing News/Finance/Sports/Weather, People, Skype, Office Hub, 3D Builder, Get Started, Get Help, Feedback Hub, Mapy, Mixed Reality Portal, Power Automate, Quick Assist, Clipchamp, Family Features, Microsoft To Do, **Sticky Notes**
+- Blokowanie **aktualizacji Office** — aktualizacje można uruchomić ręcznie z poziomu aplikacji
+- Skrypt usuwa wybrane **wbudowane aplikacje** Windows: Solitaire, Bing News/Finance/Sports/Weather, People, Skype, Office Hub, 3D Builder, Get Started, Get Help, Feedback Hub, Mapy, Mixed Reality Portal, Power Automate, Quick Assist, Clipchamp, Family Features, Microsoft To Do, Sticky Notes
 - Wyłączane są wpisy autostartu popularnych aplikacji (Spotify, Discord, Steam, Epic, Teams itd.) — można je ponownie włączyć ręcznie
 - Folder **Windows.old** jest usuwany trwale — nie ma możliwości cofnięcia do poprzedniej wersji Windows przez ustawienia systemowe
 
 ---
 
-## 🔄 Co nowego w v1.18?
+## 🔄 Co nowego w v1.19?
 
-- ✅ **Blokada autostartu OneNote** — `ONENOTEM.EXE` (szybkie notatki uruchamiane przy logowaniu) blokowane przez IFEO (`debugger=debug.exe`) oraz usunięcie wpisów `OneNote`/`OneNoteM` z rejestrów autostartu HKCU i HKLM (zarówno x64 jak i WOW6432Node)
-- ✅ **Sticky Notes usunięte z systemu** — `*MicrosoftStickyNotes*` dodane do listy usuwanych wbudowanych aplikacji AppX
+- ✅ **Wyłączanie zbędnych funkcji Windows przez DISM** — nowa sekcja w kroku 15 z paskiem postępu: Usługi XPS, Klasyczny Windows Media Player, Klient Folderów Roboczych, Drukuj do PDF oraz **SMB 1.0** (przestarzały protokół stanowiący zagrożenie bezpieczeństwa — wykorzystywany m.in. przez ransomware WannaCry)
 
 ---
 
@@ -261,4 +270,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.18 (8/05/2026)
+**Autor:** Mag | **Wersja:** 1.19 (8/05/2026)
