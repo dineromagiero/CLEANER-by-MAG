@@ -278,4 +278,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.21 (14/05/2026)
+Autor: **Mag** | Wersja: **1.21** (14/05/2026)
