@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.20-blue)
+![Version](https://img.shields.io/badge/wersja-1.21-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -27,7 +27,7 @@
 - Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian (z weryfikacją powodzenia)
 - Aktualizuje i uruchamia **szybki skan Windows Defender** z raportowaniem kodu błędu
 - Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie adware); brak internetu oznacza `[ SKIP ]`
-- Opcjonalne pobranie, skan i deinstalacja **Malwarebytes** po zakończeniu
+- Opcjonalne pobranie, skan i deinstalacja **Malwarebytes** po zakończeniu (odinstalowanie w pełni ciche — bez okienek potwierdzenia)
 
 ### 🗑️ Czyszczenie plików
 - Pliki tymczasowe użytkownika i systemu (`%TEMP%`, `C:\Windows\Temp`)
@@ -77,6 +77,7 @@
 - Optymalizacja **pliku stronicowania** (PageFile): 8192/8192 MB dla systemów ≤ 8 GB RAM; 4096/4096 MB dla systemów z > 8 GB RAM
 - Tweaki rejestru: priorytety **procesora**, zarządzanie **pamięcią**, animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
+- **Wyłączenie harmonogramu automatycznej defragmentacji** (`ScheduledDefrag`) i zatrzymanie usługi `defragsvc` — skrypt przejmuje pełną kontrolę nad defragmentacją
 - Wyłączenie wybranych programów **startowych**: Skype, OneDrive, Spotify, Discord, Steam, Epic Games, Teams, GOG Galaxy, EA App, Ubisoft Connect, Overwolf, Zoom, Viber
 
 ### 🧩 Wyłączanie zbędnych funkcji Windows
@@ -122,7 +123,7 @@
 
 ### ⚙️ Usługi, harmonogramy i autoaktualizacje
 - Dezaktywacja zbędnych usług: `DiagTrack`, `WSearch`, `MapsBroker`, `Fax`, `RetailDemo`, `dmwappushservice`; `SysMain` — tylko na SSD
-- Wyłączenie zbędnych harmonogramów systemowych (CEIP, feedback, Xbox, dysk, WER)
+- Wyłączenie zbędnych harmonogramów systemowych (CEIP, feedback, Xbox, dysk, WER, **ScheduledDefrag**)
 - Blokada procesów **przeglądarek w tle** (Chrome, Edge, Brave, Opera, Firefox, Adobe)
 - **Blokowanie automatycznych aktualizacji Microsoft Office** — wyłączenie `enableautomaticupdates`, zatrzymanie `ClickToRunSvc`
 - **Blokowanie automatycznych aktualizacji Microsoft Store** — `AutoDownload=2`, `AutoUpdateFrequencyEnabled=0`, wyłączenie harmonogramów `WindowsUpdate\Automatic App Update`
@@ -214,7 +215,7 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 | 12 | Usługi systemowe | SysMain (SSD), DiagTrack, WSearch, MapsBroker, Fax, RetailDemo |
 | 13 | HPET / Timer Resolution | useplatformclock=false, tscsync=enhanced, dynamictick=off |
 | 14 | Narrator / Ease of Access | Wyłączenie Narratora, StickyKeys, ToggleKeys, FilterKeys |
-| 15 | Blokada autoaktualizacji i autostartu | Przeglądarki, Office, Store, OneNote; wyłączanie funkcji Windows (XPS, WMP, WorkFolders, Drukuj do PDF, SMB 1.0); **blokada tła 10 aplikacji UWP** |
+| 15 | Blokada autoaktualizacji i autostartu | Przeglądarki, Office, Store, OneNote; wyłączanie funkcji Windows (XPS, WMP, WorkFolders, PDF, SMB 1.0); blokada tła 10 aplikacji UWP; **wyłączenie harmonogramu defragmentacji** |
 | 16 | Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser, Floorp, Thunderbird — dla każdego konta |
 | 17 | Cache Microsoft Teams | Klasyczny + nowy UWP (MSTeams_*) |
 | 18 | Cache OneDrive | Logi, setup/logs, .deadLetterQueue |
@@ -244,7 +245,8 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 - Tweaki **HPET/Timer Resolution** modyfikują ustawienia bootloadera (`bcdedit`) — zmiany wymagają restartu
 - Wyłączenie **Narratora** realizowane jest przez IFEO — można cofnąć ręcznie w rejestrze
 - Blokada **OneNote** (`ONENOTEM.EXE`) uniemożliwia uruchomienie procesu szybkich notatek; główna aplikacja OneNote działa normalnie
-- **Blokada tła aplikacji UWP** nie usuwa aplikacji — można je nadal uruchamiać ręcznie; przestają jedynie działać w tle bez wiedzy użytkownika
+- **Wyłączenie harmonogramu defragmentacji** (`ScheduledDefrag`) oznacza, że Windows nie będzie automatycznie defragmentował dysków w tle — skrypt wykonuje defragmentację/TRIM ręcznie przy każdym uruchomieniu
+- **Blokada tła aplikacji UWP** nie usuwa aplikacji — można je nadal uruchamiać ręcznie
 - Wyłączenie **SMB 1.0** jest zalecane ze względów bezpieczeństwa; może wpłynąć na komunikację ze starszymi urządzeniami sieciowymi
 - Czyszczenie **sterowników PnP** usuwa wyłącznie starsze wersje; najnowszy sterownik każdego urządzenia zawsze zostaje zachowany
 - **Delivery Optimization** zostaje wyłączone w trybie P2P — Windows Update działa normalnie
@@ -255,9 +257,10 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 
 ---
 
-## 🔄 Co nowego w v1.20?
+## 🔄 Co nowego w v1.21?
 
-- ✅ **Blokowanie dostępu w tle dla 10 aplikacji UWP** — nowa sekcja w kroku 15: wyłączenie aktywności w tle przez klucz `BackgroundAccessApplications` w rejestrze HKCU dla: Zdjęcia, Aparat, Kalkulator, Notatnik, Paint, Mapy, Pogoda, Filmy i TV, Groove Music i Microsoft Store; aplikacje pozostają w pełni dostępne do ręcznego uruchamiania
+- ✅ **Wyłączenie harmonogramu automatycznej defragmentacji** — skrypt wyłącza teraz harmonogram `\Microsoft\Windows\Defrag\ScheduledDefrag` i zatrzymuje usługę `defragsvc`; defragmentacja/TRIM wykonywana jest przez skrypt jednorazowo i w pełni kontrolowany sposób, zamiast działać w tle bez wiedzy użytkownika
+- ✅ **Ciche odinstalowanie Malwarebytes** — dodana flaga `/suppressmsgboxes` do `mb5uns.exe`; okno deinstalacji nie wyświetla już żadnych okienek wymagających kliknięcia
 
 ---
 
@@ -275,4 +278,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-**Autor:** Mag | **Wersja:** 1.20 (11/05/2026)
+**Autor:** Mag | **Wersja:** 1.21 (14/05/2026)
