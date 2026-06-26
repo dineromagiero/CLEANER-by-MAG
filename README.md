@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.22-blue)
+![Version](https://img.shields.io/badge/wersja-1.23-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -28,7 +28,7 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 - Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian (z weryfikacją powodzenia)
 - Aktualizuje i uruchamia **szybki skan Windows Defender** z raportowaniem kodu błędu
 - Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie adware); brak internetu oznacza `[ SKIP ]`
-- Opcjonalne pobranie, skan i **ciche odinstalowanie Malwarebytes** po zakończeniu (bez okienek potwierdzenia)
+- Opcjonalne pobranie, skan i deinstalacja **Malwarebytes** po zakończeniu (odinstalowanie w pełni ciche)
 
 ### 🗑️ Czyszczenie plików
 - Pliki tymczasowe użytkownika i systemu (`%TEMP%`, `C:\Windows\Temp`)
@@ -37,8 +37,7 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 - **Minidumpy** i raporty błędów Windows (WER)
 - Cache **ikon** i czcionek
 - **Logi instalatorów systemowych**: CBS, DISM, MeasuredBoot, NetSetup, waasmedic, INF (`*.log`, `*.pnf`)
-- Cache przeglądarek — **dla każdego konta użytkownika na komputerze** (pętla po `C:\Users\*`):  
-  Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser, Floorp, Thunderbird (domyślny profil + wszystkie `Profile *`)
+- Cache przeglądarek — **dla każdego konta użytkownika na komputerze** (pętla po `C:\Users\*`): **Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser, Floorp, Thunderbird** (domyślny profil + wszystkie `Profile *`)
 - Cache **Microsoft Teams** — obsługa obu wersji: klasycznej i nowej UWP (`MSTeams_*\LocalCache`)
 - Cache **Microsoft OneDrive** — logi, setup/logs, `.deadLetterQueue`
 - Cache **Java** (`AppData\LocalLow\Sun\Java\Deployment\cache`)
@@ -48,7 +47,7 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 - Logi **CBS** i Windows Update (`SoftwareDistribution`, `catroot2` — z fallbackiem na zmianę nazwy)
 - Cache miniatur z restartem Eksploratora
 - Folder **Windows.old** — `takeown` + `icacls` przed usunięciem; `[ SKIP ]` jeśli nie istnieje
-- **Oczyszczanie dysku** (`cleanmgr`) z konfiguracją 34 kategorii przez rejestr; `[ SKIP ]` jeśli `cleanmgr` niedostępny
+- **Oczyszczanie dysku** (`cleanmgr`) z konfiguracją 34 kategorii przez rejestr, okno wysuwane na pierwszy plan; `[ SKIP ]` jeśli `cleanmgr` niedostępny
 
 ### 🔧 Naprawa systemu
 - **SFC** (System File Checker) — dwukrotnie: przed i po DISM, z paskiem postępu i kodem błędu w raporcie
@@ -68,9 +67,9 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 ### ⚡ Optymalizacja wydajności
 - Automatyczne wykrywanie urządzenia: **laptop vs PC stacjonarny**
 - Inteligentny dobór **planu zasilania**:
-  - PC stacjonarny → Wysoka Wydajność
-  - Laptop na Windows 11 (build ≥ 22000) → globalna nakładka **Tryb Zasilania**: podłączony = Najlepsza Wydajność, na baterii = Najlepsza efektywność energetyczna
-  - Laptop na Windows 10 → Wysoka Wydajność z boost CPU podłączony / bez boost na baterii
+  - **PC stacjonarny** → Wysoka Wydajność
+  - **Laptop na Windows 11** (build ≥ 22000) → globalna nakładka **Tryb Zasilania**: podłączony = Najlepsza Wydajność, na baterii = Najlepsza efektywność energetyczna
+  - **Laptop na Windows 10** → Wysoka Wydajność z boost CPU podłączony / bez boost na baterii
 - Wykrywanie dysku przez `Get-PhysicalDisk` (MediaType: SSD / NVMe / HDD) z fallbackiem na nazwę modelu
 - Wyłączenie **hibernacji** — tylko na SSD/NVMe; na HDD pozostaje bez zmian
 - Wyłączenie **Fast Startup**
@@ -79,21 +78,21 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 - Optymalizacja **pliku stronicowania** (PageFile): 8192/8192 MB dla systemów ≤ 8 GB RAM; 4096/4096 MB dla systemów z > 8 GB RAM
 - Tweaki rejestru: priorytety **procesora**, zarządzanie **pamięcią**, animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
-- **Wyłączenie harmonogramu automatycznej defragmentacji** (`ScheduledDefrag`) i zatrzymanie usługi `defragsvc`
+- **Wyłączenie harmonogramu automatycznej defragmentacji** (`ScheduledDefrag`) — usługa `defragsvc` pozostaje dostępna dla innych operacji systemowych (DISM)
 - Wyłączenie wybranych programów **startowych**: Skype, OneDrive, Spotify, Discord, Steam, Epic Games, Teams, GOG Galaxy, EA App, Ubisoft Connect, Overwolf, Zoom, Viber
 
 ### 🧩 Wyłączanie zbędnych funkcji Windows
-Automatyczne wyłączenie przez DISM, bez restartu:
-- Usługi XPS (`Printing-XPSServices-Features`)
-- Klasyczny Windows Media Player (`WindowsMediaPlayer`)
-- Klient Folderów Roboczych (`WorkFolders-Client`)
-- Drukuj do PDF (`Printing-PrintToPDFServices-Features`)
-- Protokół SMB 1.0 (`SMB1Protocol`) — przestarzały protokół stanowiący zagrożenie bezpieczeństwa
+- Automatyczne wyłączenie przez DISM z paskiem postępu, bez restartu:
+  - **Usługi XPS** (`Printing-XPSServices-Features`)
+  - **Klasyczny Windows Media Player** (`WindowsMediaPlayer`)
+  - **Klient Folderów Roboczych** (`WorkFolders-Client`)
+  - **Drukuj do PDF** (`Printing-PrintToPDFServices-Features`)
+  - **Protokół SMB 1.0** (`SMB1Protocol`) — przestarzały protokół stanowiący zagrożenie bezpieczeństwa
 
 ### 📴 Blokowanie dostępu w tle dla aplikacji UWP
-Wyłączenie aktywności w tle dla 10 wbudowanych aplikacji przez klucz `BackgroundAccessApplications`:  
-Zdjęcia, Aparat, Kalkulator, Notatnik, Paint, Mapy, Pogoda, Filmy i TV, Groove Music, Microsoft Store  
-Aplikacje pozostają dostępne do ręcznego uruchomienia — przestają jedynie działać w tle bez wiedzy użytkownika.
+- Wyłączenie aktywności w tle dla 10 wbudowanych aplikacji UWP przez klucz `BackgroundAccessApplications` w rejestrze:
+  **Zdjęcia, Aparat, Kalkulator, Notatnik, Paint, Mapy, Pogoda, Filmy i TV, Groove Music, Microsoft Store**
+- Aplikacje pozostają dostępne do ręcznego uruchomienia — przestają jedynie działać w tle bez wiedzy użytkownika
 
 ### ⏱️ Optymalizacja latencji (HPET / Timer Resolution)
 - Wyłączenie **platform clock** (`bcdedit /set useplatformclock false`)
@@ -125,10 +124,10 @@ Aplikacje pozostają dostępne do ręcznego uruchomienia — przestają jedynie 
 
 ### ⚙️ Usługi, harmonogramy i autoaktualizacje
 - Dezaktywacja zbędnych usług: `DiagTrack`, `WSearch`, `MapsBroker`, `Fax`, `RetailDemo`, `dmwappushservice`; `SysMain` — tylko na SSD
-- Wyłączenie zbędnych harmonogramów systemowych (CEIP, feedback, Xbox, dysk, WER, **ScheduledDefrag**)
+- Wyłączenie zbędnych harmonogramów systemowych (CEIP, feedback, Xbox, dysk, WER, ScheduledDefrag)
 - Blokada procesów **przeglądarek w tle** (Chrome, Edge, Brave, Opera, Firefox, Adobe)
 - **Blokowanie automatycznych aktualizacji Microsoft Office** — wyłączenie `enableautomaticupdates`, zatrzymanie `ClickToRunSvc`
-- **Blokowanie automatycznych aktualizacji Microsoft Store** — `AutoDownload=2`, wyłączenie harmonogramów `Automatic App Update`
+- **Blokowanie automatycznych aktualizacji Microsoft Store** — `AutoDownload=2`, `AutoUpdateFrequencyEnabled=0`, wyłączenie harmonogramów `WindowsUpdate\Automatic App Update`
 
 ### 🌡️ Pomiar temperatury sprzętu
 - Automatyczne pobranie, uruchomienie i usunięcie **OpenHardwareMonitor** (z retry przy usuwaniu)
@@ -217,7 +216,7 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 | 12 | Usługi systemowe | SysMain (SSD), DiagTrack, WSearch, MapsBroker, Fax, RetailDemo |
 | 13 | HPET / Timer Resolution | useplatformclock=false, tscsync=enhanced, dynamictick=off |
 | 14 | Narrator / Ease of Access | Wyłączenie Narratora, StickyKeys, ToggleKeys, FilterKeys |
-| 15 | Blokada autoaktualizacji i autostartu | Przeglądarki, Office, Store, OneNote; funkcje Windows (XPS, WMP, WorkFolders, PDF, SMB 1.0); tło 10 aplikacji UWP; harmonogram defragmentacji |
+| 15 | Blokada autoaktualizacji i autostartu | Przeglądarki, Office, Store, OneNote; wyłączanie funkcji Windows (XPS, WMP, WorkFolders, PDF, SMB 1.0); blokada tła 10 aplikacji UWP; wyłączenie harmonogramu defragmentacji |
 | 16 | Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser, Floorp, Thunderbird — dla każdego konta |
 | 17 | Cache Microsoft Teams | Klasyczny + nowy UWP (MSTeams_*) |
 | 18 | Cache OneDrive | Logi, setup/logs, .deadLetterQueue |
@@ -247,24 +246,21 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 - Tweaki **HPET/Timer Resolution** modyfikują ustawienia bootloadera (`bcdedit`) — zmiany wymagają restartu
 - Wyłączenie **Narratora** realizowane jest przez IFEO — można cofnąć ręcznie w rejestrze
 - Blokada **OneNote** (`ONENOTEM.EXE`) uniemożliwia uruchomienie procesu szybkich notatek; główna aplikacja OneNote działa normalnie
-- **Wyłączenie harmonogramu defragmentacji** (`ScheduledDefrag`) oznacza, że Windows nie będzie automatycznie defragmentował dysków w tle — skrypt wykonuje defragmentację/TRIM ręcznie przy każdym uruchomieniu
+- Wyłączony jest **harmonogram automatycznej defragmentacji** — usługa `defragsvc` pozostaje dostępna (wymagana przez DISM), wyłączony jest tylko automatyczny harmonogram
 - **Blokada tła aplikacji UWP** nie usuwa aplikacji — można je nadal uruchamiać ręcznie
 - Wyłączenie **SMB 1.0** jest zalecane ze względów bezpieczeństwa; może wpłynąć na komunikację ze starszymi urządzeniami sieciowymi
 - Czyszczenie **sterowników PnP** usuwa wyłącznie starsze wersje; najnowszy sterownik każdego urządzenia zawsze zostaje zachowany
 - **Delivery Optimization** zostaje wyłączone w trybie P2P — Windows Update działa normalnie
 - Blokowanie **aktualizacji Office** — aktualizacje można uruchomić ręcznie z poziomu aplikacji
+- Skrypt usuwa wybrane **wbudowane aplikacje** Windows: Solitaire, Bing News/Finance/Sports/Weather, People, Skype, Office Hub, 3D Builder, Get Started, Get Help, Feedback Hub, Mapy, Mixed Reality Portal, Power Automate, Quick Assist, Clipchamp, Family Features, Microsoft To Do, Sticky Notes
 - Wyłączane są wpisy autostartu popularnych aplikacji (Spotify, Discord, Steam, Epic, Teams itd.) — można je ponownie włączyć ręcznie
 - Folder **Windows.old** jest usuwany trwale — nie ma możliwości cofnięcia do poprzedniej wersji Windows przez ustawienia systemowe
 
 ---
 
-## 🔄 Historia zmian
+## 🔄 Co nowego w v1.23?
 
-### v1.22
-- **Paski postępu PowerShell — pełne pokrycie sekcji** — trzy duże bloki poleceń zostały przepisane z sekwencyjnych wywołań `cmd` na jednolite skrypty PowerShell z animowanymi paskami `Write-Progress`:
-  - **Windows Defender** — aktualizacja definicji i szybkie skanowanie wyświetlają teraz postęp (10% → skanowanie → 100%) zamiast działać cicho w tle
-  - **AdwCleaner** — skanowanie i czyszczenie uruchamiane są przez `start /B` w tle, a PowerShell śledzi proces i animuje pasek dopóki `adwcleaner.exe` działa
-  - **Optymalizacja autostartu** — cała sekcja (przeglądarki, usługi aktualizacji, harmonogramy, OneNote, tło aplikacji, defragmentacja) połączona w jeden skrypt PowerShell z 10 etapami postępu (5% → 95%)
+- ✅ **Poprawka usługi `defragsvc`** — w v1.22 skrypt zatrzymywał i wyłączał całkowicie usługę `defragsvc`, co blokowało działanie `DISM StartComponentCleanup` (krok 27), który jej wymaga wewnętrznie; v1.23 wyłącza tylko **harmonogram** `ScheduledDefrag`, pozostawiając samą usługę dostępną — defragmentacja automatyczna jest zablokowana, ale DISM działa poprawnie
 
 ---
 
@@ -282,4 +278,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-Autor: **Mag** | Wersja: **1.22** (14/05/2026)
+Autor: **MAG** | Wersja: **1.23** (26/06/2026)
