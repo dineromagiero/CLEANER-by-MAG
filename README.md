@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.23-blue)
+![Version](https://img.shields.io/badge/wersja-1.24-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -11,7 +11,7 @@
 
 ## 📋 Opis
 
-**CLEANER by MAG** to zaawansowany skrypt `.bat` do kompleksowej optymalizacji systemu Windows. Automatyzuje dziesiątki żmudnych zadań konserwacyjnych — od skanowania antywirusowego i usuwania śmieciowych plików, przez naprawę plików systemowych, aż po konfigurację sieci i rejestru. Skrypt wykonuje **31 ponumerowanych kroków**, inteligentnie dostosowuje się do sprzętu i systemu, instaluje się w Menu Start i po każdym uruchomieniu pokazuje historię wszystkich poprzednich sesji czyszczenia.
+**CLEANER by MAG** to zaawansowany skrypt `.bat` do kompleksowej optymalizacji systemu Windows. Automatyzuje dziesiątki żmudnych zadań konserwacyjnych — od skanowania antywirusowego i usuwania śmieciowych plików, przez naprawę plików systemowych, aż po konfigurację sieci i rejestru. Skrypt wykonuje **31 ponumerowanych kroków**, inteligentnie dostosowuje się do sprzętu i systemu, instaluje się w Menu Start wraz ze **skrótem deinstalatora** i po każdym uruchomieniu pokazuje historię wszystkich poprzednich sesji czyszczenia.
 
 ---
 
@@ -22,13 +22,20 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 - Przy starcie sprawdza dostępność nowej wersji przez **GitHub API**
 - Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy uruchamiany w tle (`updater_helper.bat`), eliminując konflikt blokady pliku podczas podmiany
 - Przy pierwszym uruchomieniu **instaluje się w Menu Start** ze skrótem uruchamiającym jako administrator
-- Tworzy **skrót do folderu raportów** w Menu Start
+- Tworzy **skrót do folderu raportów** i **skrót deinstalatora** w Menu Start
+- Tworzy dedykowany **folder w Harmonogramie zadań** (`\CLEANER by MAG\`)
+
+### 🗑️ Deinstalacja
+- Skrót **„Odinstaluj CLEANER by MAG"** tworzony automatycznie w Menu Start przy każdym uruchomieniu
+- Deinstalator pyta o potwierdzenie oraz opcjonalne usunięcie zapisanych raportów
+- Usuwa folder programu z Menu Start, klucz konsoli z rejestru, folder w Harmonogramie zadań oraz harmonogramy AdwCleaner i Malwarebytes
+- Folder programu usuwany przez zewnętrzny skrypt pomocniczy (eliminuje konflikt blokady pliku)
 
 ### 🔒 Bezpieczeństwo i antywirusy
 - Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian (z weryfikacją powodzenia)
 - Aktualizuje i uruchamia **szybki skan Windows Defender** z raportowaniem kodu błędu
-- Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie adware); brak internetu oznacza `[ SKIP ]`
-- Opcjonalne pobranie, skan i deinstalacja **Malwarebytes** po zakończeniu (odinstalowanie w pełni ciche)
+- Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie adware + usunięcie jego harmonogramów); brak internetu oznacza `[ SKIP ]`
+- Opcjonalne pobranie, skan i deinstalacja **Malwarebytes** po zakończeniu (odinstalowanie ciche + usunięcie harmonogramów Malwarebytes)
 
 ### 🗑️ Czyszczenie plików
 - Pliki tymczasowe użytkownika i systemu (`%TEMP%`, `C:\Windows\Temp`)
@@ -78,7 +85,7 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 - Optymalizacja **pliku stronicowania** (PageFile): 8192/8192 MB dla systemów ≤ 8 GB RAM; 4096/4096 MB dla systemów z > 8 GB RAM
 - Tweaki rejestru: priorytety **procesora**, zarządzanie **pamięcią**, animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
-- **Wyłączenie harmonogramu automatycznej defragmentacji** (`ScheduledDefrag`) — usługa `defragsvc` pozostaje dostępna dla innych operacji systemowych (DISM)
+- **Wyłączenie harmonogramu automatycznej defragmentacji** (`ScheduledDefrag`) — usługa `defragsvc` pozostaje dostępna dla DISM
 - Wyłączenie wybranych programów **startowych**: Skype, OneDrive, Spotify, Discord, Steam, Epic Games, Teams, GOG Galaxy, EA App, Ubisoft Connect, Overwolf, Zoom, Viber
 
 ### 🧩 Wyłączanie zbędnych funkcji Windows
@@ -173,9 +180,13 @@ https://github.com/user-attachments/assets/e28f7833-bf48-4a52-ae57-5986e39a0d4d
 3. Wybierz **„Uruchom jako administrator"**
 4. Postępuj zgodnie z instrukcjami na ekranie
 
-> Po pierwszym uruchomieniu skrypt instaluje się w Menu Start — kolejne uruchomienia możliwe są bezpośrednio stamtąd.
+> Po pierwszym uruchomieniu skrypt instaluje się w Menu Start — kolejne uruchomienia oraz deinstalacja możliwe są bezpośrednio stamtąd.
 
 > ⚠️ **Uwaga:** Skrypt **musi** być uruchomiony jako administrator. Bez uprawnień administratora wyświetli czytelny komunikat i zamknie się po 10 sekundach.
+
+## 🗑️ Deinstalacja
+
+Otwórz Menu Start → **CLEANER by MAG** → kliknij prawym przyciskiem **„Odinstaluj CLEANER by MAG"** → „Uruchom jako administrator". Deinstalator zapyta o potwierdzenie i opcjonalne usunięcie raportów.
 
 ---
 
@@ -204,7 +215,7 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 |:----:|----------|------|
 | 01 | Punkt przywracania systemu | Tworzy przed jakimikolwiek zmianami (z weryfikacją) |
 | 02 | Windows Defender | Aktualizacja sygnatur + szybki skan (z kodem błędu) |
-| 03 | AdwCleaner | Skan i czyszczenie adware; `SKIP` jeśli brak internetu |
+| 03 | AdwCleaner | Skan i czyszczenie adware + usunięcie harmonogramów; `SKIP` jeśli brak internetu |
 | 04 | Zarządzanie pamięcią | DisablePagingExecutive, cache L2/L3, PageFile |
 | 05 | Analiza dysku | Wykrywanie SSD/HDD, hibernacja (tylko SSD) |
 | 06 | Plan zasilania | PC/laptop, Win10/Win11, podłączony/bateria |
@@ -246,7 +257,7 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 - Tweaki **HPET/Timer Resolution** modyfikują ustawienia bootloadera (`bcdedit`) — zmiany wymagają restartu
 - Wyłączenie **Narratora** realizowane jest przez IFEO — można cofnąć ręcznie w rejestrze
 - Blokada **OneNote** (`ONENOTEM.EXE`) uniemożliwia uruchomienie procesu szybkich notatek; główna aplikacja OneNote działa normalnie
-- Wyłączony jest **harmonogram automatycznej defragmentacji** — usługa `defragsvc` pozostaje dostępna (wymagana przez DISM), wyłączony jest tylko automatyczny harmonogram
+- Wyłączony jest **harmonogram automatycznej defragmentacji** — usługa `defragsvc` pozostaje dostępna (wymagana przez DISM)
 - **Blokada tła aplikacji UWP** nie usuwa aplikacji — można je nadal uruchamiać ręcznie
 - Wyłączenie **SMB 1.0** jest zalecane ze względów bezpieczeństwa; może wpłynąć na komunikację ze starszymi urządzeniami sieciowymi
 - Czyszczenie **sterowników PnP** usuwa wyłącznie starsze wersje; najnowszy sterownik każdego urządzenia zawsze zostaje zachowany
@@ -258,9 +269,16 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 
 ---
 
-## 🔄 Co nowego w v1.23?
+## 🔄 Co nowego w v1.24?
 
-- ✅ **Poprawka usługi `defragsvc`** — w v1.22 skrypt zatrzymywał i wyłączał całkowicie usługę `defragsvc`, co blokowało działanie `DISM StartComponentCleanup` (krok 27), który jej wymaga wewnętrznie; v1.23 wyłącza tylko **harmonogram** `ScheduledDefrag`, pozostawiając samą usługę dostępną — defragmentacja automatyczna jest zablokowana, ale DISM działa poprawnie
+- ✅ **Wbudowany deinstalator** — skrót „Odinstaluj CLEANER by MAG" tworzony automatycznie w Menu Start; deinstalator pyta o potwierdzenie oraz opcjonalne usunięcie raportów, czyści harmonogramy AdwCleaner i Malwarebytes, usuwa klucz konsoli z rejestru i folder programu przez zewnętrzny skrypt pomocniczy (bez konfliktu blokady pliku)
+- ✅ **Wbudowana ikona aplikacji** — skrypt zawiera teraz osadzoną ikonę `.ico` zakodowaną w Base64 (sekcja `:MAG_ICON_BASE64_DATA_DO_NOT_EDIT`); podczas instalacji ikona jest wyodrębniana do pliku `icon.ico` i przypisywana do skrótów w Menu Start
+- ✅ **Własna ikona skrótów** — skróty `CLEANER by MAG.lnk` oraz `Odinstaluj CLEANER by MAG.lnk` wyświetlają teraz ikonę aplikacji zamiast domyślnej ikony `cmd.exe`
+- ✅ **Ochrona przed uśpieniem systemu** — po uruchomieniu skrypt startuje w tle ukryty proces PowerShell, który przez cały czas działania blokuje usypianie systemu i wygaszacz ekranu (`SetThreadExecutionState` + `SystemParametersInfo`); przed wyjściem automatycznie przywraca oryginalne ustawienia zasilania
+- ✅ **Folder w Harmonogramie zadań** — skrypt tworzy dedykowany folder `\CLEANER by MAG\` w Task Scheduler przy każdym uruchomieniu; deinstalator usuwa go wraz z całą zawartością
+- ✅ **Czyszczenie harmonogramów AdwCleaner** — po deinstalacji AdwCleaner skrypt usuwa też jego ewentualne zadania z Harmonogramu zadań przez `Unregister-ScheduledTask`
+- ✅ **Czyszczenie harmonogramów Malwarebytes** — analogicznie po deinstalacji Malwarebytes usuwane są harmonogramy pasujące do `Malwarebytes|MBAM`
+- ✅ **Zmienne instalacyjne globalne** — `INSTALL_DIR`, `APP_BAT`, `SHORTCUT_APP` i pozostałe ścieżki zdefiniowane na samym początku pliku, dostępne zarówno w trybie głównym jak i w deinstalatoe
 
 ---
 
@@ -278,4 +296,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-Autor: **MAG** | Wersja: **1.23** (26/06/2026)
+Autor: **MAG** | Wersja: **1.24** (05/07/2026)
