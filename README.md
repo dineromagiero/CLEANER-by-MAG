@@ -16,7 +16,7 @@
 ---
 
 ## ✨ Co robi skrypt?
-https://github.com/user-attachments/assets/022caddb-17e5-4845-84eb-8595fd1cbd78
+https://github.com/user-attachments/assets/893d9a3f-8c01-4770-9a14-b5bf8929bbbf
 
 ### 🔄 Automatyczna aktualizacja i instalacja
 - Przy starcie sprawdza dostępność nowej wersji przez **GitHub API**
