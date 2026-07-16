@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.25-blue)
+![Version](https://img.shields.io/badge/wersja-1.26-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -22,7 +22,7 @@ https://github.com/user-attachments/assets/893d9a3f-8c01-4770-9a14-b5bf8929bbbf
 - Przy starcie sprawdza dostępność nowej wersji przez **GitHub API**
 - Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy uruchamiany w tle (`updater_helper.bat`), eliminując konflikt blokady pliku podczas podmiany
 - Przy pierwszym uruchomieniu **instaluje się w Menu Start** ze skrótem opatrzonym własną ikoną (`icon.ico` wypakowywaną z pliku `.bat`)
-- Tworzy **skrót do folderu raportów** i **skrót deinstalatora** w Menu Start (oba ze własną ikoną)
+- Tworzy **skrót do folderu raportów** i **skrót deinstalatora** w Menu Start
 - Tworzy dedykowany **folder w Harmonogramie zadań** (`\CLEANER by MAG\`)
 
 ### 🗑️ Deinstalacja
@@ -80,9 +80,10 @@ https://github.com/user-attachments/assets/893d9a3f-8c01-4770-9a14-b5bf8929bbbf
 - Wyłączenie **hibernacji** — tylko na SSD/NVMe; na HDD pozostaje bez zmian
 - Wyłączenie **Fast Startup**
 - **SysMain (Superfetch)** — wyłączany tylko na SSD; na HDD pozostaje aktywny
-- **DisablePagingExecutive** — włączany przy ≥ 8000 MB RAM
-- **PageFile** — ustawiany na 8192/8192 MB (≤ 8 GB RAM) lub 4096/4096 MB (> 8 GB RAM) **wyłącznie jeśli dotychczas był zarządzany automatycznie**; jeśli użytkownik ręcznie ustawił własne wartości — skrypt je zachowuje
-- Tweaki rejestru: priorytety **procesora**, zarządzanie **pamięcią**, animacje UI, aktywne godziny Windows Update (8:00–23:00)
+- **DisablePagingExecutive** — włączany przy ≥ 8000 MB RAM; poniżej progu jawnie wyłączany
+- Rozszerzone tweaki zarządzania pamięcią: **PhysicalAddressExtension** (PAE), **SystemPages**, **NtfsMemoryUsage**, cache L2/L3, priorytety procesora
+- **PageFile** — ustawiany na 8192/8192 MB (≤ 8 GB RAM) lub 4096/4096 MB (> 8 GB RAM) **wyłącznie jeśli dotychczas był zarządzany automatycznie**; ręczne ustawienia użytkownika zachowywane
+- Tweaki rejestru: animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
 - **Wyłączenie harmonogramu automatycznej defragmentacji** (`ScheduledDefrag`) — usługa `defragsvc` pozostaje dostępna dla DISM
 
@@ -96,7 +97,7 @@ https://github.com/user-attachments/assets/893d9a3f-8c01-4770-9a14-b5bf8929bbbf
 
 ### 🌐 Blokowanie procesów i autoaktualizacji przeglądarek
 - Zamknięcie procesów Chrome, Edge, Brave, Opera, Firefox
-- Wyłączenie **trybu działania w tle** przeglądarek przez polityki rejestru (Chrome, Edge, Brave, Opera)
+- Wyłączenie **trybu działania w tle** przez polityki rejestru (Chrome, Edge, Brave, Opera)
 - Wyłączenie **usług autoaktualizacji**: `gupdate`, `gupdatem`, `MicrosoftEdgeElevationService`, `edgeupdate`, `MozillaMaintenance`
 - Wyłączenie **harmonogramów aktualizacji**: Edge, Google Chrome, Opera, Adobe
 
@@ -153,9 +154,10 @@ https://github.com/user-attachments/assets/893d9a3f-8c01-4770-9a14-b5bf8929bbbf
 - Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu
 - Kolorowy, czytelny interfejs konsolowy (ANSI: aqua / biały / żółty)
 - **Własna ikona** (`icon.ico`) wypakowywana z pliku `.bat` — widoczna w skrótach Menu Start
-- **Graficzny pasek postępu** (overlay PS1) uruchamiany w tle i aktualizowany przy każdym z 31 kroków
+- **Graficzny pasek postępu** (overlay PS1) uruchamiany w tle i aktualizowany przy każdym z 31 kroków; drugi niezależny overlay do wyświetlania postępu pobierania
 - **Odliczanie 10 sekund** przed sekcją autostartu — czas na zamknięcie otwartych przeglądarek
 - **Zapobieganie usypianiu** — blokuje uśpienie systemu i wygaszacz ekranu na czas działania; oryginalne ustawienia przywracane automatycznie po zakończeniu
+- **Devlog** — wszystkie operacje w tle logowane do pliku `.devlog.txt` w folderze instalacji; ułatwia diagnozowanie problemów
 - **Ponumerowane kroki** w separatorach: `[01/31]` do `[31/31]`
 - Nagłówek z linkiem do GitHub widoczny od pierwszego uruchomienia
 - **Pozycja okna konsoli skalowana do DPI monitora** przez `System.Drawing`
@@ -222,7 +224,7 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 | 01 | Punkt przywracania systemu | Tworzy przed jakimikolwiek zmianami (z weryfikacją) |
 | 02 | Windows Defender | Aktualizacja sygnatur + szybki skan (z kodem błędu) |
 | 03 | AdwCleaner | Skan i czyszczenie adware + usunięcie harmonogramów; `SKIP` jeśli brak internetu |
-| 04 | Zarządzanie pamięcią | DisablePagingExecutive (≥8 GB), cache L2/L3, proxy reset |
+| 04 | Proxy + harmonogramy + pamięć | Reset proxy, wyłączenie harmonogramów CEIP/feedback/Xbox, DisablePagingExecutive, PAE, SystemPages, NtfsMemoryUsage, cache L2/L3, priorytety CPU |
 | 05 | Analiza dysku | Wykrywanie SSD/HDD, hibernacja (tylko SSD) |
 | 06 | Plan zasilania | PC/laptop, Win10/Win11, podłączony/bateria |
 | 07 | PageFile + Fast Startup | PageFile wg RAM (tylko jeśli auto), wyłączenie fast boot |
@@ -275,15 +277,12 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 
 ---
 
-## 🔄 Co nowego w v1.25?
+## 🔄 Co nowego w v1.26?
 
-- ✅ **Graficzny pasek postępu (overlay)** — skrypt wypakowuje i uruchamia w tle plik `cleaner_mag_overlay.ps1`; każdy z 31 kroków aktualizuje plik `cleaner_mag_overlay_step.dat`, a overlay odczytuje go i wyświetla aktualny postęp
-- ✅ **Zapobieganie usypianiu systemu** — nowy moduł PowerShell uruchamiany w tle przy starcie: blokuje uśpienie i wygaszacz ekranu przez cały czas działania; zapisuje oryginalne ustawienia i przywraca je po zakończeniu lub gdy skrypt zostanie zamknięty
-- ✅ **Własna ikona** — plik `icon.ico` wypakowywany z sekcji Base64 w pliku `.bat`; skróty w Menu Start używają tej ikony
-- ✅ **Odliczanie 10 sekund** przed sekcją autostartu (krok 15) — czas na ręczne zamknięcie otwartych przeglądarek przed ich wymuszoną terminacją
-- ✅ **Zachowanie ręcznych ustawień PageFile** — jeśli użytkownik wcześniej ręcznie skonfigurował plik stronicowania, skrypt go nie nadpisuje i wyświetla informację `[ SKIP ]`; oryginalne wartości zapisywane są do pliku `.dat` przy pierwszym uruchomieniu
-- ✅ **Deinstalator z własnym oknem** — tryb `UNINSTALL` otwiera dedykowane okno konsoli z własnym tytułem i kolorami
-- ✅ **Skrót „Raporty"** — zmiana nazwy z `Raporty (Dokumenty).lnk` na `Raporty.lnk` dla zwięzłości w Menu Start
+- ✅ **Drugi overlay (OVERLAY2)** — dodany niezależny drugi overlay z własnym zestawem plików sygnalizacyjnych (`OVERLAY2_STOP_FLAG`, `OVERLAY2_DOWNLOAD_FILE`, `OVERLAY2_INFO_FILE`); przeznaczony do wyświetlania postępu operacji pobierania niezależnie od głównego paska kroków
+- ✅ **Rozszerzone tweaki pamięci** — trzy nowe wpisy rejestru w sekcji zarządzania pamięcią: `PhysicalAddressExtension=1` (włączenie PAE), `SystemPages=0` (dynamiczne zarządzanie stronami systemowymi), `NtfsMemoryUsage=2` (priorytetowe buforowanie NTFS)
+- ✅ **Devlog** — operacje instalacyjne, tworzenie skrótów, wypakowywanie plików i inne czynności w tle są teraz logowane do pliku `.devlog.txt` w folderze instalacji zamiast być kierowane do `>nul`; ułatwia diagnozowanie problemów bez zaśmiecania konsoli
+- ✅ **Skanowanie KVRT** (Kaspersky Virus Removal Tool)
 
 ---
 
@@ -301,4 +300,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-Autor: **MAG** | Wersja: **1.25** (08/07/2026)
+Autor: **MAG** | Wersja: **1.26** (16/07/2026)
