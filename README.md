@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.26-blue)
+![Version](https://img.shields.io/badge/wersja-1.27-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -16,11 +16,13 @@
 ---
 
 ## ✨ Co robi skrypt?
-https://github.com/user-attachments/assets/18cba236-fdca-4715-baa2-fe8dc0a5c82d
+https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 
 ### 🔄 Automatyczna aktualizacja i instalacja
 - Przy starcie sprawdza dostępność nowej wersji przez **GitHub API**
-- Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy uruchamiany w tle (`updater_helper.bat`), eliminując konflikt blokady pliku podczas podmiany
+- Komunikat o wersji zastępuje linię „Sprawdzanie wersji..." (czyszczenie ANSI) — konsola nie zaśmieca się zbędnymi liniami
+- Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy uruchamiany w tle (`updater_helper.bat`)
+- Przy pominięciu aktualizacji cały blok pytania jest usuwany z konsoli
 - Przy pierwszym uruchomieniu **instaluje się w Menu Start** ze skrótem opatrzonym własną ikoną (`icon.ico` wypakowywaną z pliku `.bat`)
 - Tworzy **skrót do folderu raportów** i **skrót deinstalatora** w Menu Start
 - Tworzy dedykowany **folder w Harmonogramie zadań** (`\CLEANER by MAG\`)
@@ -81,7 +83,7 @@ https://github.com/user-attachments/assets/18cba236-fdca-4715-baa2-fe8dc0a5c82d
 - Wyłączenie **Fast Startup**
 - **SysMain (Superfetch)** — wyłączany tylko na SSD; na HDD pozostaje aktywny
 - **DisablePagingExecutive** — włączany przy ≥ 8000 MB RAM; poniżej progu jawnie wyłączany
-- Rozszerzone tweaki zarządzania pamięcią: **PhysicalAddressExtension** (PAE), **SystemPages**, **NtfsMemoryUsage**, cache L2/L3, priorytety procesora
+- Rozszerzone tweaki zarządzania pamięcią: **PhysicalAddressExtension** (PAE), **SystemPages**, **NtfsMemoryUsage**, **LargeSystemCache=0**, **ClearPageFileAtShutdown=0**, cache L2/L3, priorytety procesora
 - **PageFile** — ustawiany na 8192/8192 MB (≤ 8 GB RAM) lub 4096/4096 MB (> 8 GB RAM) **wyłącznie jeśli dotychczas był zarządzany automatycznie**; ręczne ustawienia użytkownika zachowywane
 - Tweaki rejestru: animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
@@ -122,7 +124,7 @@ https://github.com/user-attachments/assets/18cba236-fdca-4715-baa2-fe8dc0a5c82d
 - **Reset proxy** systemowego (WinHTTP i rejestr IE)
 - Flush i rejestracja **DNS**
 - Reset **stosu TCP/IP** i Winsock
-- Ustawienie serwerów DNS: **Cloudflare (1.1.1.1 / 1.0.0.1)** i **Google (8.8.8.8)** dla IPv4 i IPv6 — dla każdego aktywnego interfejsu sieciowego
+- Ustawienie serwerów DNS dla każdego aktywnego interfejsu: **Cloudflare 1.1.1.1** (primary), **Cloudflare 1.0.0.1** (secondary), **Google 8.8.8.8** (fallback) dla IPv4 i IPv6
 - Optymalizacja parametrów **TCP** (autotuninglevel, RSS, chimney)
 - **Wyłączenie trybu P2P Delivery Optimization** (`DODownloadMode=0`)
 
@@ -153,11 +155,12 @@ https://github.com/user-attachments/assets/18cba236-fdca-4715-baa2-fe8dc0a5c82d
 ### 🖥️ Interfejs i UX
 - Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu
 - Kolorowy, czytelny interfejs konsolowy (ANSI: aqua / biały / żółty)
+- **Czyszczenie linii ANSI** — sprawdzanie wersji, pytanie o aktualizację i odpowiedź użytkownika są nadpisywane, nie pozostawiając zbędnych linii w konsoli
 - **Własna ikona** (`icon.ico`) wypakowywana z pliku `.bat` — widoczna w skrótach Menu Start
-- **Graficzny pasek postępu** (overlay PS1) uruchamiany w tle i aktualizowany przy każdym z 31 kroków; drugi niezależny overlay do wyświetlania postępu pobierania
+- **Graficzny pasek postępu** (overlay PS1) uruchamiany w tle i aktualizowany przy każdym z 31 kroków; drugi overlay do wyświetlania postępu pobierania
 - **Odliczanie 10 sekund** przed sekcją autostartu — czas na zamknięcie otwartych przeglądarek
 - **Zapobieganie usypianiu** — blokuje uśpienie systemu i wygaszacz ekranu na czas działania; oryginalne ustawienia przywracane automatycznie po zakończeniu
-- **Devlog** — wszystkie operacje w tle logowane do pliku `.devlog.txt` w folderze instalacji; ułatwia diagnozowanie problemów
+- **Devlog** — wszystkie operacje w tle logowane do `.devlog.txt` w folderze instalacji
 - **Ponumerowane kroki** w separatorach: `[01/31]` do `[31/31]`
 - Nagłówek z linkiem do GitHub widoczny od pierwszego uruchomienia
 - **Pozycja okna konsoli skalowana do DPI monitora** przez `System.Drawing`
@@ -224,17 +227,17 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 | 01 | Punkt przywracania systemu | Tworzy przed jakimikolwiek zmianami (z weryfikacją) |
 | 02 | Windows Defender | Aktualizacja sygnatur + szybki skan (z kodem błędu) |
 | 03 | AdwCleaner | Skan i czyszczenie adware + usunięcie harmonogramów; `SKIP` jeśli brak internetu |
-| 04 | Proxy + harmonogramy + pamięć | Reset proxy, wyłączenie harmonogramów CEIP/feedback/Xbox, DisablePagingExecutive, PAE, SystemPages, NtfsMemoryUsage, cache L2/L3, priorytety CPU |
+| 04 | Proxy + harmonogramy + pamięć | Reset proxy, wyłączenie harmonogramów CEIP/feedback/Xbox, DisablePagingExecutive, PAE, SystemPages, NtfsMemoryUsage, LargeSystemCache, ClearPageFileAtShutdown, cache L2/L3, priorytety CPU |
 | 05 | Analiza dysku | Wykrywanie SSD/HDD, hibernacja (tylko SSD) |
 | 06 | Plan zasilania | PC/laptop, Win10/Win11, podłączony/bateria |
 | 07 | PageFile + Fast Startup | PageFile wg RAM (tylko jeśli auto), wyłączenie fast boot |
 | 08 | Pliki tymczasowe + Prefetch + Minidump + WER + logi | `%TEMP%`, `C:\Windows\Temp`; Prefetch tylko HDD; minidumpy; WER; logi instalatorów |
-| 09 | DNS / Sieć | Flush, reset TCP/IP + Winsock, Cloudflare + Google DNS, TCP tweaki |
-| 10 | Oczyszczanie dysku | cleanmgr z 34 kategoriami; `SKIP` jeśli niedostępny |
-| 11 | CHKDSK | Planowanie na restart; `SKIP` jeśli już zaplanowany |
+| 09 | DNS | Flush, reset TCP/IP + Winsock, Cloudflare 1.1.1.1/1.0.0.1 + Google 8.8.8.8 dla IPv4 i IPv6 |
+| 10 | TCP + Event Log | autotuninglevel, RSS, chimney; czyszczenie Event Viewer; konfiguracja cleanmgr |
+| 11 | CHKDSK + cleanmgr | CHKDSK planowany na restart (`SKIP` jeśli już zaplanowany); oczyszczanie dysku 34 kategorie |
 | 12 | Usługi systemowe | SysMain (SSD), DiagTrack, WSearch, MapsBroker, Fax, RetailDemo |
 | 13 | HPET / Timer Resolution | useplatformclock=false, tscsync=enhanced, dynamictick=off |
-| 14 | Optymalizacja rejestru + Narrator | Animacje, telemetria, Cortana, WER; wyłączenie Narratora, StickyKeys, ToggleKeys, FilterKeys |
+| 14 | Optymalizacja rejestru + Narrator + dmwappushservice | Animacje, telemetria, Cortana, WER; wyłączenie Narratora, StickyKeys, ToggleKeys, FilterKeys; dmwappushservice |
 | 15 | Blokada autoaktualizacji i autostartu | Przeglądarki (tło + usługi + harmonogramy), Office, Store, OneNote; wyłączanie funkcji Windows (XPS, WMP, WorkFolders, PDF, SMB 1.0); blokada tła 10 aplikacji UWP; wyłączenie harmonogramu defragmentacji |
 | 16 | Cache przeglądarek | Chrome, Edge, Brave, Opera, Opera GX, Firefox, Vivaldi, Waterfox, LibreWolf, Zen Browser, Floorp, Thunderbird — dla każdego konta |
 | 17 | Cache Microsoft Teams | Klasyczny + nowy UWP (MSTeams_*) |
@@ -277,12 +280,17 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 
 ---
 
-## 🔄 Co nowego w v1.26?
+## 🔄 Co nowego w v1.27?
 
-- ✅ **Drugi overlay (OVERLAY2)** — dodany niezależny drugi overlay z własnym zestawem plików sygnalizacyjnych (`OVERLAY2_STOP_FLAG`, `OVERLAY2_DOWNLOAD_FILE`, `OVERLAY2_INFO_FILE`); przeznaczony do wyświetlania postępu operacji pobierania niezależnie od głównego paska kroków
-- ✅ **Rozszerzone tweaki pamięci** — trzy nowe wpisy rejestru w sekcji zarządzania pamięcią: `PhysicalAddressExtension=1` (włączenie PAE), `SystemPages=0` (dynamiczne zarządzanie stronami systemowymi), `NtfsMemoryUsage=2` (priorytetowe buforowanie NTFS)
-- ✅ **Devlog** — operacje instalacyjne, tworzenie skrótów, wypakowywanie plików i inne czynności w tle są teraz logowane do pliku `.devlog.txt` w folderze instalacji zamiast być kierowane do `>nul`; ułatwia diagnozowanie problemów bez zaśmiecania konsoli
-- ✅ **Skanowanie KVRT** (Kaspersky Virus Removal Tool)
+- ✅**Zmienna `KEEPAWAKE_ACTIVE`** — flaga śledząca czy proces keepawake jest aktualnie uruchomiony; `:STOP_KEEPAWAKE` pomija całą procedurę zatrzymania jeśli keepawake nie był uruchamiany (`KEEPAWAKE_ACTIVE=0`), eliminując zbędne oczekiwanie
+- ✅**Komunikat sprawdzania zainstalowanych programów** — przed sekcją Malwarebytes wyświetlany jest teraz komunikat `Sprawdzanie zainstalowanych programów...`
+- ✅**Nadpisywanie linii w konsoli (ANSI escape)** — komunikaty zastępują teraz poprzednie linie zamiast je zostawiać, używając sekwencji `ESC[1A ESC[2K` (przesuń kursor w górę + wyczyść linię) i `ESC[nA ESC[nM` (usuń n linii) w następujących miejscach:
+  - Wynik sprawdzania wersji (`aktualna` / `brak połączenia` / `dostępna nowa wersja`) zastępuje linię z `Sprawdzam wersję...`
+  - Wybór `[T/N]` przy Malwarebytes zastępuje blok pytania po naciśnięciu klawisza
+  - Wybór `[T/N]` przy KVRT zastępuje blok pytania i ostrzeżenia
+  - Wybór `[T/N]` przy donacji zastępuje blok pytania
+  - Pominięcie aktualizacji (`[N] Pominięto aktualizację`) zastępuje blok dialogu aktualizacji
+- ✅**Wybór KVRT przepisany na `choice`** — zamiast pętli PowerShell z `[Console]::ReadKey` używany jest natywny `choice /c TN /n`, co upraszcza kod i poprawia niezawodność
 
 ---
 
@@ -300,4 +308,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-Autor: **MAG** | Wersja: **1.26** (16/07/2026)
+Autor: **MAG** | Wersja: **1.27** (18/07/2026)
