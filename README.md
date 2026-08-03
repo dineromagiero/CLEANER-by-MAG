@@ -2,7 +2,7 @@
 
 > Kompleksowy skrypt optymalizacji i czyszczenia systemu Windows — jednym kliknięciem.
 
-![Version](https://img.shields.io/badge/wersja-1.27-blue)
+![Version](https://img.shields.io/badge/wersja-1.28-blue)
 ![Platform](https://img.shields.io/badge/platforma-Windows%2010%2F11-0078d4?logo=windows)
 ![Language](https://img.shields.io/badge/język-Batch%20%2F%20PowerShell-4EAA25)
 ![License](https://img.shields.io/badge/licencja-MIT-green)
@@ -19,13 +19,15 @@
 https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 
 ### 🔄 Automatyczna aktualizacja i instalacja
-- Przy starcie sprawdza dostępność nowej wersji przez **GitHub API**
-- Komunikat o wersji zastępuje linię „Sprawdzanie wersji..." (czyszczenie ANSI) — konsola nie zaśmieca się zbędnymi liniami
-- Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy uruchamiany w tle (`updater_helper.bat`)
-- Przy pominięciu aktualizacji cały blok pytania jest usuwany z konsoli
+- Przy starcie sprawdza dostępność nowej wersji przez **GitHub API** — porównanie przez `[version]::Parse()`, obsługuje wszystkie przypadki: nowsza, taka sama, starsza
+- Jeśli skrypt jest nowszy niż GitHub — wyświetla stosowny komunikat bez pytania o aktualizację
+- Pytanie o aktualizację ma **20-sekundowy timeout** z domyślnym `N` — bez odpowiedzi skrypt kontynuuje obecną wersję
+- Po wyborze cały blok pytania jest usuwany z konsoli (ANSI)
+- Jeśli dostępna aktualizacja — pobiera plik `.bat` przez dedykowany skrypt pomocniczy w tle (`updater_helper.bat`)
 - Przy pierwszym uruchomieniu **instaluje się w Menu Start** ze skrótem opatrzonym własną ikoną (`icon.ico` wypakowywaną z pliku `.bat`)
 - Tworzy **skrót do folderu raportów** i **skrót deinstalatora** w Menu Start
 - Tworzy dedykowany **folder w Harmonogramie zadań** (`\CLEANER by MAG\`)
+- **Devlog odświeżany przy każdym uruchomieniu** — poprzedni log jest kasowany na starcie
 
 ### 🗑️ Deinstalacja
 - Skrót **„Odinstaluj CLEANER by MAG"** tworzony automatycznie w Menu Start przy każdym uruchomieniu
@@ -33,7 +35,7 @@ https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 - Usuwa folder programu z Menu Start, klucz konsoli z rejestru, folder w Harmonogramie zadań oraz harmonogramy AdwCleaner i Malwarebytes
 
 ### 🔒 Bezpieczeństwo i antywirusy
-- Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian (z weryfikacją powodzenia)
+- Tworzy **punkt przywracania systemu** przed wprowadzeniem jakichkolwiek zmian (z weryfikacją powodzenia; dysk systemowy wykrywany przez `%SystemDrive%`)
 - Aktualizuje i uruchamia **szybki skan Windows Defender** z raportowaniem kodu błędu
 - Pobiera, uruchamia i automatycznie usuwa **AdwCleaner** (skan + czyszczenie adware + usunięcie jego harmonogramów); brak internetu oznacza `[ SKIP ]`
 - Opcjonalne pobranie, skan i deinstalacja **Malwarebytes** po zakończeniu (ciche + usunięcie harmonogramów)
@@ -61,7 +63,7 @@ https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 - **SFC** (System File Checker) — dwukrotnie: przed i po DISM, z paskiem postępu i kodem błędu w raporcie
 - **DISM RestoreHealth** — naprawa obrazu systemu, z paskiem postępu i kodem błędu
 - **DISM StartComponentCleanup** — czyszczenie bazy składników po aktualizacjach
-- **CHKDSK** — planowany na następny restart; `[ SKIP ]` jeśli już zaplanowany
+- **CHKDSK** — planowany na następny restart z **inteligentnym 30-dniowym cooldown**: jeśli CHKDSK był zaplanowany w ciągu ostatnich 30 dni, operacja jest pomijana (`[ SKIP ]`); data ostatniego planowania zapisywana w pliku `.dat`
 - **Inteligentna naprawa WMI** — weryfikacja → Salvage → Reset z rejestracją MOF/MFL; `[ SKIP ]` jeśli baza jest zdrowa
 - Pełny reset **Windows Update** (zatrzymanie usług, usunięcie SoftwareDistribution i catroot2 z fallbackiem, rejestracja DLL)
 
@@ -83,8 +85,8 @@ https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 - Wyłączenie **Fast Startup**
 - **SysMain (Superfetch)** — wyłączany tylko na SSD; na HDD pozostaje aktywny
 - **DisablePagingExecutive** — włączany przy ≥ 8000 MB RAM; poniżej progu jawnie wyłączany
-- Rozszerzone tweaki zarządzania pamięcią: **PhysicalAddressExtension** (PAE), **SystemPages**, **NtfsMemoryUsage**, **LargeSystemCache=0**, **ClearPageFileAtShutdown=0**, cache L2/L3, priorytety procesora
-- **PageFile** — ustawiany na 8192/8192 MB (≤ 8 GB RAM) lub 4096/4096 MB (> 8 GB RAM) **wyłącznie jeśli dotychczas był zarządzany automatycznie**; ręczne ustawienia użytkownika zachowywane
+- Rozszerzone tweaki zarządzania pamięcią: PAE, SystemPages, NtfsMemoryUsage, LargeSystemCache, ClearPageFileAtShutdown, cache L2/L3, priorytety procesora
+- **PageFile** — ustawiany wg RAM wyłącznie jeśli był zarządzany automatycznie; ręczne ustawienia użytkownika zachowywane
 - Tweaki rejestru: animacje UI, aktywne godziny Windows Update (8:00–23:00)
 - **Defragmentacja** (HDD) lub **TRIM** (SSD) przez `defrag /O`
 - **Wyłączenie harmonogramu automatycznej defragmentacji** (`ScheduledDefrag`) — usługa `defragsvc` pozostaje dostępna dla DISM
@@ -116,7 +118,7 @@ https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 
 ### 🔕 Narrator, OneNote i ułatwienia dostępu
 - Wyłączenie **Narratora** przez IFEO i klucze polityk
-- Blokada autostartu **OneNote** (`ONENOTEM.EXE`) przez IFEO oraz usunięcie wpisów `Run` z rejestru (HKCU i HKLM, x64 i WOW6432Node)
+- Blokada autostartu **OneNote** (`ONENOTEM.EXE`) przez IFEO oraz usunięcie wpisów `Run` z rejestru
 - Wyłączenie **StickyKeys, ToggleKeys, FilterKeys**
 - Wyciszenie **dźwięków dostępności** i wyłączenie autostartu Narratora przy logowaniu
 
@@ -140,11 +142,11 @@ https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 - Dezaktywacja zbędnych usług: `DiagTrack`, `WSearch`, `MapsBroker`, `Fax`, `RetailDemo`, `dmwappushservice`; `SysMain` — tylko na SSD
 - Wyłączenie zbędnych harmonogramów systemowych (CEIP, feedback, Xbox, dysk, WER, ScheduledDefrag)
 - **Blokowanie automatycznych aktualizacji Microsoft Office** — wyłączenie `enableautomaticupdates`, zatrzymanie `ClickToRunSvc`
-- **Blokowanie automatycznych aktualizacji Microsoft Store** — `AutoDownload=2`, `AutoUpdateFrequencyEnabled=0`, wyłączenie harmonogramów `WindowsUpdate\Automatic App Update`
+- **Blokowanie automatycznych aktualizacji Microsoft Store** — `AutoDownload=2`, `AutoUpdateFrequencyEnabled=0`, wyłączenie harmonogramów
 
 ### 🌡️ Pomiar temperatury sprzętu
 - Automatyczne pobranie, uruchomienie i usunięcie **OpenHardwareMonitor** (z retry przy usuwaniu)
-- Odczyt temperatury **CPU** i **GPU** przez WMI
+- Odczyt temperatury **CPU** i **GPU** przez WMI; adaptery Microsoft (Basic Display, Hyper-V) pomijane przy wykrywaniu GPU
 - Wyniki w raporcie; jeśli brak internetu lub OHM nie zadziała — wartości oznaczane jako `niedostępne`
 
 ### 📊 Historia optymalizacji
@@ -154,13 +156,14 @@ https://github.com/user-attachments/assets/548bb1f3-e38e-426b-b3fc-3f6916860fcd
 
 ### 🖥️ Interfejs i UX
 - Automatyczne **odblokowanie skryptu** (`Unblock-File`) po pobraniu z internetu
+- **Ekran potwierdzenia przed startem** — informuje o zamknięciu przeglądarek i usunięciu Windows.old; 60-sekundowy timeout z domyślnym `T`; przy `N` skrypt kończy działanie
 - Kolorowy, czytelny interfejs konsolowy (ANSI: aqua / biały / żółty)
-- **Czyszczenie linii ANSI** — sprawdzanie wersji, pytanie o aktualizację i odpowiedź użytkownika są nadpisywane, nie pozostawiając zbędnych linii w konsoli
+- **Czyszczenie linii ANSI** — sprawdzanie wersji, pytanie o aktualizację i odpowiedź użytkownika są nadpisywane w miejscu
 - **Własna ikona** (`icon.ico`) wypakowywana z pliku `.bat` — widoczna w skrótach Menu Start
 - **Graficzny pasek postępu** (overlay PS1) uruchamiany w tle i aktualizowany przy każdym z 31 kroków; drugi overlay do wyświetlania postępu pobierania
 - **Odliczanie 10 sekund** przed sekcją autostartu — czas na zamknięcie otwartych przeglądarek
 - **Zapobieganie usypianiu** — blokuje uśpienie systemu i wygaszacz ekranu na czas działania; oryginalne ustawienia przywracane automatycznie po zakończeniu
-- **Devlog** — wszystkie operacje w tle logowane do `.devlog.txt` w folderze instalacji
+- **Devlog odświeżany** przy każdym starcie — wszystkie operacje w tle logowane do `.devlog.txt` w folderze instalacji
 - **Ponumerowane kroki** w separatorach: `[01/31]` do `[31/31]`
 - Nagłówek z linkiem do GitHub widoczny od pierwszego uruchomienia
 - **Pozycja okna konsoli skalowana do DPI monitora** przez `System.Drawing`
@@ -212,7 +215,7 @@ Po zakończeniu działania skrypt automatycznie zapisuje plik tekstowy w **Dokum
 Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisywane. Raport zawiera:
 - datę i czas wykonania (start, koniec, łączny czas trwania `HH:MM:SS`)
 - ilość zwolnionego miejsca na dysku C:
-- parametry systemu: RAM, pagefile, model dysku, CPU, GPU, wersja Windows + build number
+- parametry systemu: RAM, pagefile, model dysku, CPU, GPU (z pominięciem adapterów Microsoft), wersja Windows + build number
 - temperatury CPU i GPU zmierzone przez OpenHardwareMonitor
 - rozmiar kolejki drukarki przed czyszczeniem
 - listę wszystkich 31 operacji ze statusem: `[ OK ]`, `[ SKIP ]`, `[ BŁĄD ]`
@@ -233,8 +236,8 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 | 07 | PageFile + Fast Startup | PageFile wg RAM (tylko jeśli auto), wyłączenie fast boot |
 | 08 | Pliki tymczasowe + Prefetch + Minidump + WER + logi | `%TEMP%`, `C:\Windows\Temp`; Prefetch tylko HDD; minidumpy; WER; logi instalatorów |
 | 09 | DNS | Flush, reset TCP/IP + Winsock, Cloudflare 1.1.1.1/1.0.0.1 + Google 8.8.8.8 dla IPv4 i IPv6 |
-| 10 | TCP + Event Log | autotuninglevel, RSS, chimney; czyszczenie Event Viewer; konfiguracja cleanmgr |
-| 11 | CHKDSK + cleanmgr | CHKDSK planowany na restart (`SKIP` jeśli już zaplanowany); oczyszczanie dysku 34 kategorie |
+| 10 | TCP + Event Log + cleanmgr | TCP tweaki; czyszczenie Event Viewer; konfiguracja i uruchomienie cleanmgr |
+| 11 | CHKDSK | Planowanie na restart z 30-dniowym cooldown; `SKIP` jeśli już zaplanowany lub zbyt niedawno |
 | 12 | Usługi systemowe | SysMain (SSD), DiagTrack, WSearch, MapsBroker, Fax, RetailDemo |
 | 13 | HPET / Timer Resolution | useplatformclock=false, tscsync=enhanced, dynamictick=off |
 | 14 | Optymalizacja rejestru + Narrator + dmwappushservice | Animacje, telemetria, Cortana, WER; wyłączenie Narratora, StickyKeys, ToggleKeys, FilterKeys; dmwappushservice |
@@ -260,7 +263,8 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 
 ## ⚠️ Ważne uwagi
 
-- Skrypt **planuje CHKDSK** na następny restart (tylko jeśli nie był już zaplanowany) — wymagane ponowne uruchomienie
+- **Ekran potwierdzenia na starcie** — skrypt informuje o wszystkich ingerencjach wymagających świadomej zgody (zamknięcie przeglądarek, usunięcie Windows.old) zanim cokolwiek wykona
+- Skrypt **planuje CHKDSK** maksymalnie raz na 30 dni — przy częstszych uruchomieniach operacja jest pomijana
 - Wyłączona jest **hibernacja** — ale tylko na SSD/NVMe; na HDD pozostaje aktywna
 - Usługa **Windows Search (WSearch)** zostaje wyłączona — może wpłynąć na wyszukiwanie w menu Start
 - Usługa **SysMain (Superfetch)** wyłączana jest tylko na SSD; na HDD pozostaje aktywna
@@ -280,17 +284,16 @@ Każde uruchomienie tworzy **nowy plik** — poprzednie raporty nie są nadpisyw
 
 ---
 
-## 🔄 Co nowego w v1.27?
+## 🔄 Co nowego w v1.28?
 
-- ✅**Zmienna `KEEPAWAKE_ACTIVE`** — flaga śledząca czy proces keepawake jest aktualnie uruchomiony; `:STOP_KEEPAWAKE` pomija całą procedurę zatrzymania jeśli keepawake nie był uruchamiany (`KEEPAWAKE_ACTIVE=0`), eliminując zbędne oczekiwanie
-- ✅**Komunikat sprawdzania zainstalowanych programów** — przed sekcją Malwarebytes wyświetlany jest teraz komunikat `Sprawdzanie zainstalowanych programów...`
-- ✅**Nadpisywanie linii w konsoli (ANSI escape)** — komunikaty zastępują teraz poprzednie linie zamiast je zostawiać, używając sekwencji `ESC[1A ESC[2K` (przesuń kursor w górę + wyczyść linię) i `ESC[nA ESC[nM` (usuń n linii) w następujących miejscach:
-  - Wynik sprawdzania wersji (`aktualna` / `brak połączenia` / `dostępna nowa wersja`) zastępuje linię z `Sprawdzam wersję...`
-  - Wybór `[T/N]` przy Malwarebytes zastępuje blok pytania po naciśnięciu klawisza
-  - Wybór `[T/N]` przy KVRT zastępuje blok pytania i ostrzeżenia
-  - Wybór `[T/N]` przy donacji zastępuje blok pytania
-  - Pominięcie aktualizacji (`[N] Pominięto aktualizację`) zastępuje blok dialogu aktualizacji
-- ✅**Wybór KVRT przepisany na `choice`** — zamiast pętli PowerShell z `[Console]::ReadKey` używany jest natywny `choice /c TN /n`, co upraszcza kod i poprawia niezawodność
+- ✅ **Ekran potwierdzenia przed startem** — po weryfikacji uprawnień administratora pojawia się nowe okno dialogowe wyjaśniające co skrypt zaraz zrobi (zamknie przeglądarki, usunie Windows.old); 60-sekundowy timeout z domyślnym `T`; przy `N` skrypt kończy działanie bez żadnych zmian w systemie
+- ✅ **Inteligentny CHKDSK z 30-dniowym cooldown** — skrypt zapisuje datę każdego zaplanowanego CHKDSK do pliku `cleaner_mag_chkdsk_last.dat`; jeśli od ostatniego planowania minęło mniej niż 30 dni, operacja jest oznaczana `[ SKIP ]` z podaniem daty; eliminuje niepotrzebne skanowanie przy częstych uruchomieniach
+- ✅ **Porównanie wersji przez `[version]::Parse()`** — zamiast prostego porównania stringów, skrypt używa prawdziwego porównania wersji przez PowerShell; obsługuje przypadki gdy lokalna wersja jest nowsza niż GitHub (np. wersje testowe) — wyświetla komunikat bez pytania o aktualizację
+- ✅ **Timeout 20 s na pytanie o aktualizację** — pytanie `[T/N]` ma teraz automatyczny wybór `N` po 20 sekundach bez odpowiedzi; skrypt nie blokuje nieskończenie przy braku użytkownika przy klawiaturze
+- ✅ **Devlog odświeżany przy każdym uruchomieniu** — poprzedni `.devlog.txt` jest kasowany przed rozpoczęciem nowej sesji; log zawiera tylko operacje z bieżącego uruchomienia
+- ✅ **Pomijanie adapterów Microsoft przy wykrywaniu GPU** — filtr `Where-Object { $_.Name -notlike 'Microsoft*' }` eliminuje Microsoft Basic Display Adapter i wirtualne adaptery Hyper-V z wyniku; GPU w raporcie zawsze pokazuje rzeczywistą kartę graficzną
+- ✅ **`KEEPAWAKE_ACTIVE=1` po uruchomieniu modułu** — flaga anty-sleep ustawiana na `1` dopiero po faktycznym wystartowaniu procesu w tle; poprawne odzwierciedlenie stanu modułu
+- ✅ **Punkt przywracania przez `%SystemDrive%`** — bardziej przenośne niż hardcoded `C:\`; działa poprawnie gdy Windows jest zainstalowany na innym dysku
 
 ---
 
@@ -308,4 +311,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ---
 
-Autor: **MAG** | Wersja: **1.27** (18/07/2026)
+Autor: **MAG** | Wersja: **1.28** (04/08/2026)
