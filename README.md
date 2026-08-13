@@ -16,7 +16,7 @@ Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty
 - [Instalacja i pierwsze uruchomienie](#instalacja-i-pierwsze-uruchomienie)
 - [Tryby pracy](#tryby-pracy)
 - [Co dokładnie robi tryb Pełny](#co-dokładnie-robi-tryb-pełny)
-- [Dodatkowe skanery na żądanie](#dodatkowe-skanery-na-żądanie)
+- [Dodatkowe skany na żądanie](#dodatkowe-skany-na-żądanie)
 - [Raporty i historia czyszczeń](#raporty-i-historia-czyszczeń)
 - [Automatyczna aktualizacja](#automatyczna-aktualizacja)
 - [Odinstalowanie](#odinstalowanie)
@@ -74,19 +74,21 @@ W trybie **Niestandardowym** decydujesz osobno o:
 4. głębokim resecie Windows Update,
 5. defragmentacji / TRIM dysku C:,
 6. odczycie temperatur CPU/GPU (pobiera dodatkowe narzędzie zewnętrzne).
-
+7. 
 ## Co dokładnie robi tryb Pełny
 
 <details>
 <summary>Pełna lista 31 operacji (kliknij, aby rozwinąć)</summary>
-
+  
 **Bezpieczeństwo**
+ 
 1. Punkt przywracania systemu
 2. Skan Windows Defender
 3. Skan AdwCleaner
 4. Reset proxy
 
 **Czyszczenie plików i pamięci podręcznej**
+ 
 5. Pliki tymczasowe (użytkownika i systemu)
 6. Prefetch (tylko na dyskach HDD — na SSD pomijane)
 7. Cache przeglądarek
@@ -102,6 +104,7 @@ W trybie **Niestandardowym** decydujesz osobno o:
 17. Trwałe usunięcie folderu `Windows.old` (jeśli istnieje)
 
 **Naprawa systemu**
+ 
 18. SFC — skan wstępny
 19. DISM RestoreHealth
 20. SFC — skan końcowy
@@ -110,6 +113,7 @@ W trybie **Niestandardowym** decydujesz osobno o:
 23. Dzienniki zdarzeń
 
 **Wydajność i konfiguracja**
+ 
 24. Optymalizacja usług systemowych
 25. Optymalizacja rejestru
 26. Reset DNS / sieci
@@ -118,10 +122,9 @@ W trybie **Niestandardowym** decydujesz osobno o:
 29. Optymalizacja Timer Resolution / HPET (obniżenie latencji)
 30. Wyłączenie automatycznego uruchamiania Narratora (skrót ułatwień dostępu)
 31. Usunięcie starych/nieużywanych sterowników PnP i drukarek
-
 </details>
 
-## Dodatkowe skanery na żądanie
+## Dodatkowe skany na żądanie
 
 Dostępne z menu głównego (tryb Pełny/Szybki/Niestandardowy na końcu) lub bezpośrednio przez opcję **[D] Dodatkowe kroki**:
 
