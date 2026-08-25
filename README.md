@@ -1,6 +1,6 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.30-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.31-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
@@ -8,8 +8,18 @@
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
+## Co nowego w wersji 1.31
+
+- Ujednolicone śledzenie dat ostatnich skanów (AdwCleaner, CHKDSK, Malwarebytes, KVRT) w jednym pliku — ze starszych wersji dane są migrowane automatycznie przy pierwszym uruchomieniu.
+- Punkt przywracania systemu jest teraz oznaczany dokładną datą i godziną oraz tworzony zawsze, również w trybie Niestandardowym bez zaznaczonej żadnej kategorii.
+- Poprawka: czyszczenie cache Microsoft Store jest teraz zawężone wyłącznie do pakietu Sklepu — nie dotyka już danych innych aplikacji zainstalowanych ze Store.
+- KVRT sprząta po sobie folder `KVRT_Data`, z zabezpieczeniem przed usunięciem, jeśli na komputerze wykryto zainstalowany pełny produkt Kaspersky.
+- Dokładniejsze przywracanie zaplanowanych zadań przy odinstalowaniu — każde zadanie wraca do swojego oryginalnego stanu (Włączone/Wyłączone), zamiast być każdorazowo włączanym.
+- Aplikacja **Zdjęcia** (Photos) nie jest już usuwana w ramach czyszczenia zbędnych aplikacji Windows.
+
 ## Spis treści
 
+- [Co nowego w wersji 1.31](#co-nowego-w-wersji-131)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -31,12 +41,14 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 ## Funkcje
 
-- **31 operacji czyszcząco-naprawczych** w jednym przebiegu (pełna lista niżej)
+- **31 kroków** czyszcząco-naprawczo-optymalizacyjnych w jednym przebiegu (pełna lista niżej)
 - 4 tryby pracy: Pełny / Szybki / Niestandardowy / Dodatkowe kroki
 - Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases
 - Tworzenie punktu przywracania systemu przed zmianami
 - Wbudowane skanowanie Windows Defender i AdwCleaner
 - Opcjonalne skanery na żądanie: **Malwarebytes** i **KVRT** (Kaspersky Virus Removal Tool) — pobierane, uruchamiane i sprzątane automatycznie
+- Debloat: usuwanie zbędnych aplikacji Windows, wyłączanie zbędnych funkcji, procesów w tle i programów startowych
+- Strojenie sieci: DNS, parametry TCP oraz reset proxy
 - Szczegółowy raport `.txt` po każdym przebiegu + wykres historii ostatnich 20 sesji w konsoli
 - Pływająca nakładka z paskiem postępu i licznikiem kroków
 - Blokada uśpienia komputera („keep-awake") na czas długich operacji
@@ -62,7 +74,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 | Skrót | Tryb | Opis |
 |---|---|---|
-| `P` | **Pełny** | wszystkie 31 operacji (zalecane) |
+| `P` | **Pełny** | wszystkie 31 kroków (zalecane) |
 | `S` | **Szybki** | pomija antywirusy, SFC/DISM oraz czyszczenie starych sterowników |
 | `N` | **Niestandardowy** | seria pytań T/N — sam wybierasz kategorie |
 | `D` | **Dodatkowe kroki** | pomija czyszczenie i przechodzi od razu do Malwarebytes / KVRT / wsparcia projektu |
@@ -74,62 +86,56 @@ W trybie **Niestandardowym** decydujesz osobno o:
 4. głębokim resecie Windows Update,
 5. defragmentacji / TRIM dysku C:,
 6. odczycie temperatur CPU/GPU (pobiera dodatkowe narzędzie zewnętrzne).
-7. 
+
+Punkt przywracania systemu (krok 1) jest tworzony zawsze, niezależnie od tego, które kategorie zaznaczysz.
+
 ## Co dokładnie robi tryb Pełny
 
 <details>
-<summary>Pełna lista 31 operacji (kliknij, aby rozwinąć)</summary>
-  
-**Bezpieczeństwo**
- 
+<summary>Pełna lista 31 kroków (kliknij, aby rozwinąć)</summary>
+
+Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich wykonuje po kilka powiązanych czynności naraz.
+
 1. Punkt przywracania systemu
 2. Skan Windows Defender
-3. Skan AdwCleaner
-4. Reset proxy
+3. Skan AdwCleaner i reset ustawień proxy
+4. Harmonogramy zadań, priorytety procesora i zarządzanie pamięcią
+5. Analiza typu dysku (HDD/SSD) i mobilności urządzenia
+6. Plan zasilania
+7. Wyłączenie Fast Startup i dopasowanie pliku stronicowania do ilości RAM
+8. Pliki tymczasowe, Downloaded Program Files, Minidump, raporty WER, logi instalatorów oraz folder Prefetch (tylko HDD)
+9. Sieć, DNS (Cloudflare/Google) i parametry TCP
+10. Dzienniki zdarzeń i Oczyszczanie dysku (w tym cache miniatur)
+11. Sprawdzanie dysku przy następnym uruchomieniu (CHKDSK)
+12. Optymalizacja usług systemowych
+13. Timer Resolution / HPET (obniżenie latencji)
+14. Optymalizacja rejestru i wyłączenie Narratora
+15. Zbędne aplikacje Windows, funkcje Windows, aktywne godziny (8–23) i procesy w tle
+16. Cache przeglądarek
+17. Cache Microsoft Teams
+18. Cache OneDrive
+19. Cache Java / .NET oraz kolejka drukarki (Spooler)
+20. Czyszczenie starych sterowników drukarek
+21. Usuwanie przestarzałych sterowników PnP
+22. Cache Microsoft Store
+23. Optymalizacja dostarczania aktualizacji i wyłączenie śledzenia/sugestii systemowych
+24. SFC — skan wstępny
+25. DISM RestoreHealth (naprawa obrazu systemu)
+26. SFC — skan końcowy i oczyszczenie bazy składników
+27. Logi CBS
+28. Głęboka naprawa i reset Windows Update
+29. Trwałe usunięcie folderu `Windows.old` (jeśli istnieje)
+30. Defragmentacja / TRIM dysku C: (dopasowane do typu dysku)
+31. Zbędne programy startowe, naprawa Eksploratora Windows i baza WMI
 
-**Czyszczenie plików i pamięci podręcznej**
- 
-5. Pliki tymczasowe (użytkownika i systemu)
-6. Prefetch (tylko na dyskach HDD — na SSD pomijane)
-7. Cache przeglądarek
-8. Cache Microsoft Teams
-9. Cache OneDrive
-10. Cache Microsoft Store
-11. Thumbnail Cache (miniatury)
-12. Pliki Minidump
-13. Raporty błędów Windows (WER)
-14. Logi instalatorów (CBS/DISM/NetSetup itd.)
-15. Kolejka drukarki
-16. Cache Windows Update
-17. Trwałe usunięcie folderu `Windows.old` (jeśli istnieje)
-
-**Naprawa systemu**
- 
-18. SFC — skan wstępny
-19. DISM RestoreHealth
-20. SFC — skan końcowy
-21. Logi CBS
-22. Naprawa WMI
-23. Dzienniki zdarzeń
-
-**Wydajność i konfiguracja**
- 
-24. Optymalizacja usług systemowych
-25. Optymalizacja rejestru
-26. Reset DNS / sieci
-27. Defragmentacja / TRIM (dopasowane do typu dysku)
-28. Wyłączenie Fast Startup + dopasowanie pliku stronicowania do ilości RAM
-29. Optymalizacja Timer Resolution / HPET (obniżenie latencji)
-30. Wyłączenie automatycznego uruchamiania Narratora (skrót ułatwień dostępu)
-31. Usunięcie starych/nieużywanych sterowników PnP i drukarek
 </details>
 
 ## Dodatkowe skany na żądanie
 
-Dostępne z menu głównego (tryb Pełny/Szybki/Niestandardowy na końcu) lub bezpośrednio przez opcję **[D] Dodatkowe kroki**:
+Dostępne z menu głównego (na końcu trybu Pełnego/Szybkiego/Niestandardowego) lub bezpośrednio przez opcję **[D] Dodatkowe kroki**:
 
 - **Malwarebytes** — pobiera instalator, instaluje program, uruchamia go do ręcznego skanu, a po zamknięciu okna automatycznie odinstalowuje program (jeśli nie był już wcześniej zainstalowany — wtedy skrypt po prostu go otwiera).
-- **KVRT (Kaspersky Virus Removal Tool)** — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi.
+- **KVRT (Kaspersky Virus Removal Tool)** — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi (folder `KVRT_Data` jest sprzątany, chyba że na komputerze wykryto zainstalowany pełny produkt Kaspersky — wtedy zostaje nietknięty).
 
 > ⚠️ **Uwaga:** KVRT może w trakcie skanowania wykryć poważne zagrożenie i **zrestartować komputer bez pytania o zgodę**. Zapisz pracę przed uruchomieniem tej opcji — skrypt blokuje nieoczekiwany restart tylko na czas własnego działania.
 
@@ -152,9 +158,9 @@ Dostępne z menu głównego (tryb Pełny/Szybki/Niestandardowy na końcu) lub be
 Użyj skrótu **„Odinstaluj CLEANER by MAG"** w Menu Start (wymaga uprawnień administratora). Proces zapyta dodatkowo o:
 
 - usunięcie zapisanych raportów,
-- przywrócenie oryginalnych ustawień systemowych sprzed instalacji (DNS, usługi, rejestr, HPET itd.) na podstawie stanu zapisanego przy pierwszym pełnym uruchomieniu.
+- przywrócenie oryginalnych ustawień systemowych sprzed instalacji (DNS, usługi, rejestr, HPET itd.) na podstawie stanu zapisanego przy pierwszym pełnym uruchomieniu — zaplanowane zadania wracają do swojego dokładnego stanu sprzed zmian (Włączone/Wyłączone), a nie są po prostu masowo włączane.
 
-Po odinstalowaniu usuwane są też wpisy w Harmonogramie zadań i w rejestrze dodane przez skrypt.
+Po odinstalowaniu usuwane są też pozostałe wpisy w Harmonogramie zadań i w rejestrze dodane przez skrypt.
 
 ## Bezpieczeństwo i uwagi
 
@@ -175,4 +181,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.30** (13/08/2026)
+Autor: **MAG** | Wersja: **1.31** (25/08/2026)
