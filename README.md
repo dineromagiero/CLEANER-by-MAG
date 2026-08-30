@@ -1,6 +1,6 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.31-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.32-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
@@ -8,18 +8,15 @@
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
-## Co nowego w wersji 1.31
+## Co nowego w wersji 1.32
 
-- Ujednolicone śledzenie dat ostatnich skanów (AdwCleaner, CHKDSK, Malwarebytes, KVRT) w jednym pliku — ze starszych wersji dane są migrowane automatycznie przy pierwszym uruchomieniu.
-- Punkt przywracania systemu jest teraz oznaczany dokładną datą i godziną oraz tworzony zawsze, również w trybie Niestandardowym bez zaznaczonej żadnej kategorii.
-- Poprawka: czyszczenie cache Microsoft Store jest teraz zawężone wyłącznie do pakietu Sklepu — nie dotyka już danych innych aplikacji zainstalowanych ze Store.
-- KVRT sprząta po sobie folder `KVRT_Data`, z zabezpieczeniem przed usunięciem, jeśli na komputerze wykryto zainstalowany pełny produkt Kaspersky.
-- Dokładniejsze przywracanie zaplanowanych zadań przy odinstalowaniu — każde zadanie wraca do swojego oryginalnego stanu (Włączone/Wyłączone), zamiast być każdorazowo włączanym.
-- Aplikacja **Zdjęcia** (Photos) nie jest już usuwana w ramach czyszczenia zbędnych aplikacji Windows.
+- Aktualizacje są teraz weryfikowane sumą kontrolną **SHA-256** (jeśli wydanie ją udostępnia) — w razie niezgodności skrypt przerywa aktualizację i otwiera stronę Releases zamiast uruchomić niezweryfikowany plik.
+- Szybszy start i mniejsze obciążenie systemu — wywołania PowerShell używają teraz flagi `-NoProfile`, a operacje takie jak pobranie daty/godziny czy usuwanie zbędnych aplikacji Windows są skonsolidowane do pojedynczych wywołań zamiast wielu osobnych procesów.
+- Pływająca nakładka poprawnie pokazuje status po wejściu w sekcję „Dodatkowe kroki", zamiast nieaktualnej informacji z głównego przebiegu.
 
 ## Spis treści
 
-- [Co nowego w wersji 1.31](#co-nowego-w-wersji-131)
+- [Co nowego w wersji 1.32](#co-nowego-w-wersji-132)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -151,6 +148,7 @@ Dostępne z menu głównego (na końcu trybu Pełnego/Szybkiego/Niestandardowego
 
 - Przy każdym starcie skrypt porównuje swoją wersję z najnowszym wydaniem w repozytorium [`dineromagiero/CLEANER-by-MAG`](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest).
 - Jeśli dostępna jest nowsza wersja, proponuje automatyczne pobranie i podmianę pliku `.bat`, po czym sam uruchamia nową wersję.
+- Integralność pobranego pliku jest sprawdzana sumą kontrolną SHA-256 (gdy wydanie ją udostępnia) — przy niezgodności aktualizacja zostaje przerwana, a skrypt otwiera stronę Releases zamiast uruchomić niezweryfikowany plik.
 - Brak połączenia z internetem nie blokuje działania — sprawdzanie aktualizacji jest po prostu pomijane.
 
 ## Odinstalowanie
@@ -181,4 +179,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.31** (25/08/2026)
+Autor: **MAG** | Wersja: **1.32** (30/08/2026)
