@@ -1,6 +1,6 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.32-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.33-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
@@ -8,15 +8,16 @@
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
-## Co nowego w wersji 1.32
+## Co nowego w wersji 1.33
 
-- Aktualizacje są teraz weryfikowane sumą kontrolną **SHA-256** (jeśli wydanie ją udostępnia) — w razie niezgodności skrypt przerywa aktualizację i otwiera stronę Releases zamiast uruchomić niezweryfikowany plik.
-- Szybszy start i mniejsze obciążenie systemu — wywołania PowerShell używają teraz flagi `-NoProfile`, a operacje takie jak pobranie daty/godziny czy usuwanie zbędnych aplikacji Windows są skonsolidowane do pojedynczych wywołań zamiast wielu osobnych procesów.
-- Pływająca nakładka poprawnie pokazuje status po wejściu w sekcję „Dodatkowe kroki", zamiast nieaktualnej informacji z głównego przebiegu.
+- Naprawiono automatyczne pobieranie aktualizacji — adres pliku `.bat` i suma kontrolna SHA-256 są teraz poprawnie odczytywane z wydania na GitHubie (wcześniej mechanizm mógł zawsze przełączać się na ręczne otwarcie strony Releases zamiast pobrać plik).
+- AdwCleaner: skrypt faktycznie weryfikuje teraz, czy proces uruchomił się podczas skanowania i czyszczenia oraz czy powstał log, zamiast zakładać sukces z góry — w razie wątpliwości zobaczysz ostrzeżenie zamiast fałszywego „OK”.
+- Naprawiono odczyt wyniku skanu SFC (wstępnego i końcowego) — status w konsoli i raporcie jest teraz wiarygodny.
+- Zrzut stanu do przywracania ustawień przy odinstalowaniu obejmuje teraz też ustawienia Delivery Optimization, sugestie w Menu Start oraz integrację Bing/Cortana w wyszukiwarce.
 
 ## Spis treści
 
-- [Co nowego w wersji 1.32](#co-nowego-w-wersji-132)
+- [Co nowego w wersji 1.33](#co-nowego-w-wersji-133)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -179,4 +180,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.32** (30/08/2026)
+Autor: **MAG** | Wersja: **1.33** (05/09/2026)
