@@ -1,6 +1,6 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.33-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.34-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
@@ -8,16 +8,15 @@
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
-## Co nowego w wersji 1.33
+## Co nowego w wersji 1.34
 
-- Naprawiono automatyczne pobieranie aktualizacji — adres pliku `.bat` i suma kontrolna SHA-256 są teraz poprawnie odczytywane z wydania na GitHubie (wcześniej mechanizm mógł zawsze przełączać się na ręczne otwarcie strony Releases zamiast pobrać plik).
-- AdwCleaner: skrypt faktycznie weryfikuje teraz, czy proces uruchomił się podczas skanowania i czyszczenia oraz czy powstał log, zamiast zakładać sukces z góry — w razie wątpliwości zobaczysz ostrzeżenie zamiast fałszywego „OK”.
-- Naprawiono odczyt wyniku skanu SFC (wstępnego i końcowego) — status w konsoli i raporcie jest teraz wiarygodny.
-- Zrzut stanu do przywracania ustawień przy odinstalowaniu obejmuje teraz też ustawienia Delivery Optimization, sugestie w Menu Start oraz integrację Bing/Cortana w wyszukiwarce.
+- Tryb Niestandardowy ma teraz osobną kategorię **Sprawdzanie dysku (CHKDSK)** — wcześniej w tym trybie CHKDSK był zawsze pomijany; teraz można go świadomie włączyć, z pominięciem standardowego limitu „nie częściej niż raz na 30 dni”.
+- Czyszczenie cache przeglądarek: 10-sekundowe odliczanie przed zamknięciem przeglądarek pojawia się teraz tylko wtedy, gdy skrypt faktycznie wykryje uruchomioną przeglądarkę — jeśli żadna nie działa, krok przechodzi od razu dalej.
+- Naprawa Eksploratora Windows czyści teraz też pliki `thumbcache_*.db`, dokładniej usuwając cache miniatur.
 
 ## Spis treści
 
-- [Co nowego w wersji 1.33](#co-nowego-w-wersji-133)
+- [Co nowego w wersji 1.34](#co-nowego-w-wersji-134)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -83,7 +82,8 @@ W trybie **Niestandardowym** decydujesz osobno o:
 3. czyszczeniu starych sterowników drukarek i PnP,
 4. głębokim resecie Windows Update,
 5. defragmentacji / TRIM dysku C:,
-6. odczycie temperatur CPU/GPU (pobiera dodatkowe narzędzie zewnętrzne).
+6. sprawdzaniu dysku C: (CHKDSK) — z pominięciem limitu „raz na 30 dni”,
+7. odczycie temperatur CPU/GPU (pobiera dodatkowe narzędzie zewnętrzne).
 
 Punkt przywracania systemu (krok 1) jest tworzony zawsze, niezależnie od tego, które kategorie zaznaczysz.
 
@@ -103,7 +103,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 7. Wyłączenie Fast Startup i dopasowanie pliku stronicowania do ilości RAM
 8. Pliki tymczasowe, Downloaded Program Files, Minidump, raporty WER, logi instalatorów oraz folder Prefetch (tylko HDD)
 9. Sieć, DNS (Cloudflare/Google) i parametry TCP
-10. Dzienniki zdarzeń i Oczyszczanie dysku (w tym cache miniatur)
+10. Dzienniki zdarzeń i Oczyszczanie dysku
 11. Sprawdzanie dysku przy następnym uruchomieniu (CHKDSK)
 12. Optymalizacja usług systemowych
 13. Timer Resolution / HPET (obniżenie latencji)
@@ -124,7 +124,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 28. Głęboka naprawa i reset Windows Update
 29. Trwałe usunięcie folderu `Windows.old` (jeśli istnieje)
 30. Defragmentacja / TRIM dysku C: (dopasowane do typu dysku)
-31. Zbędne programy startowe, naprawa Eksploratora Windows i baza WMI
+31. Zbędne programy startowe, cache ikon i miniatur, naprawa Eksploratora Windows i baza WMI
 
 </details>
 
@@ -180,4 +180,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.33** (05/09/2026)
+Autor: **MAG** | Wersja: **1.34** (07/09/2026)
