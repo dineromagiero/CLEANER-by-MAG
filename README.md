@@ -1,22 +1,28 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.34-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.35-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
-**Jednoplikowy skrypt `.bat` do głębokiego czyszczenia, naprawy i optymalizacji systemu Windows** — z automatyczną instalacją, samoaktualizacją, szczegółowymi raportami i opcjonalnymi skanerami antywirusowymi.
+**Jednoplikowy skrypt `.bat` do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z automatyczną instalacją, samoaktualizacją, szczegółowymi raportami i opcjonalnymi skanerami antywirusowymi.
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
-## Co nowego w wersji 1.34
+## Co nowego w wersji 1.35
 
-- Tryb Niestandardowy ma teraz osobną kategorię **Sprawdzanie dysku (CHKDSK)** — wcześniej w tym trybie CHKDSK był zawsze pomijany; teraz można go świadomie włączyć, z pominięciem standardowego limitu „nie częściej niż raz na 30 dni”.
-- Czyszczenie cache przeglądarek: 10-sekundowe odliczanie przed zamknięciem przeglądarek pojawia się teraz tylko wtedy, gdy skrypt faktycznie wykryje uruchomioną przeglądarkę — jeśli żadna nie działa, krok przechodzi od razu dalej.
-- Naprawa Eksploratora Windows czyści teraz też pliki `thumbcache_*.db`, dokładniej usuwając cache miniatur.
+Duża aktualizacja — licznik kroków w trybie Pełnym rośnie z 31 do **37**.
+
+- Nowa opcja w Dodatkowych krokach: **aktualizacja zainstalowanych programów przez winget**, z automatyczną instalacją winget, jeśli go brakuje (np. na Windows LTSC), i podglądem postępu pobierania na żywo.
+- Nowy blok utwardzania bezpieczeństwa (kroki 31–36): Windows Defender + reguły ASR, ochrona poświadczeń/LSA, wyłączenie LLMNR/NetBIOS/WPAD, zabezpieczenie SMB, blokada autoodtwarzania, przywrócenie UAC do najwyższego poziomu, blokada makr Office pobranych z internetu, optymalizacja GPU/sieci/NTFS, Czujnik pamięci z cyklicznym zadaniem konserwacji, audyt persystencji (tylko raportuje, niczego nie usuwa) oraz diagnostyka zdrowia systemu. W trybie Niestandardowym ten blok jest na razie zawsze pomijany — nie ma jeszcze osobnej kategorii do wyboru.
+- Krok 1 (punkt przywracania) dodatkowo ogranicza miejsce zajmowane przez kopie w tle (VSS).
+- Krok 8 dodatkowo czyści cache GPU i pliki tymczasowe we wszystkich profilach użytkowników, nie tylko bieżącego.
+- Krok 9 (sieć/DNS) dodatkowo włącza DNS over HTTPS.
+- Krok 23 dodatkowo blokuje reklamy, podpowiedzi i ciche instalacje oraz wyłącza historię aktywności, Windows Recall i Copilot.
+- Krok 37 dodatkowo odświeża cache czcionek.
 
 ## Spis treści
 
-- [Co nowego w wersji 1.34](#co-nowego-w-wersji-134)
+- [Co nowego w wersji 1.35](#co-nowego-w-wersji-135)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -38,14 +44,16 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 ## Funkcje
 
-- **31 kroków** czyszcząco-naprawczo-optymalizacyjnych w jednym przebiegu (pełna lista niżej)
+- **37 kroków** czyszcząco-naprawczo-optymalizacyjnych i zabezpieczających w jednym przebiegu (pełna lista niżej)
 - 4 tryby pracy: Pełny / Szybki / Niestandardowy / Dodatkowe kroki
 - Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases
 - Tworzenie punktu przywracania systemu przed zmianami
 - Wbudowane skanowanie Windows Defender i AdwCleaner
 - Opcjonalne skanery na żądanie: **Malwarebytes** i **KVRT** (Kaspersky Virus Removal Tool) — pobierane, uruchamiane i sprzątane automatycznie
+- Aktualizacja zainstalowanych programów przez **winget** (Menedżer pakietów Windows), z automatyczną instalacją winget, jeśli go brakuje
+- Utwardzanie bezpieczeństwa: reguły ASR, ochrona LSA, zabezpieczenie SMB, blokada autoodtwarzania i makr Office, przywrócenie UAC, audyt persystencji i diagnostyka zdrowia systemu
 - Debloat: usuwanie zbędnych aplikacji Windows, wyłączanie zbędnych funkcji, procesów w tle i programów startowych
-- Strojenie sieci: DNS, parametry TCP oraz reset proxy
+- Strojenie sieci: DNS, DNS over HTTPS, parametry TCP oraz reset proxy
 - Szczegółowy raport `.txt` po każdym przebiegu + wykres historii ostatnich 20 sesji w konsoli
 - Pływająca nakładka z paskiem postępu i licznikiem kroków
 - Blokada uśpienia komputera („keep-awake") na czas długich operacji
@@ -71,7 +79,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 | Skrót | Tryb | Opis |
 |---|---|---|
-| `P` | **Pełny** | wszystkie 31 kroków (zalecane) |
+| `P` | **Pełny** | wszystkie 37 kroków (zalecane) |
 | `S` | **Szybki** | pomija antywirusy, SFC/DISM oraz czyszczenie starych sterowników |
 | `N` | **Niestandardowy** | seria pytań T/N — sam wybierasz kategorie |
 | `D` | **Dodatkowe kroki** | pomija czyszczenie i przechodzi od razu do Malwarebytes / KVRT / wsparcia projektu |
@@ -85,24 +93,24 @@ W trybie **Niestandardowym** decydujesz osobno o:
 6. sprawdzaniu dysku C: (CHKDSK) — z pominięciem limitu „raz na 30 dni”,
 7. odczycie temperatur CPU/GPU (pobiera dodatkowe narzędzie zewnętrzne).
 
-Punkt przywracania systemu (krok 1) jest tworzony zawsze, niezależnie od tego, które kategorie zaznaczysz.
+Punkt przywracania systemu (krok 1) jest tworzony zawsze, niezależnie od tego, które kategorie zaznaczysz. Nowy blok utwardzania bezpieczeństwa (kroki 31–36) nie ma jeszcze osobnej kategorii — w trybie Niestandardowym jest zawsze pomijany.
 
 ## Co dokładnie robi tryb Pełny
 
 <details>
-<summary>Pełna lista 31 kroków (kliknij, aby rozwinąć)</summary>
+<summary>Pełna lista 37 kroków (kliknij, aby rozwinąć)</summary>
 
 Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich wykonuje po kilka powiązanych czynności naraz.
 
-1. Punkt przywracania systemu
+1. Punkt przywracania systemu i ograniczenie miejsca na kopie w tle (VSS)
 2. Skan Windows Defender
 3. Skan AdwCleaner i reset ustawień proxy
 4. Harmonogramy zadań, priorytety procesora i zarządzanie pamięcią
 5. Analiza typu dysku (HDD/SSD) i mobilności urządzenia
 6. Plan zasilania
 7. Wyłączenie Fast Startup i dopasowanie pliku stronicowania do ilości RAM
-8. Pliki tymczasowe, Downloaded Program Files, Minidump, raporty WER, logi instalatorów oraz folder Prefetch (tylko HDD)
-9. Sieć, DNS (Cloudflare/Google) i parametry TCP
+8. Pliki tymczasowe, Downloaded Program Files, Minidump, raporty WER, logi instalatorów, folder Prefetch (tylko HDD) oraz cache GPU we wszystkich profilach użytkowników
+9. Sieć, DNS (Cloudflare/Google), DNS over HTTPS i parametry TCP
 10. Dzienniki zdarzeń i Oczyszczanie dysku
 11. Sprawdzanie dysku przy następnym uruchomieniu (CHKDSK)
 12. Optymalizacja usług systemowych
@@ -116,7 +124,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 20. Czyszczenie starych sterowników drukarek
 21. Usuwanie przestarzałych sterowników PnP
 22. Cache Microsoft Store
-23. Optymalizacja dostarczania aktualizacji i wyłączenie śledzenia/sugestii systemowych
+23. Optymalizacja dostarczania aktualizacji, wyłączenie śledzenia/sugestii, blokowanie reklam i cichych instalacji oraz wyłączenie historii aktywności, Recall i Copilot
 24. SFC — skan wstępny
 25. DISM RestoreHealth (naprawa obrazu systemu)
 26. SFC — skan końcowy i oczyszczenie bazy składników
@@ -124,7 +132,13 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 28. Głęboka naprawa i reset Windows Update
 29. Trwałe usunięcie folderu `Windows.old` (jeśli istnieje)
 30. Defragmentacja / TRIM dysku C: (dopasowane do typu dysku)
-31. Zbędne programy startowe, cache ikon i miniatur, naprawa Eksploratora Windows i baza WMI
+31. Utwardzanie Windows Defender i reguły ASR (Attack Surface Reduction)
+32. Utwardzanie systemu, kont i protokołów — ochrona LSA/poświadczeń, wyłączenie LLMNR/NetBIOS/WPAD, zabezpieczenie SMB, blokada autoodtwarzania, przywrócenie UAC do najwyższego poziomu, blokada makr Office pobranych z internetu, widoczność rozszerzeń plików
+33. Optymalizacja GPU (planowanie sprzętowe, Game DVR), sieci i systemu plików NTFS
+34. Konfiguracja Czujnika pamięci (Storage Sense) i cyklicznego zadania konserwacji
+35. Audyt persystencji i bezpieczeństwa (tylko raportuje, niczego nie usuwa)
+36. Diagnostyka zdrowia systemu
+37. Zbędne programy startowe, cache ikon/miniatur/czcionek, naprawa Eksploratora Windows i baza WMI
 
 </details>
 
@@ -133,6 +147,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 Dostępne z menu głównego (na końcu trybu Pełnego/Szybkiego/Niestandardowego) lub bezpośrednio przez opcję **[D] Dodatkowe kroki**:
 
 - **Malwarebytes** — pobiera instalator, instaluje program, uruchamia go do ręcznego skanu, a po zamknięciu okna automatycznie odinstalowuje program (jeśli nie był już wcześniej zainstalowany — wtedy skrypt po prostu go otwiera).
+- **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie aktualizuje po kolei wszystkie zainstalowane programy, z podglądem postępu pobierania na żywo.
 - **KVRT (Kaspersky Virus Removal Tool)** — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi (folder `KVRT_Data` jest sprzątany, chyba że na komputerze wykryto zainstalowany pełny produkt Kaspersky — wtedy zostaje nietknięty).
 
 > ⚠️ **Uwaga:** KVRT może w trakcie skanowania wykryć poważne zagrożenie i **zrestartować komputer bez pytania o zgodę**. Zapisz pracę przed uruchomieniem tej opcji — skrypt blokuje nieoczekiwany restart tylko na czas własnego działania.
@@ -141,7 +156,7 @@ Dostępne z menu głównego (na końcu trybu Pełnego/Szybkiego/Niestandardowego
 
 - Po każdym przebiegu w trybie Pełnym lub Szybkim zapisywany jest raport tekstowy:
   `Dokumenty\CLEANER by MAG\Raport_<data>_<godzina>.txt`
-- Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD`).
+- Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD`). Jeśli krok 35 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu.
 - Skrót **„Raporty"** w Menu Start prowadzi bezpośrednio do tego folderu.
 - Na koniec działania skrypt pokazuje w konsoli wykres słupkowy (ASCII) z historii ostatnich 20 sesji — ile miejsca zwalniano i ile trwało czyszczenie.
 
@@ -164,6 +179,7 @@ Po odinstalowaniu usuwane są też pozostałe wpisy w Harmonogramie zadań i w r
 ## Bezpieczeństwo i uwagi
 
 - Skrypt wymaga uprawnień administratora i modyfikuje ustawienia systemowe (rejestr, usługi, DNS, harmonogram zadań, ustawienia zegara/BCD, plik stronicowania).
+- Blok utwardzania bezpieczeństwa (kroki 31–32) zmienia też ustawienia sieciowe (SMB, LLMNR/NetBIOS/WPAD) i UAC — w rzadkich przypadkach (stare drukarki lub udziały sieciowe w lokalnej sieci) może to wymagać ręcznej korekty.
 - Przed pierwszą pełną optymalizacją tworzony jest **punkt przywracania systemu**, a stan kluczowych ustawień jest zapisywany do ewentualnego przywrócenia przy odinstalowaniu.
 - Tryb Pełny i Szybki **zamykają otwarte okna przeglądarki** oraz **trwale usuwają folder `Windows.old`**, jeśli istnieje — skrypt prosi o potwierdzenie przed rozpoczęciem.
 - Skrypt nie jest podpisany cyfrowo — Windows SmartScreen/Defender może wyświetlić ostrzeżenie przy pierwszym uruchomieniu. Pobieraj go wyłącznie z oficjalnego repozytorium.
@@ -180,4 +196,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.34** (07/09/2026)
+Autor: **MAG** | Wersja: **1.35** (20/09/2026)
