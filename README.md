@@ -1,6 +1,6 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.35-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.36-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
@@ -8,21 +8,23 @@
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
-## Co nowego w wersji 1.35
+## Co nowego w wersji 1.36
 
-Duża aktualizacja — licznik kroków w trybie Pełnym rośnie z 31 do **37**.
+Wydanie skupione na niezawodności — wiele kroków dokładniej sprawdza, czy operacja faktycznie się powiodła, zamiast zakładać sukces z góry.
 
-- Nowa opcja w Dodatkowych krokach: **aktualizacja zainstalowanych programów przez winget**, z automatyczną instalacją winget, jeśli go brakuje (np. na Windows LTSC), i podglądem postępu pobierania na żywo.
-- Nowy blok utwardzania bezpieczeństwa (kroki 31–36): Windows Defender + reguły ASR, ochrona poświadczeń/LSA, wyłączenie LLMNR/NetBIOS/WPAD, zabezpieczenie SMB, blokada autoodtwarzania, przywrócenie UAC do najwyższego poziomu, blokada makr Office pobranych z internetu, optymalizacja GPU/sieci/NTFS, Czujnik pamięci z cyklicznym zadaniem konserwacji, audyt persystencji (tylko raportuje, niczego nie usuwa) oraz diagnostyka zdrowia systemu. W trybie Niestandardowym ten blok jest na razie zawsze pomijany — nie ma jeszcze osobnej kategorii do wyboru.
-- Krok 1 (punkt przywracania) dodatkowo ogranicza miejsce zajmowane przez kopie w tle (VSS).
-- Krok 8 dodatkowo czyści cache GPU i pliki tymczasowe we wszystkich profilach użytkowników, nie tylko bieżącego.
-- Krok 9 (sieć/DNS) dodatkowo włącza DNS over HTTPS.
-- Krok 23 dodatkowo blokuje reklamy, podpowiedzi i ciche instalacje oraz wyłącza historię aktywności, Windows Recall i Copilot.
-- Krok 37 dodatkowo odświeża cache czcionek.
+- Nowy status **REST** (wymaga restartu): SFC i oczyszczanie bazy składników (DISM) wykrywają teraz oczekujący restart systemu i jasno o nim informują zamiast zgłaszać niejasny błąd. Dokładniejsze raportowanie objęło też Timer Resolution/HPET, CHKDSK, defragmentację, reset Windows Update, DNS i stare sterowniki drukarek (pokazuje liczbę usuniętych folderów).
+- Plan zasilania „Wysoka wydajność” jest teraz sam odnajdywany/odblokowywany, jeśli jest ukryty (częste na laptopach/OEM) — wcześniej mogło to kończyć się cichym niepowodzeniem.
+- Reset stosu IP jest pomijany, gdy wykryto statyczny adres IP — zapobiega utracie połączenia sieciowego. Konfiguracja DNS została przepisana na bardziej niezawodny mechanizm z osobną obsługą błędów dla każdego interfejsu.
+- Wykrywanie uprawnień administratora poprawione (`fltmc` zamiast `net session`) — działa teraz poprawnie nawet gdy usługa Server jest wyłączona.
+- Ponowne uruchamianie Eksploratora Windows wraca z normalnymi uprawnieniami zamiast dziedziczyć uprawnienia administratora ze skryptu; restart OneDrive po czyszczeniu cache ma teraz zapasową metodę przez Harmonogram zadań, jeśli standardowe uruchomienie się nie powiedzie.
+- Przejmowanie własności folderu `Windows.old` naprawione na niektórych językowych wersjach Windows.
+- Odczyt temperatur CPU/GPU: sterownik OpenHardwareMonitor (WinRing0) zastąpiony przez PawnIO, ponieważ WinRing0 bywał usuwany przez Windows Defender jako podatny sterownik.
+- Instalacja winget (gdy go brakuje) jest bardziej niezawodna — obsługuje zależności dla właściwej architektury (x64/x86/ARM64) i ma zapasową metodę przez oficjalny moduł Microsoft.WinGet.Client.
+- Mechanizm przywracania ustawień przy odinstalowaniu został gruntownie przebudowany — dokładnie liczy udane/nieudane/pominięte operacje i obejmuje więcej ustawień (BCD, TCP, DoH, plany zasilania, VSS, AppX), z zachowaniem kompatybilności ze stanem zapisanym w starszych wersjach.
 
 ## Spis treści
 
-- [Co nowego w wersji 1.35](#co-nowego-w-wersji-135)
+- [Co nowego w wersji 1.36](#co-nowego-w-wersji-136)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -116,7 +118,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 12. Optymalizacja usług systemowych
 13. Timer Resolution / HPET (obniżenie latencji)
 14. Optymalizacja rejestru i wyłączenie Narratora
-15. Zbędne aplikacje Windows, funkcje Windows, aktywne godziny (8–23) i procesy w tle
+15. Zbędne aplikacje Windows, aktywne godziny (8–23) i procesy w tle
 16. Cache przeglądarek
 17. Cache Microsoft Teams
 18. Cache OneDrive
@@ -128,8 +130,8 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 24. SFC — skan wstępny
 25. DISM RestoreHealth (naprawa obrazu systemu)
 26. SFC — skan końcowy i oczyszczenie bazy składników
-27. Logi CBS
-28. Głęboka naprawa i reset Windows Update
+27. Głęboka naprawa i reset Windows Update
+28. Optymalizacja Funkcji Windows i logi CBS
 29. Trwałe usunięcie folderu `Windows.old` (jeśli istnieje)
 30. Defragmentacja / TRIM dysku C: (dopasowane do typu dysku)
 31. Utwardzanie Windows Defender i reguły ASR (Attack Surface Reduction)
@@ -156,7 +158,7 @@ Dostępne z menu głównego (na końcu trybu Pełnego/Szybkiego/Niestandardowego
 
 - Po każdym przebiegu w trybie Pełnym lub Szybkim zapisywany jest raport tekstowy:
   `Dokumenty\CLEANER by MAG\Raport_<data>_<godzina>.txt`
-- Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD`). Jeśli krok 35 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu.
+- Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD` / `REST` — wymaga restartu). Jeśli krok 35 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu.
 - Skrót **„Raporty"** w Menu Start prowadzi bezpośrednio do tego folderu.
 - Na koniec działania skrypt pokazuje w konsoli wykres słupkowy (ASCII) z historii ostatnich 20 sesji — ile miejsca zwalniano i ile trwało czyszczenie.
 
@@ -196,4 +198,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.35** (20/09/2026)
+Autor: **MAG** | Wersja: **1.36** (23/09/2026)
