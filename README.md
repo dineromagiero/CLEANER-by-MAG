@@ -1,6 +1,6 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.36-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.37-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
@@ -8,23 +8,17 @@
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
-## Co nowego w wersji 1.36
+## Co nowego w wersji 1.37
 
-Wydanie skupione na niezawodności — wiele kroków dokładniej sprawdza, czy operacja faktycznie się powiodła, zamiast zakładać sukces z góry.
+Wydanie skupione na jakości raportu końcowego oraz uproszczeniu odczytu temperatur podzespołów.
 
-- Nowy status **REST** (wymaga restartu): SFC i oczyszczanie bazy składników (DISM) wykrywają teraz oczekujący restart systemu i jasno o nim informują zamiast zgłaszać niejasny błąd. Dokładniejsze raportowanie objęło też Timer Resolution/HPET, CHKDSK, defragmentację, reset Windows Update, DNS i stare sterowniki drukarek (pokazuje liczbę usuniętych folderów).
-- Plan zasilania „Wysoka wydajność” jest teraz sam odnajdywany/odblokowywany, jeśli jest ukryty (częste na laptopach/OEM) — wcześniej mogło to kończyć się cichym niepowodzeniem.
-- Reset stosu IP jest pomijany, gdy wykryto statyczny adres IP — zapobiega utracie połączenia sieciowego. Konfiguracja DNS została przepisana na bardziej niezawodny mechanizm z osobną obsługą błędów dla każdego interfejsu.
-- Wykrywanie uprawnień administratora poprawione (`fltmc` zamiast `net session`) — działa teraz poprawnie nawet gdy usługa Server jest wyłączona.
-- Ponowne uruchamianie Eksploratora Windows wraca z normalnymi uprawnieniami zamiast dziedziczyć uprawnienia administratora ze skryptu; restart OneDrive po czyszczeniu cache ma teraz zapasową metodę przez Harmonogram zadań, jeśli standardowe uruchomienie się nie powiedzie.
-- Przejmowanie własności folderu `Windows.old` naprawione na niektórych językowych wersjach Windows.
-- Odczyt temperatur CPU/GPU: sterownik OpenHardwareMonitor (WinRing0) zastąpiony przez PawnIO, ponieważ WinRing0 bywał usuwany przez Windows Defender jako podatny sterownik.
-- Instalacja winget (gdy go brakuje) jest bardziej niezawodna — obsługuje zależności dla właściwej architektury (x64/x86/ARM64) i ma zapasową metodę przez oficjalny moduł Microsoft.WinGet.Client.
-- Mechanizm przywracania ustawień przy odinstalowaniu został gruntownie przebudowany — dokładnie liczy udane/nieudane/pominięte operacje i obejmuje więcej ustawień (BCD, TCP, DoH, plany zasilania, VSS, AppX), z zachowaniem kompatybilności ze stanem zapisanym w starszych wersjach.
+- **Raport HTML jako domyślny format**: każdy przebieg trybu Pełnego lub Szybkiego zapisuje teraz czytelny, stylizowany raport `.html` (karty, tabele) zamiast samego pliku tekstowego. Jeśli wygenerowanie HTML z jakiegoś powodu się nie powiedzie, skrypt automatycznie zapisuje awaryjną wersję `.txt` — tak jak dotychczas. Wykres historii ostatnich 20 sesji w konsoli odczytuje teraz oba formaty, więc starsze raporty `.txt` nadal liczą się do historii.
+- **Diagnostyka zasilania dołączona do raportu**: po zakończeniu wszystkich kroków i przywróceniu oryginalnych ustawień uśpienia/wygaszania ekranu skrypt generuje raport wydajności energetycznej Windows (`powercfg /energy`) i dołącza go na końcu raportu końcowego — dzięki temu odzwierciedla rzeczywisty stan systemu, a nie tymczasowe ustawienia używane podczas czyszczenia. Na laptopach dodatkowo dołączane są raport kondycji baterii (`powercfg /batteryreport`) oraz raport uśpienia (`powercfg /sleepstudy`).
+- **Odczyt temperatur CPU/GPU bez instalowania sterownika**: krok pomiaru temperatur korzysta teraz z biblioteki LibreHardwareMonitor działającej bez sterownika trybu jądra — eliminuje to ryzyko, które wcześniej dotyczyło PawnIO/WinRing0 (usuwanie przez Windows Defender jako „podatny sterownik”). Gdy odczyt z biblioteki się nie powiedzie, skrypt nadal ma zapasową metodę: strefę termiczną ACPI dla CPU i `nvidia-smi` dla GPU.
 
 ## Spis treści
 
-- [Co nowego w wersji 1.36](#co-nowego-w-wersji-136)
+- [Co nowego w wersji 1.37](#co-nowego-w-wersji-137)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -56,7 +50,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 - Utwardzanie bezpieczeństwa: reguły ASR, ochrona LSA, zabezpieczenie SMB, blokada autoodtwarzania i makr Office, przywrócenie UAC, audyt persystencji i diagnostyka zdrowia systemu
 - Debloat: usuwanie zbędnych aplikacji Windows, wyłączanie zbędnych funkcji, procesów w tle i programów startowych
 - Strojenie sieci: DNS, DNS over HTTPS, parametry TCP oraz reset proxy
-- Szczegółowy raport `.txt` po każdym przebiegu + wykres historii ostatnich 20 sesji w konsoli
+- Szczegółowy raport HTML (z awaryjnym trybem `.txt`) po każdym przebiegu, z dołączonym raportem wydajności energetycznej Windows (a na laptopach też raportem baterii i uśpienia) + wykres historii ostatnich 20 sesji w konsoli
 - Pływająca nakładka z paskiem postępu i licznikiem kroków
 - Blokada uśpienia komputera („keep-awake") na czas długich operacji
 - Samoinstalacja w Menu Start (aplikacja, skrót do raportów, skrót do odinstalowania)
@@ -93,9 +87,9 @@ W trybie **Niestandardowym** decydujesz osobno o:
 4. głębokim resecie Windows Update,
 5. defragmentacji / TRIM dysku C:,
 6. sprawdzaniu dysku C: (CHKDSK) — z pominięciem limitu „raz na 30 dni”,
-7. odczycie temperatur CPU/GPU (pobiera dodatkowe narzędzie zewnętrzne).
+7. odczycie temperatur CPU/GPU (pobiera dodatkowe narzędzie zewnętrzne, bez instalacji sterownika).
 
-Punkt przywracania systemu (krok 1) jest tworzony zawsze, niezależnie od tego, które kategorie zaznaczysz. Nowy blok utwardzania bezpieczeństwa (kroki 31–36) nie ma jeszcze osobnej kategorii — w trybie Niestandardowym jest zawsze pomijany.
+Punkt przywracania systemu (krok 1) jest tworzony zawsze, niezależnie od tego, które kategorie zaznaczysz. Blok utwardzania bezpieczeństwa i końcowych porządków (kroki 31–37) nie ma jeszcze osobnej kategorii — w trybie Niestandardowym jest zawsze pomijany.
 
 ## Co dokładnie robi tryb Pełny
 
@@ -139,7 +133,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 33. Optymalizacja GPU (planowanie sprzętowe, Game DVR), sieci i systemu plików NTFS
 34. Konfiguracja Czujnika pamięci (Storage Sense) i cyklicznego zadania konserwacji
 35. Audyt persystencji i bezpieczeństwa (tylko raportuje, niczego nie usuwa)
-36. Diagnostyka zdrowia systemu
+36. Diagnostyka zdrowia systemu (na laptopach dodatkowo raport kondycji baterii i raport uśpienia, dołączane do raportu końcowego)
 37. Zbędne programy startowe, cache ikon/miniatur/czcionek, naprawa Eksploratora Windows i baza WMI
 
 </details>
@@ -156,11 +150,12 @@ Dostępne z menu głównego (na końcu trybu Pełnego/Szybkiego/Niestandardowego
 
 ## Raporty i historia czyszczeń
 
-- Po każdym przebiegu w trybie Pełnym lub Szybkim zapisywany jest raport tekstowy:
-  `Dokumenty\CLEANER by MAG\Raport_<data>_<godzina>.txt`
+- Po każdym przebiegu w trybie Pełnym lub Szybkim zapisywany jest raport:
+  `Dokumenty\CLEANER by MAG\Raport_<data>_<godzina>.html` — czytelny, stylizowany raport HTML. Jeśli jego wygenerowanie się nie powiedzie, skrypt automatycznie zapisuje w zamian awaryjną wersję `Raport_<data>_<godzina>.txt`.
 - Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD` / `REST` — wymaga restartu). Jeśli krok 35 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu.
+- Na końcu raportu dołączany jest raport wydajności energetycznej Windows (`powercfg /energy`), generowany dopiero po zakończeniu działania skryptu i przywróceniu oryginalnych ustawień uśpienia/wygaszania ekranu, dzięki czemu odzwierciedla rzeczywisty stan systemu. Na laptopach dołączane są też raport kondycji baterii i raport uśpienia.
 - Skrót **„Raporty"** w Menu Start prowadzi bezpośrednio do tego folderu.
-- Na koniec działania skrypt pokazuje w konsoli wykres słupkowy (ASCII) z historii ostatnich 20 sesji — ile miejsca zwalniano i ile trwało czyszczenie.
+- Na koniec działania skrypt pokazuje w konsoli wykres słupkowy (ASCII) z historii ostatnich 20 sesji (na podstawie raportów `.html` i starszych `.txt`) — ile miejsca zwalniano i ile trwało czyszczenie.
 
 ## Automatyczna aktualizacja
 
@@ -184,6 +179,7 @@ Po odinstalowaniu usuwane są też pozostałe wpisy w Harmonogramie zadań i w r
 - Blok utwardzania bezpieczeństwa (kroki 31–32) zmienia też ustawienia sieciowe (SMB, LLMNR/NetBIOS/WPAD) i UAC — w rzadkich przypadkach (stare drukarki lub udziały sieciowe w lokalnej sieci) może to wymagać ręcznej korekty.
 - Przed pierwszą pełną optymalizacją tworzony jest **punkt przywracania systemu**, a stan kluczowych ustawień jest zapisywany do ewentualnego przywrócenia przy odinstalowaniu.
 - Tryb Pełny i Szybki **zamykają otwarte okna przeglądarki** oraz **trwale usuwają folder `Windows.old`**, jeśli istnieje — skrypt prosi o potwierdzenie przed rozpoczęciem.
+- Po zakończeniu wszystkich kroków w trybie Pełnym/Szybkim skrypt automatycznie uruchamia krótką (ok. 10 sekund) diagnostykę wydajności energetycznej Windows (`powercfg /energy`) na potrzeby raportu końcowego — to nieszkodliwy, wyłącznie odczytowy pomiar.
 - Skrypt nie jest podpisany cyfrowo — Windows SmartScreen/Defender może wyświetlić ostrzeżenie przy pierwszym uruchomieniu. Pobieraj go wyłącznie z oficjalnego repozytorium.
 - Zamknij ważne, niezapisane prace przed uruchomieniem — zwłaszcza przed skanem KVRT (patrz wyżej) i przed ewentualnym restartem na końcu przebiegu.
 
@@ -198,4 +194,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.36** (23/09/2026)
+Autor: **MAG** | Wersja: **1.37** (27/09/2026)
