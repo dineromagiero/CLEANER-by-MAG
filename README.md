@@ -1,6 +1,6 @@
 # CLEANER by MAG
 
-![Wersja](https://img.shields.io/badge/wersja-1.37-blue)
+![Wersja](https://img.shields.io/badge/wersja-1.38-blue)
 ![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
 ![Technologia](https://img.shields.io/badge/skrypt-Batch%20%2B%20PowerShell-lightgrey)
 
@@ -8,17 +8,18 @@
 
 Skrypt działa w konsoli z własnym motywem kolorystycznym (turkus/biel/żółty) oraz pływającą nakładką pokazującą postęp poza oknem konsoli.
 
-## Co nowego w wersji 1.37
+## Co nowego w wersji 1.38
 
-Wydanie skupione na jakości raportu końcowego oraz uproszczeniu odczytu temperatur podzespołów.
+Drobne wydanie poprawiające wiarygodność paska postępu podczas aktualizacji programów przez winget.
 
-- **Raport HTML jako domyślny format**: każdy przebieg trybu Pełnego lub Szybkiego zapisuje teraz czytelny, stylizowany raport `.html` (karty, tabele) zamiast samego pliku tekstowego. Jeśli wygenerowanie HTML z jakiegoś powodu się nie powiedzie, skrypt automatycznie zapisuje awaryjną wersję `.txt` — tak jak dotychczas. Wykres historii ostatnich 20 sesji w konsoli odczytuje teraz oba formaty, więc starsze raporty `.txt` nadal liczą się do historii.
-- **Diagnostyka zasilania dołączona do raportu**: po zakończeniu wszystkich kroków i przywróceniu oryginalnych ustawień uśpienia/wygaszania ekranu skrypt generuje raport wydajności energetycznej Windows (`powercfg /energy`) i dołącza go na końcu raportu końcowego — dzięki temu odzwierciedla rzeczywisty stan systemu, a nie tymczasowe ustawienia używane podczas czyszczenia. Na laptopach dodatkowo dołączane są raport kondycji baterii (`powercfg /batteryreport`) oraz raport uśpienia (`powercfg /sleepstudy`).
-- **Odczyt temperatur CPU/GPU bez instalowania sterownika**: krok pomiaru temperatur korzysta teraz z biblioteki LibreHardwareMonitor działającej bez sterownika trybu jądra — eliminuje to ryzyko, które wcześniej dotyczyło PawnIO/WinRing0 (usuwanie przez Windows Defender jako „podatny sterownik”). Gdy odczyt z biblioteki się nie powiedzie, skrypt nadal ma zapasową metodę: strefę termiczną ACPI dla CPU i `nvidia-smi` dla GPU.
+- **Realny postęp pobierania dzięki Delivery Optimization**: winget pobiera instalatory przez usługę Delivery Optimization, a plik w `%TEMP%\WinGet` bywa wstępnie alokowany lub ma opóźniony rozmiar, przez co pasek potrafił stać w miejscu albo pokazywać zero. Skrypt odczytuje teraz całkowity rozmiar i ilość pobranych bajtów bezpośrednio z zadania Delivery Optimization, więc pasek pokazuje prawdziwy procent od pierwszej chwili. Gdy usługa jest niedostępna, skrypt automatycznie wraca do śledzenia rozmiaru pliku.
+- **Pewniejsze wykrywanie pobieranego pliku**: monitor rozpoznaje plik instalatora także po czasie jego utworzenia, a rozmiar odczytuje bezpośrednio z uchwytu pliku, co eliminuje nieaktualne odczyty w trakcie zapisu.
+- **Jeden pasek postępu zamiast dwóch**: pasek pobierania winget jest pokazywany wyłącznie w oknie konsoli, a pływająca nakładka nie powiela już tej samej informacji.
+- **Koniec z „zamrożonym" 0%**: dopóki nie ma realnego procentu, pasek pokazuje animację nieokreśloną zamiast stać na początkowym 0%.
 
 ## Spis treści
 
-- [Co nowego w wersji 1.37](#co-nowego-w-wersji-137)
+- [Co nowego w wersji 1.38](#co-nowego-w-wersji-138)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -143,7 +144,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym w konsoli — część z nich 
 Dostępne z menu głównego (na końcu trybu Pełnego/Szybkiego/Niestandardowego) lub bezpośrednio przez opcję **[D] Dodatkowe kroki**:
 
 - **Malwarebytes** — pobiera instalator, instaluje program, uruchamia go do ręcznego skanu, a po zamknięciu okna automatycznie odinstalowuje program (jeśli nie był już wcześniej zainstalowany — wtedy skrypt po prostu go otwiera).
-- **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie aktualizuje po kolei wszystkie zainstalowane programy, z podglądem postępu pobierania na żywo.
+- **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie aktualizuje po kolei wszystkie zainstalowane programy, z paskiem postępu pobierania na żywo w konsoli (realny procent odczytywany z usługi Delivery Optimization, a gdy jest niedostępna — z rozmiaru pobieranego pliku).
 - **KVRT (Kaspersky Virus Removal Tool)** — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi (folder `KVRT_Data` jest sprzątany, chyba że na komputerze wykryto zainstalowany pełny produkt Kaspersky — wtedy zostaje nietknięty).
 
 > ⚠️ **Uwaga:** KVRT może w trakcie skanowania wykryć poważne zagrożenie i **zrestartować komputer bez pytania o zgodę**. Zapisz pracę przed uruchomieniem tej opcji — skrypt blokuje nieoczekiwany restart tylko na czas własnego działania.
@@ -194,4 +195,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **1.37** (27/09/2026)
+Autor: **MAG** | Wersja: **1.38** (28/10/2026)
