@@ -1,12 +1,24 @@
-# <img width="40" height="40" alt="CbM_Logo" src="https://github.com/user-attachments/assets/a047f7d7-4f88-4f7f-878b-cdf53fc4ca23" /> CLEANER by MAG
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0aa49271-1742-43af-a5e3-be9e190a355a" alt="Logo CLEANER by MAG" width="160">
+</p>
 
-![Wersja](https://img.shields.io/badge/wersja-2.0-blue)
-![Platforma](https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6)
-![Technologia](https://img.shields.io/badge/aplikacja-Python%20%2B%20Qt%20%2B%20PowerShell-lightgrey)
+<h1 align="center">CLEANER by MAG</h1>
+
+<p align="center">
+  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.0-blue">
+  <img alt="Platforma" src="https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6">
+  <img alt="Technologia" src="https://img.shields.io/badge/aplikacja-Python%20%2B%20Qt%20%2B%20PowerShell-lightgrey">
+</p>
 
 **Aplikacja do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z przejrzystym oknem zamiast konsoli, samoaktualizacją, raportami otwieranymi w programie i opcjonalnymi skanerami antywirusowymi. Dostarczana jako jeden plik `.exe`.
 
 Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, więc kroki i ich kolejność pozostają takie, jakie znasz. Zmienia się to, jak program wygląda i jak się go obsługuje.
+
+<p align="center">
+  <img alt="Ekran startowy CLEANER by MAG 2.0 z wyborem tryb" src="https://github.com/user-attachments/assets/72fb0c09-efa7-4d5c-932c-c8ffb6424af3" width="760" />
+  <br>
+  <em>Ekran startowy: wybór trybu czyszczenia (Windows 11).</em>
+</p>
 
 ## Co nowego w wersji 2.0
 
