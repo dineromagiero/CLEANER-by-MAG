@@ -10,7 +10,7 @@
   <img alt="Technologia" src="https://img.shields.io/badge/aplikacja-Python%20%2B%20Qt%20%2B%20PowerShell-lightgrey">
 </p>
 
-**Aplikacja do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z przejrzystym oknem zamiast konsoli, samoaktualizacją, raportami otwieranymi w programie i opcjonalnymi skanerami antywirusowymi. Dostarczana jako jeden plik `.exe`.
+**Aplikacja do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z przejrzystym oknem zamiast konsoli, samoaktualizacją, raportami i historią podsumowań otwieranymi w programie oraz opcjonalnymi skanerami antywirusowymi. Dostarczana jako jeden plik `.exe`.
 
 Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, więc kroki i ich kolejność pozostają takie, jakie znasz. Zmienia się to, jak program wygląda i jak się go obsługuje.
 
@@ -24,16 +24,17 @@ Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, wię
 
 Duży update: CLEANER by MAG przestaje być skryptem `.bat` w oknie konsoli i staje się pełnoprawną aplikacją z własnym oknem.
 
-- **Nowy interfejs graficzny**: ciemne okno z paskiem bocznym (wybór trybu, Opcje dodatkowe, Postęp, Raporty, Odinstaluj, O programie), pierścieniem postępu, listą wszystkich etapów i licznikiem „Krok k z N”.
+- **Nowy interfejs graficzny**: ciemne okno z paskiem bocznym (wybór trybu, Opcje dodatkowe, Postęp, Raporty, Historia, Odinstaluj, O programie), pierścieniem postępu, listą wszystkich etapów i licznikiem „Krok k z N”.
 - **Jeden plik `.exe`**: silnik, skrypty pomocnicze i grafiki są w środku — nic nie trzeba rozpakowywać ani pobierać osobno.
-- **Uwagi i podpowiedzi**: gdy coś wymaga uwagi, dostajesz opis problemu i wskazówkę, co zrobić, zamiast surowej linii z dziennika. Lista pozycji z audytu bezpieczeństwa otwiera się w oknie programu i można ją skopiować.
+- **Uwagi i podpowiedzi**: gdy coś wymaga uwagi, dostajesz opis problemu i wskazówkę, co zrobić, zamiast surowej linii z dziennika. Lista pozycji z audytu bezpieczeństwa (oraz wykluczeń Windows Defender) otwiera się w oknie programu i można ją skopiować.
+- **Historia podsumowań**: po każdym zakończonym przebiegu (Pełny, Szybki, Własny, Opcje dodatkowe) program zapisuje ekran wyniku — tytuł, czas, liczniki, listę operacji, uwagi i temperatury. Z menu „Historia” otworzysz każde takie podsumowanie ponownie, dokładnie w takiej postaci, jak zaraz po przebiegu.
 - **Raporty i dziennik w programie**: raport HTML, raport TXT i plik diagnostyczny otwierają się w oknie aplikacji, bez przeglądarki i Notatnika.
 - **Opcje dodatkowe na osobnej stronie**: Malwarebytes, KVRT i aktualizację programów (winget) uruchamiasz osobno, w dowolnej chwili, jednym kliknięciem.
 - **Karty etapów skanów i kafelki programów**: widać, który skan lub program jest w kolejce, w trakcie, gotowy, pominięty albo zakończony błędem — wraz z powodem pominięcia.
 - **Samoaktualizacja**: program sam sprawdza GitHub Releases, pobiera nowy `.exe`, podmienia się i uruchamia ponownie.
 - **Szybszy start czyszczenia**: silnik rozgrzewa się już przy starcie aplikacji i wykonuje przygotowania niezależne od trybu.
 - **Odinstalowanie z postępem na żywo** i limitami czasu dla operacji, które wcześniej potrafiły się zawiesić.
-- **Wygodniejsze zamknięcie i restart**: przycisk restartu na ekranie podsumowania oraz pytanie przy zamykaniu aplikacji.
+- **Wygodniejsze zamknięcie i restart**: przycisk restartu na ekranie podsumowania oraz pytanie przy zamykaniu aplikacji (z opcją „Zamknij i uruchom ponownie”).
 
 Pełna lista zmian jest w pliku `CHANGELOG`.
 
@@ -65,6 +66,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 - **37 kroków** czyszcząco-naprawczo-optymalizacyjnych i zabezpieczających w jednym przebiegu (pełna lista niżej)
 - Graficzny interfejs z postępem krok po kroku, pierścieniem postępu i kartami uwag
 - 3 tryby czyszczenia (Pełny / Szybki / Własny) oraz osobna strona Opcji dodatkowych
+- Historia podsumowań przebiegów, dostępna w programie (ostatnie 100 wpisów)
 - Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases, z samopodmianą pliku `.exe`
 - Tworzenie punktu przywracania systemu przed zmianami
 - Wbudowane skanowanie Windows Defender i AdwCleaner
@@ -73,9 +75,9 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 - Utwardzanie bezpieczeństwa: reguły ASR, ochrona LSA, zabezpieczenie SMB, blokada autoodtwarzania i makr Office, przywrócenie UAC, audyt persystencji i diagnostyka zdrowia systemu
 - Debloat: usuwanie zbędnych aplikacji Windows, wyłączanie zbędnych funkcji, procesów w tle i programów startowych
 - Strojenie sieci: DNS, DNS over HTTPS, parametry TCP oraz reset proxy
-- Czytelne podpowiedzi przy ponad 60 typowych problemach (brak internetu, wyłączona ochrona systemu, blokada przez antywirus, błędy SFC/DISM i wiele innych)
+- Czytelne podpowiedzi przy ponad 50 typowych problemach (brak internetu, wyłączona ochrona systemu, blokada przez antywirus, błędy SFC/DISM i wiele innych)
 - Szczegółowy raport HTML (z awaryjnym trybem `.txt`) po każdym przebiegu, otwierany w programie, z dołączonym raportem wydajności energetycznej Windows (a na laptopach też raportem baterii i uśpienia)
-- Odczyt temperatur procesora i karty graficznej z oceną kolorystyczną na ekranie wyniku
+- Odczyt temperatur procesora i karty graficznej z oceną kolorystyczną na ekranie wyniku (do 74 °C zielony, 75–89 °C żółty, od 90 °C czerwony, brak odczytu — szary)
 - Pływająca nakładka z licznikiem kroków, widoczna, gdy okno programu jest zminimalizowane lub nie ma fokusu
 - Blokada uśpienia komputera („keep-awake") na czas długich operacji
 - Samoinstalacja w Menu Start (aplikacja, skrót do raportów, skrót do odinstalowania)
@@ -93,14 +95,14 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 1. Pobierz najnowszy plik `.exe` z zakładki [Releases](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest) i zapisz go w miejscu, w którym ma zostać na stałe.
 2. Uruchom go — jeśli program nie ma uprawnień administratora, pokaże przycisk **Uruchom jako administrator** i poprosi o potwierdzenie w oknie UAC (albo kliknij plik prawym przyciskiem myszy → **Uruchom jako administrator**).
-3. Przy pierwszym uruchomieniu zobaczysz krótkie okno powitalne z opisem nowej odsłony (pokazuje się tylko raz). Program tworzy wpisy w Menu Start (`CLEANER by MAG`): skrót do aplikacji, do folderu raportów oraz do odinstalowania.
+3. Przy pierwszym uruchomieniu zobaczysz krótkie okno powitalne z opisem nowej odsłony (pokazuje się tylko raz; później znajdziesz je w „O programie” → „Co nowego”). Program tworzy wpisy w Menu Start (`CLEANER by MAG`): skrót do aplikacji, do folderu raportów oraz do odinstalowania.
 4. Kolejne uruchomienia wykonuj ze skrótu w Menu Start — program sam sprawdzi, czy jest aktualny. Skróty wskazują na plik `.exe`, więc nie przenoś go ani nie usuwaj po instalacji.
 
 ## Jak wygląda praca z programem
 
 1. **Wybierz tryb** na ekranie startowym (karty: Pełny, Szybki, Własny, Opcje dodatkowe). Przed startem program przypomina, że zostaną zamknięte przeglądarki, a folder `Windows.old` (jeśli istnieje) zostanie trwale usunięty.
 2. **Obserwuj postęp** na stronie „Postęp": pierścień pokazuje ogólny postęp, lista pokazuje wszystkie etapy i ich stany, a licznik — „Krok k z N". Możesz przerwać operację przyciskiem „Przerwij", ale przerwanie w trakcie pracy może zostawić część ustawień w stanie pośrednim (np. usługi Windows Update), więc zalecane jest dokończenie.
-3. **Przeczytaj wynik**: ekran „Wszystko gotowe" lub „Zakończono z uwagami" pokazuje wykonane i pominięte operacje, elementy wymagające restartu, błędy, czas oraz temperatury. Zakładka „Uwagi i podpowiedzi" tłumaczy, co oznacza każdy problem i co z nim zrobić.
+3. **Przeczytaj wynik**: ekran „Wszystko gotowe" lub „Zakończono z uwagami" pokazuje wykonane i pominięte operacje, elementy wymagające restartu, błędy, czas oraz temperatury. Zakładka „Uwagi i podpowiedzi" tłumaczy, co oznacza każdy problem i co z nim zrobić. Każde podsumowanie trafia też do strony „Historia".
 4. **Zrestartuj komputer** przyciskiem na ekranie podsumowania, jeśli program to zaleca (czyszczenie zmieniło system albo Windows czeka na restart).
 
 Podczas operacji pozostałe pozycje menu są zablokowane, a pasek boczny pokazuje, że operacja trwa. Przycisk „Dziennik" i plik diagnostyczny pozwalają zajrzeć w szczegóły techniczne bez opuszczania programu.
@@ -110,20 +112,20 @@ Podczas operacji pozostałe pozycje menu są zablokowane, a pasek boczny pokazuj
 | Tryb | Opis |
 |---|---|
 | **Pełny** (zalecany) | wszystkie 37 kroków, plus odczyt temperatur na końcu |
-| **Szybki** (na co dzień) | pomija skany antywirusowe, naprawę systemu (DISM/SFC), czyszczenie starych sterowników, naprawę Windows Update, optymalizację dysku C: i odczyt temperatur |
+| **Szybki** (na co dzień) | pomija skany antywirusowe, naprawę systemu (DISM/SFC), czyszczenie starych sterowników, naprawę Windows Update, optymalizację dysku C: i odczyt temperatur; krok prywatności i reklam (bez wstępnej kontroli plików systemowych) wykonuje |
 | **Własny** (ty decydujesz) | wykonuje wyłącznie zaznaczone kategorie (lista niżej) — na stronie postępu widzisz tylko je |
 | **Opcje dodatkowe** | osobna strona z Malwarebytes, KVRT i aktualizacją programów, uruchamiana niezależnie od czyszczenia |
 
 W trybie **Własnym** zaznaczasz przełącznikami (są przyciski „Zaznacz wszystko" i „Wyczyść"):
 1. skan antywirusowy (Windows Defender + AdwCleaner),
-2. naprawę systemu (SFC + DISM — najdłuższy etap),
+2. naprawę systemu (wstępna kontrola plików systemowych + DISM + SFC + porządki w bazie składników — najdłuższy etap),
 3. czyszczenie starych sterowników drukarek i urządzeń,
 4. naprawę Windows Update,
 5. optymalizację dysku C: (defragmentacja lub TRIM, zależnie od typu dysku),
 6. sprawdzenie dysku C: (CHKDSK) — z pominięciem limitu „raz na 30 dni",
 7. odczyt temperatur procesora i karty graficznej (pobiera małe narzędzie zewnętrzne, bez instalacji sterownika).
 
-Punkt przywracania systemu (krok 1) jest tworzony, gdy wybierzesz cokolwiek poza samym odczytem temperatur — sam odczyt niczego nie zmienia, więc punkt jest wtedy zbędny i pomijany. Blok utwardzania bezpieczeństwa i końcowych porządków (kroki 31–37) nie ma jeszcze osobnej kategorii — w trybie Własnym jest zawsze pomijany.
+Punkt przywracania systemu (krok 1) jest tworzony, gdy wybierzesz cokolwiek poza samym odczytem temperatur — sam odczyt niczego nie zmienia, więc punkt jest wtedy zbędny i pomijany. Jeśli nie zaznaczysz żadnej kategorii, program od razu przechodzi do dodatkowych opcji. Blok utwardzania bezpieczeństwa i końcowych porządków (kroki 31–37) nie ma jeszcze osobnej kategorii — w trybie Własnym jest zawsze pomijany.
 
 ## Co dokładnie robi tryb Pełny
 
@@ -176,7 +178,7 @@ Po kroku 37 tryb Pełny wykonuje jeszcze odczyt temperatur procesora i karty gra
 
 ## Opcje dodatkowe
 
-Dostępne na osobnej stronie „Opcje dodatkowe" (w dowolnej chwili, bez czyszczenia systemu) oraz jako propozycja po zakończeniu czyszczenia — wynik widzisz wtedy od razu, a pytanie o przejście dalej pojawia się dopiero na ekranie podsumowania. Kliknięcie „Uruchom" przy wybranej opcji startuje właśnie tę jedną opcję, bez dalszych pytań.
+Dostępne na osobnej stronie „Opcje dodatkowe" (w dowolnej chwili, bez czyszczenia systemu) oraz jako propozycja po zakończeniu czyszczenia — wynik widzisz wtedy od razu, a pytanie o przejście dalej pojawia się dopiero na ekranie podsumowania. Kliknięcie „Uruchom" przy wybranej opcji startuje właśnie tę jedną opcję, bez dalszych pytań. Skany Malwarebytes i KVRT są pokazywane jako lista kart etapów (Malwarebytes: 4 etapy, KVRT: 3 etapy), a pierścień „Etapy skanu" i nakładka pokazują numer bieżącego etapu.
 
 - **Malwarebytes** (obsługa ręczna) — pobiera instalator, instaluje program i otwiera go do ręcznego skanu, a po zamknięciu okna automatycznie go odinstalowuje. Jeśli Malwarebytes był już zainstalowany, program po prostu go otwiera (niczego nie pobiera ani nie usuwa). Gdy proces po zamknięciu okna nadal wisi w tle, możesz użyć przycisku **„Wymuś zamknięcie"** (program próbuje kolejno kilku metod, w tym zamknięcia przez ikonę w zasobniku) albo skorzystać z instrukcji „Jak zamknąć ręcznie".
 - **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie aktualizuje po kolei wszystkie zainstalowane programy. Każdy program ma własny kafelek (w kolejce → pobieranie → instalowanie → gotowe) z wersją obecną i dostępną oraz paskiem pobierania, w którym procent jest odczytywany z usługi Delivery Optimization (a gdy jest niedostępna — z rozmiaru pobieranego pliku). Jeśli program nie zostanie zaktualizowany, kafelek wyjaśnia dlaczego (np. program jest uruchomiony, brak pasującej aktualizacji, wymagana ręczna reinstalacja albo błąd pobierania).
@@ -189,6 +191,7 @@ Dostępne na osobnej stronie „Opcje dodatkowe" (w dowolnej chwili, bez czyszcz
 - Po każdym przebiegu zapisywany jest raport:
   `Dokumenty\CLEANER by MAG\Raport_<data>_<godzina>.html` — czytelny, stylizowany raport HTML. Jeśli jego wygenerowanie się nie powiedzie, program automatycznie zapisuje w zamian awaryjną wersję `Raport_<data>_<godzina>.txt`.
 - Strona **„Raporty"** w programie pokazuje listę wszystkich zapisanych raportów (data i godzina, rozmiar) z przyciskami „Otwórz", „Wersja TXT" i „Otwórz folder". Raport otwiera się w oknie aplikacji; z podglądu można go nadal otworzyć w przeglądarce.
+- Strona **„Historia"** przechowuje podsumowania zakończonych przebiegów (Pełny, Szybki, Własny i Opcje dodatkowe). Przycisk „Pokaż" otwiera wybrane podsumowanie w tym samym widoku co zaraz po przebiegu (tylko do odczytu), a pojedyncze wpisy lub całą historię można usunąć („Wyczyść historię"). Program przechowuje ostatnie 100 wpisów w pliku `Historia_podsumowan.json` w folderze raportów (`Dokumenty\CLEANER by MAG`). Usunięcie historii nie kasuje raportów z folderu Dokumenty.
 - Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD` / `REST` — wymaga restartu). Jeśli krok 35 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu, a w programie otwierasz ją przyciskiem „Pokaż listę".
 - Na końcu raportu dołączany jest raport wydajności energetycznej Windows (`powercfg /energy`), generowany dopiero po zakończeniu pracy i przywróceniu oryginalnych ustawień uśpienia/wygaszania ekranu, dzięki czemu odzwierciedla rzeczywisty stan systemu. Na laptopach dołączane są też raport kondycji baterii i raport uśpienia.
 - Skrót **„Raporty"** w Menu Start prowadzi bezpośrednio do folderu z raportami.
@@ -198,16 +201,16 @@ Dostępne na osobnej stronie „Opcje dodatkowe" (w dowolnej chwili, bez czyszcz
 ## Automatyczna aktualizacja
 
 - Program sprawdza w tle, czy w repozytorium [`dineromagiero/CLEANER-by-MAG`](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest) jest nowsze wydanie. Wskaźnik w lewym dolnym rogu paska bocznego pokazuje stan: łączenie, brak połączenia, najnowsza wersja albo dostępna aktualizacja.
-- Gdy jest nowsza wersja, program pyta, czy ją zainstalować. Przy „Tak" pobiera nowy plik `.exe` z paskiem postępu, zamyka się, podmienia plik i uruchamia nową wersję. Wybierając „Nie", możesz zaktualizować później, klikając wskaźnik aktualizacji.
+- Gdy jest nowsza wersja, program pyta, czy ją zainstalować. Przy „Tak" pobiera nowy plik `.exe` (obok bieżącego, z paskiem postępu), zamyka się, podmienia plik za pomocą ukrytego pomocnika i uruchamia nową wersję. Wybierając „Nie", możesz zaktualizować później, klikając wskaźnik aktualizacji.
 - Jeśli samodzielna podmiana nie jest możliwa (np. wydanie zawiera tylko archiwum `.zip`), plik zostaje zapisany w folderze „Pobrane" albo otwierana jest strona wydania.
-- Pobieranie jest dozwolone wyłącznie z domen `github.com` i `githubusercontent.com`.
+- Pobieranie jest dozwolone wyłącznie z domen `github.com` i `githubusercontent.com`; przekierowania poza GitHub są odrzucane.
 - Brak połączenia z internetem nie blokuje działania — sprawdzanie aktualizacji jest po prostu pomijane, a wskaźnik pozwala spróbować ponownie.
 
 ## Odinstalowanie
 
 Użyj skrótu **„Odinstaluj CLEANER by MAG"** w Menu Start (wymaga uprawnień administratora) albo uruchom program z parametrem `--uninstall`. Otworzy się strona odinstalowania, a program zapyta o:
 
-- usunięcie zapisanych raportów,
+- usunięcie zapisanych raportów (razem z nimi znika też historia podsumowań),
 - przywrócenie oryginalnych ustawień systemowych sprzed instalacji (DNS, usługi, rejestr, HPET itd.) na podstawie stanu zapisanego przy pierwszym pełnym uruchomieniu — zaplanowane zadania wracają do swojego dokładnego stanu sprzed zmian (Włączone/Wyłączone), a nie są po prostu masowo włączane.
 
 Przywracanie pokazuje postęp na żywo („Etap k z 17") i zapisuje dziennik do pliku `cleaner_mag_revert_log.txt` w folderze TEMP. Każdy etap ma limit czasu, więc przywracanie nie zawiesi się na pojedynczej operacji (np. funkcjach opcjonalnych Windows); pozycje, których nie udało się przywrócić w limicie, trafiają na listę z podpowiedzią, jak zrobić to ręcznie.
