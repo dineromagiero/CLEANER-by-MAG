@@ -15,8 +15,8 @@
 Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, więc kroki i ich kolejność pozostają takie, jakie znasz. Zmienia się to, jak program wygląda i jak się go obsługuje.
 
 <p align="center">
-  <img alt="Ekran startowy CLEANER by MAG 2.0 z wyborem tryb" src="https://github.com/user-attachments/assets/b98622ae-bd19-49f0-83b4-08c3ebceb9ba" width="760" />
-  <br>
+  <img alt="Ekran startowy CLEANER by MAG 2.0 z wyborem tryb" src="https://github.com/user-attachments/assets/7eeade10-8ea9-458d-b03c-157f8f90a780" width="760" />
+<br>
   <em>Ekran startowy: wybór trybu czyszczenia (Windows 10).</em>
 </p>
 
