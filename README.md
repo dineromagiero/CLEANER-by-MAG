@@ -5,41 +5,52 @@
 <h1 align="center">CLEANER by MAG</h1>
 
 <p align="center">
-  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1-blue">
+  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1.1-blue">
   <img alt="Platforma" src="https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6">
   <img alt="Technologia" src="https://img.shields.io/badge/aplikacja-Python%20%2B%20Qt%20%2B%20PowerShell-lightgrey">
 </p>
 
 **Aplikacja do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z przejrzystym oknem zamiast konsoli, temperaturami na żywo, samoaktualizacją, raportami i historią podsumowań otwieranymi w programie, zgłaszaniem problemów prosto z aplikacji oraz opcjonalnymi skanerami antywirusowymi. Dostarczana jako jeden plik `.exe`.
 
-Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x i 2.0, więc kroki i ich kolejność pozostają takie, jakie znasz.
+Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, 2.0 i 2.1, więc kroki i ich kolejność pozostają takie, jakie znasz.
 
 <p align="center">
-  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/94597207-55b4-4f09-9aaf-082e537ae2f7" width="760" />
+  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/958a0775-1462-4555-97b3-8d04f23dc5c2" width="760" />
 <br>
   <em>Ekran startowy: wybór trybu czyszczenia (Windows 10).</em>
 </p>
 
-<!-- Tu można wstawić zrzut ekranu podsumowania z kartą „Temperatury” i dymkiem ze szczegółami (wersja 2.1). -->
+## Co nowego w wersji 2.1.1
 
-## Co nowego w wersji 2.1
+Wersja 2.1.1 to wydanie poprawkowe: silnik czyszczenia, kroki i ich kolejność zostają bez zmian. Zmiany dotyczą **historii podsumowań** oraz **aktualizacji programów (winget)**.
 
-Silnik czyszczenia, kroki i ich kolejność zostają takie jak w 2.0. Zmiany dotyczą przede wszystkim **temperatur**, **uwag przy krokach**, **zgłaszania problemów**, strony **„Przywracanie”** (dawniej „Odinstaluj”) oraz tego, **gdzie program się instaluje** i na co wskazują skróty w Menu Start.
+- **Importuj — na stałe w historii**: podsumowania zaimportowane na stronie „Historia” (z dziennika, paczki zgłoszenia `.zip` lub pliku `podsumowanie.json`, także z kilku plików naraz) zostają na liście na stałe. Wcześniej znikały po przejściu do innego menu. Zaimportowane wpisy mają chłodniejszy odcień i ikonę „i”, żeby było widać, że pochodzą z importu. Wpisy, które już są w historii, nie są dublowane.
+- **Historia już nie znika**: gdy plik historii jest chwilowo zajęty (np. przez antywirus albo OneDrive), lista nie wygląda już na pustą i nic nie jest nadpisywane. Do kopii `.bad` trafia tylko plik z naprawdę uszkodzoną zawartością, a poprawne wpisy z takich kopii wracają do historii przy starcie programu.
+- **„Odtwórz z dziennika”**: nowy przycisk na stronie „Historia” dopisuje do listy podsumowania zapisane w dzienniku, których w niej brakuje. Istniejących wpisów nie zmienia i można go klikać wielokrotnie.
+- **„Wszystkie programy są aktualne”**: gdy aktualizacja programów w „Opcjach dodatkowych” nie znajdzie nic do zrobienia, w podsumowaniu zobaczysz pozycję „Aktualizacja programów: wszystkie aktualne” i uwagę z wyjaśnieniem — zamiast pustej listy.
+- **Programy przenośne aktualizują się**: programy przenośne zmienione poza wingetem (np. yt-dlp, FFmpeg) nie są już pomijane. Program ponawia próbę raz w trybie wymuszonym, a instalator nadal jest weryfikowany. Naprawiono też fałszywy komunikat o problemie z internetem, który pojawiał się przy udanej weryfikacji instalatora.
+- **Spójne nazewnictwo**: „Plik diagnostyczny” nazywa się teraz po prostu **„Dziennik”** (w „O programie”, w oknie „Zgłoś problem” i przy imporcie historii).
+- **Animowane strzałki** „Zobacz »” na przycisku „Co nowego” w „O programie”.
+
+<details>
+<summary>Co wprowadziła wersja 2.1 (kliknij, aby rozwinąć)</summary>
+
+Zmiany dotyczyły przede wszystkim **temperatur**, **uwag przy krokach**, **zgłaszania problemów**, strony **„Przywracanie”** (dawniej „Odinstaluj”) oraz tego, **gdzie program się instaluje** i na co wskazują skróty w Menu Start.
 
 - **Temperatury na żywo w pasku bocznym**: widżet pokazuje aktualną temperaturę procesora i karty graficznej (odświeżanie co 2 s), także w trakcie czyszczenia. Kolor odczytu zmienia się wraz z progiem, a czerwony delikatnie pulsuje. Kliknięcie widżetu wstrzymuje i wznawia odczyt, a podpowiedź pokazuje źródło wartości albo powód, dla którego czegoś brakuje.
-- **Minimalistyczna karta „Temperatury” w podsumowaniu**: jedna cienka linia (**Temperatury  CPU X  GPU X**) ze średnią z całego przebiegu, każda wartość w kolorze progu. Mała ikona „i” (taka jak „Co nowego”) podpowiada, że po najechaniu na kartę otwiera się duży dymek ze szczegółami: najniższa i najwyższa temperatura z godziną, średnia z liczbą odczytów, okres pomiarów i legenda kolorów.
+- **Minimalistyczna karta „Temperatury” w podsumowaniu**: jedna cienka linia (**Temperatury  CPU X  GPU X**) ze średnią z całego przebiegu, każda wartość w kolorze progu. Po najechaniu na kartę otwiera się duży dymek ze szczegółami.
 - **Statystyki temperatur z całego przebiegu**: zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Opcjach dodatkowych”. Trafiają do historii podsumowań i do dziennika diagnostycznego.
-- **Niezawodniejszy odczyt temperatur**: źródła są ułożone warstwowo, a każdy odczyt jest sprawdzany pod kątem sensowności. Krok „Temperatury” w silniku bierze wartości z widżetu, więc nie pobiera i nie uruchamia czujników od nowa.
-- **Uwagi przy krokach**: krok z uwagą ma ikonę dzwonka (w kolorze ważności), a po najechaniu pokazuje dymek z opisem i wskazówką. W podsumowaniu najechanie na operację przewija panel „Uwagi i podpowiedzi” do odpowiedniej karty i ją podświetla.
+- **Niezawodniejszy odczyt temperatur**: źródła są ułożone warstwowo, a każdy odczyt jest sprawdzany pod kątem sensowności. Krok „Temperatury” w silniku bierze wartości z widżetu.
+- **Uwagi przy krokach**: krok z uwagą ma ikonę dzwonka (w kolorze ważności), a po najechaniu pokazuje dymek z opisem i wskazówką. W podsumowaniu najechanie na operację przewija panel „Uwagi i podpowiedzi” do odpowiedniej karty.
 - **Zgłaszanie problemów**: przycisk **„Zgłoś problem”** w pasku bocznym składa paczkę ZIP z opisem i wybranymi plikami diagnostycznymi, którą wysyłasz autorowi jednym kliknięciem — bez zakładania konta i bez GitHuba.
-- **Przywracanie ustawień z wyborem elementów**: zaznaczasz, które z **17 elementów** mają wrócić do stanu sprzed optymalizacji, z postępem na żywo i podsumowaniem takim jak po czyszczeniu. Raporty i historię usuwasz osobnym przyciskiem, a sam program osobno.
-- **Ikona „Co nowego”**: po aktualizacji obok numeru wersji pojawia się ikona nowości, która znika po otwarciu okna „Co nowego” (zmiany wersja po wersji, od najnowszej).
+- **Przywracanie ustawień z wyborem elementów**: zaznaczasz, które z **17 elementów** mają wrócić do stanu sprzed optymalizacji, z postępem na żywo i podsumowaniem takim jak po czyszczeniu.
+- **Ikona „Co nowego”**: po aktualizacji obok numeru wersji pojawia się ikona nowości, która znika po otwarciu okna „Co nowego”.
 - **Stała kopia programu i stały skrót**: program kopiuje się do `C:\Program Files\CLEANER by MAG\CLEANER by MAG.exe` i na ten plik wskazuje skrót w Menu Start. Kolejne aktualizacje podmieniają tylko kopię, więc skrót (także przypięty do Start) nie zmienia celu.
 - **Prostszy tryb Własny**: kategorii „Temperatury podzespołów” nie trzeba już wybierać — temperatury pokazuje widżet.
 
-> **Uwaga przy aktualizacji z 2.0:** przy pierwszym uruchomieniu 2.1 skrót zostanie raz przepisany na nową ścieżkę. Jeśli do Start przypięty był sam plik `.exe` z folderu Pobrane (a nie skrót „CLEANER by MAG” z listy programów), trzeba go przypiąć ponownie. Skrót odinstalowania nazywa się teraz po prostu **„Odinstaluj”** — stary skrót jest usuwany automatycznie.
+> **Uwaga przy aktualizacji z 2.0:** przy pierwszym uruchomieniu 2.1 skrót został raz przepisany na nową ścieżkę. Jeśli do Start przypięty był sam plik `.exe` z folderu Pobrane (a nie skrót „CLEANER by MAG” z listy programów), trzeba go przypiąć ponownie. Skrót odinstalowania nazywa się **„Odinstaluj”** — stary skrót jest usuwany automatycznie.
 
-Pełna lista zmian jest w pliku `CHANGELOG`.
+</details>
 
 <details>
 <summary>Co wprowadziła wersja 2.0 (kliknij, aby rozwinąć)</summary>
@@ -50,7 +61,7 @@ CLEANER by MAG przestał być skryptem `.bat` w oknie konsoli i stał się pełn
 - **Jeden plik `.exe`**: silnik, skrypty pomocnicze i grafiki są w środku — nic nie trzeba rozpakowywać ani pobierać osobno.
 - **Uwagi i podpowiedzi**: gdy coś wymaga uwagi, dostajesz opis problemu i wskazówkę, co zrobić, zamiast surowej linii z dziennika. Lista pozycji z audytu bezpieczeństwa (oraz wykluczeń Windows Defender) otwiera się w oknie programu i można ją skopiować.
 - **Historia podsumowań**: po każdym zakończonym przebiegu program zapisuje ekran wyniku, a z menu „Historia” otworzysz go ponownie w takiej samej postaci.
-- **Raporty i dziennik w programie**: raport HTML, raport TXT i plik diagnostyczny otwierają się w oknie aplikacji, bez przeglądarki i Notatnika.
+- **Raporty i dziennik w programie**: raport HTML, raport TXT i dziennik otwierają się w oknie aplikacji, bez przeglądarki i Notatnika.
 - **Opcje dodatkowe na osobnej stronie**: Malwarebytes, KVRT i aktualizację programów (winget) uruchamiasz osobno, w dowolnej chwili.
 - **Karty etapów skanów i kafelki programów**: widać, co jest w kolejce, w trakcie, gotowe, pominięte lub zakończone błędem — wraz z powodem pominięcia.
 - **Samoaktualizacja** z GitHub Releases, **szybszy start czyszczenia** i **wygodniejsze zamknięcie i restart** (przycisk restartu na ekranie podsumowania, pytanie przy zamykaniu).
@@ -59,7 +70,7 @@ CLEANER by MAG przestał być skryptem `.bat` w oknie konsoli i stał się pełn
 
 ## Spis treści
 
-- [Co nowego w wersji 2.1](#co-nowego-w-wersji-21)
+- [Co nowego w wersji 2.1.1](#co-nowego-w-wersji-211)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -88,16 +99,16 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 - Graficzny interfejs z postępem krok po kroku, pierścieniem postępu i kartami uwag
 - 3 tryby czyszczenia (Pełny / Szybki / Własny) oraz osobna strona Opcji dodatkowych
 - **Temperatury procesora i karty graficznej na żywo** w pasku bocznym, z osobnymi progami kolorów dla CPU i GPU oraz wyjaśnieniem, gdy odczyt jest niemożliwy
-- **Statystyki temperatur z przebiegu** (średnia na karcie, najniższa i najwyższa z godziną w dymku) w podsumowaniu, historii i dzienniku diagnostycznym
+- **Statystyki temperatur z przebiegu** (średnia na karcie, najniższa i najwyższa z godziną w dymku) w podsumowaniu, historii i dzienniku
 - Uwagi przy krokach z ikoną dzwonka i dymkiem z opisem oraz powiązaniem z kartą uwag w podsumowaniu
-- **Zgłaszanie problemów** z poziomu programu (paczka ZIP z opisem, zrzutem okna i plikami diagnostycznymi, z ukrywaniem nazwy użytkownika)
+- **Zgłaszanie problemów** z poziomu programu (paczka ZIP z opisem, zrzutem okna i dziennikiem, z ukrywaniem nazwy użytkownika)
 - **Przywracanie ustawień z wyborem elementów** (17 pozycji) z postępem na żywo oraz osobne usuwanie raportów i historii
-- Historia podsumowań przebiegów, dostępna w programie (ostatnie 100 wpisów)
+- **Historia podsumowań** dostępna w programie (ostatnie 100 wpisów) — odporna na chwilowe blokady pliku, z **importem** z dziennika, paczki zgłoszenia lub pliku JSON oraz z **odtwarzaniem z dziennika**
 - Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases, z samopodmianą pliku `.exe`; stała kopia programu i stały skrót w Menu Start
 - Tworzenie punktu przywracania systemu przed zmianami
 - Wbudowane skanowanie Windows Defender i AdwCleaner
 - Opcjonalne skanery na żądanie: **Malwarebytes** i **KVRT** (Kaspersky Virus Removal Tool) — pobierane, uruchamiane i sprzątane automatycznie
-- Aktualizacja zainstalowanych programów przez **winget** (Menedżer pakietów Windows), z automatyczną instalacją winget, jeśli go brakuje, i powodem pominięcia przy każdym programie, którego nie udało się zaktualizować
+- Aktualizacja zainstalowanych programów przez **winget** (Menedżer pakietów Windows), z automatyczną instalacją winget, jeśli go brakuje, z obsługą programów przenośnych i z powodem pominięcia przy każdym programie, którego nie udało się zaktualizować
 - Utwardzanie bezpieczeństwa: reguły ASR, ochrona LSA, zabezpieczenie SMB, blokada autoodtwarzania i makr Office, przywrócenie UAC, audyt persystencji i diagnostyka zdrowia systemu
 - Debloat: usuwanie zbędnych aplikacji Windows, wyłączanie zbędnych funkcji, procesów w tle i programów startowych
 - Strojenie sieci: DNS, DNS over HTTPS, parametry TCP oraz reset proxy
@@ -131,7 +142,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 3. **Przeczytaj wynik**: ekran „Wszystko gotowe” lub „Zakończono z uwagami” pokazuje wykonane i pominięte operacje, elementy wymagające restartu, błędy, czas oraz kartę temperatur. Panel „Uwagi i podpowiedzi” tłumaczy, co oznacza każdy problem i co z nim zrobić — najechanie na operację z dzwonkiem przewija go do właściwej uwagi. Każde podsumowanie trafia też do strony „Historia”.
 4. **Zrestartuj komputer** przyciskiem na ekranie podsumowania, jeśli program to zaleca (czyszczenie zmieniło system albo Windows czeka na restart).
 
-Podczas operacji pozostałe pozycje menu są zablokowane, a pasek boczny pokazuje, że operacja trwa. Przycisk „Dziennik” i plik diagnostyczny pozwalają zajrzeć w szczegóły techniczne bez opuszczania programu.
+Podczas operacji pozostałe pozycje menu są zablokowane, a pasek boczny pokazuje, że operacja trwa. Przycisk „Dziennik” i zakładka „Dziennik” na stronie „Postęp” pozwalają zajrzeć w szczegóły techniczne bez opuszczania programu.
 
 ## Tryby pracy
 
@@ -222,14 +233,17 @@ Biblioteka LibreHardwareMonitor jest pobierana raz do trwałego folderu, a proce
 
 **Karta „Temperatury” w podsumowaniu** to jedna cienka linia: **Temperatury  CPU X  GPU X** — średnia z całego przebiegu, każda wartość w kolorze progu (gdy nie ma statystyk, pokazywany jest odczyt z kroku „Temperatury”). Mała ikona „i” na końcu linii podpowiada, że **po najechaniu na kartę** otwiera się duży dymek ze szczegółami: najniższa i najwyższa temperatura z godziną pomiaru, średnia z liczbą odczytów, okres pomiarów i legenda kolorów. Gdy nie uda się odczytać ani temperatury procesora, ani karty graficznej, karty nie ma wcale.
 
-Statystyki są zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Opcjach dodatkowych”. Przywracanie ich nie liczy. Zapisują się w historii podsumowań oraz w dzienniku diagnostycznym (sekcja „Temperatury w trakcie przebiegu”).
+Statystyki są zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Opcjach dodatkowych”. Przywracanie ich nie liczy. Zapisują się w historii podsumowań oraz w dzienniku (sekcja „Temperatury w trakcie przebiegu”).
 
 ## Opcje dodatkowe
 
 Dostępne na osobnej stronie „Opcje dodatkowe” (w dowolnej chwili, bez czyszczenia systemu) oraz jako propozycja po zakończeniu czyszczenia — wynik widzisz wtedy od razu, a pytanie o przejście dalej pojawia się dopiero na ekranie podsumowania. Kliknięcie „Uruchom” przy wybranej opcji startuje właśnie tę jedną opcję, bez dalszych pytań. Skany Malwarebytes i KVRT są pokazywane jako lista kart etapów (Malwarebytes: 4 etapy, KVRT: 3 etapy), a pierścień „Etapy skanu” i nakładka pokazują numer bieżącego etapu.
 
 - **Malwarebytes** (obsługa ręczna) — pobiera instalator, instaluje program i otwiera go do ręcznego skanu, a po zamknięciu okna automatycznie go odinstalowuje. Jeśli Malwarebytes był już zainstalowany, program po prostu go otwiera (niczego nie pobiera ani nie usuwa). Gdy proces po zamknięciu okna nadal wisi w tle, możesz użyć przycisku **„Wymuś zamknięcie”** (program próbuje kolejno kilku metod, w tym zamknięcia przez ikonę w zasobniku) albo skorzystać z instrukcji „Jak zamknąć ręcznie”.
-- **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie aktualizuje po kolei wszystkie zainstalowane programy. Każdy program ma własny kafelek (w kolejce → pobieranie → instalowanie → gotowe) z wersją obecną i dostępną oraz paskiem pobierania, w którym procent jest odczytywany z usługi Delivery Optimization (a gdy jest niedostępna — z rozmiaru pobieranego pliku). Jeśli program nie zostanie zaktualizowany, kafelek wyjaśnia dlaczego (np. program jest uruchomiony, brak pasującej aktualizacji, wymagana ręczna reinstalacja albo błąd pobierania).
+- **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie aktualizuje po kolei wszystkie zainstalowane programy. Każdy program ma własny kafelek (w kolejce → pobieranie → instalowanie → gotowe) z wersją obecną i dostępną oraz paskiem pobierania, w którym procent jest odczytywany z usługi Delivery Optimization (a gdy jest niedostępna — z rozmiaru pobieranego pliku).
+  - Jeśli program nie zostanie zaktualizowany, kafelek wyjaśnia dlaczego (np. program jest uruchomiony, brak pasującej aktualizacji, wymagana ręczna reinstalacja albo błąd pobierania).
+  - **Programy przenośne** (np. yt-dlp, FFmpeg) zmienione poza wingetem — np. przez własną samoaktualizację — są aktualizowane po jednorazowej ponownej próbie w trybie wymuszonym; skrót instalatora jest nadal weryfikowany. Jeśli i to się nie uda, program podpowiada zamknięcie aplikacji lub ponowną instalację.
+  - Gdy winget nie znajduje żadnej aktualizacji, ekran wyniku pokazuje **„Aktualizacja programów: wszystkie aktualne”** wraz z uwagą informacyjną (nie zmienia ona podsumowania „Wszystko gotowe”).
 - **KVRT (Kaspersky Virus Removal Tool)** — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi (folder `KVRT_Data` jest sprzątany, chyba że na komputerze wykryto zainstalowany pełny produkt Kaspersky — wtedy zostaje nietknięty). Skan, który nie zakończy się w ciągu 90 minut, jest przerywany, a wynik skanu można obejrzeć przyciskiem „Pokaż wynik skanu”.
 
 > ⚠️ **Uwaga:** KVRT może w trakcie skanowania wykryć poważne zagrożenie i **zrestartować komputer bez pytania o zgodę**. Zapisz pracę przed uruchomieniem tej opcji — program blokuje nieoczekiwany restart tylko na czas własnego działania i ostrzega, jeśli KVRT próbował go wymusić.
@@ -239,19 +253,26 @@ Dostępne na osobnej stronie „Opcje dodatkowe” (w dowolnej chwili, bez czysz
 - Po każdym przebiegu zapisywany jest raport:
   `Dokumenty\CLEANER by MAG\Raport_<data>_<godzina>.html` — czytelny, stylizowany raport HTML. Jeśli jego wygenerowanie się nie powiedzie, program automatycznie zapisuje w zamian awaryjną wersję `Raport_<data>_<godzina>.txt`.
 - Strona **„Raporty”** w programie pokazuje listę wszystkich zapisanych raportów (data i godzina, rozmiar) z przyciskami „Otwórz”, „Wersja TXT” i „Otwórz folder”. Raport otwiera się w oknie aplikacji; z podglądu można go nadal otworzyć w przeglądarce.
-- Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pełny, Szybki, Własny i Opcje dodatkowe), razem ze statystykami temperatur (starsze wpisy bez statystyk działają jak dotąd) i powiązaniami operacji z uwagami. Przycisk „Pokaż” otwiera wybrane podsumowanie w tym samym widoku co zaraz po przebiegu (tylko do odczytu), a pojedyncze wpisy lub całą historię można usunąć („Wyczyść historię”). Program przechowuje ostatnie 100 wpisów w pliku `Historia_podsumowan.json` w folderze raportów (`Dokumenty\CLEANER by MAG`). Usunięcie historii nie kasuje raportów z folderu Dokumenty.
 - Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD` / `REST` — wymaga restartu). Jeśli krok 35 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu, a w programie otwierasz ją przyciskiem „Pokaż listę”.
 - Na końcu raportu dołączany jest raport wydajności energetycznej Windows (`powercfg /energy`), generowany dopiero po zakończeniu pracy i przywróceniu oryginalnych ustawień uśpienia/wygaszania ekranu, dzięki czemu odzwierciedla rzeczywisty stan systemu. Na laptopach dołączane są też raport kondycji baterii i raport uśpienia.
 - Skrót **„Raporty”** w Menu Start prowadzi bezpośrednio do folderu z raportami.
 - Silnik nadal generuje historię ostatnich 20 sesji (ile miejsca zwalniano i ile trwało czyszczenie) na podstawie zapisanych raportów.
-- **Plik diagnostyczny** (`.devlog.txt`) otwierasz w programie przyciskiem „Plik diagnostyczny”. Jest zapisywany podczas czyszczenia i kasowany przy starcie następnego przebiegu, więc zawsze dotyczy ostatniej operacji.
+- **Dziennik** (`.devlog.txt`) otwierasz w programie przyciskiem „Dziennik” w „O programie”. Jest zapisywany podczas czyszczenia i kasowany przy starcie następnego przebiegu, więc zawsze dotyczy ostatniej operacji.
+
+### Historia podsumowań
+
+Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pełny, Szybki, Własny i Opcje dodatkowe), razem ze statystykami temperatur i powiązaniami operacji z uwagami. Przycisk „Pokaż” otwiera wybrane podsumowanie w tym samym widoku co zaraz po przebiegu (tylko do odczytu), a pojedyncze wpisy lub całą historię można usunąć („Wyczyść historię”). Program przechowuje ostatnie 100 wpisów w pliku `Historia_podsumowan.json` w folderze raportów (`Dokumenty\CLEANER by MAG`). Usunięcie historii nie kasuje raportów z folderu Dokumenty.
+
+- **Importuj** — wczytuje podsumowania z dziennika (`.txt`), paczki zgłoszenia (`.zip`) lub pliku `podsumowanie.json` (można zaznaczyć kilka plików naraz) i dopisuje je do historii **na stałe**. Zaimportowane wpisy mają inny odcień i ikonę „i”. Podsumowania, które już są w historii, nie są dublowane, a dwa różne przebiegi o tym samym czasie zakończenia nie są traktowane jako duplikat. Jedno znalezione podsumowanie otwiera się od razu. To przydatne m.in. przy analizie zgłoszeń przysłanych przez innych użytkowników.
+- **Odtwórz z dziennika** — dopisuje do historii podsumowania zapisane w bieżącym dzienniku, których w niej brakuje. Istniejących wpisów nie zmienia i można go klikać wielokrotnie. Odtworzy tylko tyle, ile jest w dzienniku (dziennik jest przycinany do 1 MB, a starsze wersje programu nie zapisywały w nim podsumowań).
+- **Odporność na błędy pliku** — chwilowy błąd odczytu (plik zajęty przez antywirus lub OneDrive) jest ponawiany i nigdy nie powoduje nadpisania historii. Do kopii `.bad` trafia tylko plik z faktycznie uszkodzoną zawartością, a przy starcie poprawne wpisy z takich kopii wracają do historii. Przy migracji program szuka też w starym folderze `%USERPROFILE%\Documents\CLEANER by MAG`.
 
 ## Zgłaszanie problemów
 
 Przycisk **„Zgłoś problem”** w pasku bocznym otwiera okno, w którym opisujesz, co poszło nie tak (na którym kroku, co się stało, czego się spodziewałeś) i wybierasz, co dołączyć do zgłoszenia:
 
 - **zrzut ekranu okna programu** (z podglądem),
-- **plik diagnostyczny** z ostatniego przebiegu,
+- **dziennik** z ostatniego przebiegu,
 - **podsumowanie wyniku** (dane ekranu wyniku, żeby autor mógł go odtworzyć),
 - **informacje o systemie** (wersja programu i Windows, architektura, uprawnienia administratora, tryb ostatniego przebiegu oraz — gdy widżet nie widzi temperatury procesora — jedna linia diagnostyczna z przyczyną).
 
@@ -271,7 +292,7 @@ Pozycji, których jeszcze nie ma (np. dziennik przed pierwszym przebiegiem), nie
 
 ## Przywracanie i odinstalowanie
 
-Strona **„Przywracanie”** (dawniej „Odinstaluj”) otwiera się z menu bocznego albo skrótem **„Odinstaluj”** w Menu Start (wymaga uprawnień administratora; skrót uruchamia program z parametrem `--uninstall` i przewija stronę na sam dół). Masz tu trzy osobne czynności:
+Strona **„Przywracanie”** otwiera się z menu bocznego albo skrótem **„Odinstaluj”** w Menu Start (wymaga uprawnień administratora; skrót uruchamia program z parametrem `--uninstall` i przewija stronę na sam dół). Masz tu trzy osobne czynności:
 
 - **Przywróć wybrane** — zaznaczasz, które z **17 elementów** mają wrócić do stanu sprzed optymalizacji: rejestr, usługi Windows, funkcje opcjonalne, BCD, TCP / RSS, DNS, DoH, plik stronicowania, Defender, SMB, NetBIOS, zasilanie kart sieciowych, plan zasilania i hibernacja, Oczyszczanie dysku, zadania harmonogramu, kopie w tle VSS, aplikacje UWP. Dostępne są „Zaznacz wszystko” i „Wyczyść”, licznik „Wybrano n z 17” oraz potwierdzenie z liczbą wybranych elementów. Zadania harmonogramu wracają do swojego dokładnego stanu sprzed zmian (Włączone/Wyłączone), a nie są masowo włączane.
 - **Usuń raporty i historię** — bez odinstalowywania programu.
@@ -304,4 +325,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **2.1** (03/11/2026)
+Autor: **MAG** | Wersja: **2.1.1** (05/11/2026)
