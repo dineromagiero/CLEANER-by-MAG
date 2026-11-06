@@ -5,24 +5,38 @@
 <h1 align="center">CLEANER by MAG</h1>
 
 <p align="center">
-  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1.1-blue">
+  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1.2-blue">
   <img alt="Platforma" src="https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6">
   <img alt="Technologia" src="https://img.shields.io/badge/aplikacja-Python%20%2B%20Qt%20%2B%20PowerShell-lightgrey">
 </p>
 
 **Aplikacja do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z przejrzystym oknem zamiast konsoli, temperaturami na żywo, samoaktualizacją, raportami i historią podsumowań otwieranymi w programie, zgłaszaniem problemów prosto z aplikacji oraz opcjonalnymi skanerami antywirusowymi. Dostarczana jako jeden plik `.exe`.
 
-Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, 2.0 i 2.1, więc kroki i ich kolejność pozostają takie, jakie znasz.
+Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, 2.0 i 2.1.x, więc kroki i ich kolejność pozostają takie, jakie znasz.
 
 <p align="center">
-  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/958a0775-1462-4555-97b3-8d04f23dc5c2" width="760" />
+  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/006d47a0-3f45-40fd-8c20-b54a669fb1ee" width="760" />
 <br>
   <em>Ekran startowy: wybór trybu czyszczenia (Windows 10).</em>
 </p>
 
-## Co nowego w wersji 2.1.1
+## Co nowego w wersji 2.1.2
 
-Wersja 2.1.1 to wydanie poprawkowe: silnik czyszczenia, kroki i ich kolejność zostają bez zmian. Zmiany dotyczą **historii podsumowań** oraz **aktualizacji programów (winget)**.
+Wersja 2.1.2 to wydanie poprawkowe: kroki czyszczenia i ich kolejność zostają bez zmian. Zmiany dotyczą przede wszystkim **aktualizacji programów (winget)**, **dat ostatnich testów i skanów**, **zakończenia przebiegu** (koniec z kodem wyjścia 255 po pełnym czyszczeniu) oraz **bezpieczniejszego pobierania aktualizacji programu**.
+
+- **Aktualizacja programów w dwóch krokach**: program najpierw wyszukuje dostępne aktualizacje (winget) i pokazuje je na liście z polami wyboru: nazwa, ID pakietu, wersja zainstalowana → dostępna. Wszystkie są domyślnie zaznaczone, więc odznacz te, których nie chcesz ruszać (są też przyciski „Zaznacz wszystko” i „Odznacz wszystko”). Aktualizacja rusza dopiero po „Aktualizuj zaznaczone”, a „Pomiń aktualizację” kończy krok bez ruszania czegokolwiek. W trakcie widać, który program jest aktualizowany i ile już za nami (np. „3 z 7”), a na końcu podsumowanie: co się zaktualizowało, co się nie udało, a czego nie wybrano.
+- **Data ostatniego testu na Start**: karty Pełny i Szybki pokazują „Ostatni test: rrrr-mm-dd (N dni temu)”. Liczą się tylko przebiegi dokończone, więc przerwany przebieg niczego nie zmienia. Dopóki trybu nie dokończysz ani razu, linii nie ma wcale. Pierwszy przebieg po aktualizacji zacznie od pustej linii, bo wcześniejsze wersje nie zapisywały tych dat.
+- **Data ostatniego skanu w „Opcjach dodatkowych”**: kafelki Skan Malwarebytes i Skan KVRT pokazują, kiedy skan był ostatnio wykonany (albo „nigdy”).
+- **Koniec z kodem wyjścia 255**: po pełnym przebiegu (nawet 37 z 37 kroków OK) okno mogło kończyć się czerwonym ekranem albo uwagą „Końcowe porządki zakończyły się nieoczekiwanie”. Przyczyną był błąd składni w jednej linii silnika, który przerywał skrypt przed końcowymi porządkami. Po poprawce silnik dochodzi do końca, a **czyszczenie Temp na końcu przebiegu, które dotąd faktycznie się nie wykonywało, zaczyna się wykonywać**. Dziennik zapisuje też znaczniki `[KONIEC]`, które pokażą, na którym etapie silnik się kończy, gdyby problem wrócił.
+- **Wykluczenia Defendera tylko raz**: wykluczenia Windows Defendera nie powtarzają się już na liście „Audyt znalazł N pozycji do przejrzenia”, bo są w uwadze kroku utwardzania Defendera.
+- **Pewniejsza samoaktualizacja**: urwane pobieranie nowej wersji nie jest już uznawane za udane. Program porównuje liczbę odebranych bajtów z rozmiarem zapowiedzianym przez serwer i z rozmiarem pliku w wydaniu GitHuba, więc niepełny plik nie podmieni działającego `.exe`.
+- **Architektura komputera w zgłoszeniu**: „Zgłoś problem” rozróżnia architekturę komputera od architektury programu i podaje, czy program działa w emulacji (np. „ARM64 (program AMD64 działa w emulacji)”).
+- **Drobne poprawki**: mała ikona „i” na karcie „Temperatury” w podsumowaniu (pulsuje do pierwszego najechania) i zaokrąglone rogi tej karty; plakietka wersji w pasku bocznym pokazuje krótszy napis „Wersja 2.1.2”, gdy pełny się nie mieści; uwaga „brak raportu energii” oraz „Brak starych sterowników drukarek” są informacyjne i nie psują wyniku „Wszystko gotowe”; dokładniejszy komunikat o miejscu zapisu nieudanej aktualizacji; jedna linia (zamiast dwóch) w ostrzeżeniu o produkcie Kaspersky.
+
+<details>
+<summary>Co wprowadziła wersja 2.1.1 (kliknij, aby rozwinąć)</summary>
+
+Wersja 2.1.1 była wydaniem poprawkowym. Zmiany dotyczyły **historii podsumowań** oraz **aktualizacji programów (winget)**.
 
 - **Importuj — na stałe w historii**: podsumowania zaimportowane na stronie „Historia” (z dziennika, paczki zgłoszenia `.zip` lub pliku `podsumowanie.json`, także z kilku plików naraz) zostają na liście na stałe. Wcześniej znikały po przejściu do innego menu. Zaimportowane wpisy mają chłodniejszy odcień i ikonę „i”, żeby było widać, że pochodzą z importu. Wpisy, które już są w historii, nie są dublowane.
 - **Historia już nie znika**: gdy plik historii jest chwilowo zajęty (np. przez antywirus albo OneDrive), lista nie wygląda już na pustą i nic nie jest nadpisywane. Do kopii `.bad` trafia tylko plik z naprawdę uszkodzoną zawartością, a poprawne wpisy z takich kopii wracają do historii przy starcie programu.
@@ -31,6 +45,8 @@ Wersja 2.1.1 to wydanie poprawkowe: silnik czyszczenia, kroki i ich kolejność 
 - **Programy przenośne aktualizują się**: programy przenośne zmienione poza wingetem (np. yt-dlp, FFmpeg) nie są już pomijane. Program ponawia próbę raz w trybie wymuszonym, a instalator nadal jest weryfikowany. Naprawiono też fałszywy komunikat o problemie z internetem, który pojawiał się przy udanej weryfikacji instalatora.
 - **Spójne nazewnictwo**: „Plik diagnostyczny” nazywa się teraz po prostu **„Dziennik”** (w „O programie”, w oknie „Zgłoś problem” i przy imporcie historii).
 - **Animowane strzałki** „Zobacz »” na przycisku „Co nowego” w „O programie”.
+
+</details>
 
 <details>
 <summary>Co wprowadziła wersja 2.1 (kliknij, aby rozwinąć)</summary>
@@ -70,7 +86,7 @@ CLEANER by MAG przestał być skryptem `.bat` w oknie konsoli i stał się pełn
 
 ## Spis treści
 
-- [Co nowego w wersji 2.1.1](#co-nowego-w-wersji-211)
+- [Co nowego w wersji 2.1.2](#co-nowego-w-wersji-212)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -97,18 +113,18 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 - **37 kroków** czyszcząco-naprawczo-optymalizacyjnych i zabezpieczających w jednym przebiegu (pełna lista niżej)
 - Graficzny interfejs z postępem krok po kroku, pierścieniem postępu i kartami uwag
-- 3 tryby czyszczenia (Pełny / Szybki / Własny) oraz osobna strona Opcji dodatkowych
+- 3 tryby czyszczenia (Pełny / Szybki / Własny) oraz osobna strona Opcji dodatkowych, z datą ostatniego dokończonego testu przy trybach Pełny i Szybki oraz ostatniego skanu przy Malwarebytes i KVRT
 - **Temperatury procesora i karty graficznej na żywo** w pasku bocznym, z osobnymi progami kolorów dla CPU i GPU oraz wyjaśnieniem, gdy odczyt jest niemożliwy
 - **Statystyki temperatur z przebiegu** (średnia na karcie, najniższa i najwyższa z godziną w dymku) w podsumowaniu, historii i dzienniku
 - Uwagi przy krokach z ikoną dzwonka i dymkiem z opisem oraz powiązaniem z kartą uwag w podsumowaniu
 - **Zgłaszanie problemów** z poziomu programu (paczka ZIP z opisem, zrzutem okna i dziennikiem, z ukrywaniem nazwy użytkownika)
 - **Przywracanie ustawień z wyborem elementów** (17 pozycji) z postępem na żywo oraz osobne usuwanie raportów i historii
 - **Historia podsumowań** dostępna w programie (ostatnie 100 wpisów) — odporna na chwilowe blokady pliku, z **importem** z dziennika, paczki zgłoszenia lub pliku JSON oraz z **odtwarzaniem z dziennika**
-- Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases, z samopodmianą pliku `.exe`; stała kopia programu i stały skrót w Menu Start
+- Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases (z kontrolą rozmiaru pobranego pliku), z samopodmianą pliku `.exe`; stała kopia programu i stały skrót w Menu Start
 - Tworzenie punktu przywracania systemu przed zmianami
 - Wbudowane skanowanie Windows Defender i AdwCleaner
 - Opcjonalne skanery na żądanie: **Malwarebytes** i **KVRT** (Kaspersky Virus Removal Tool) — pobierane, uruchamiane i sprzątane automatycznie
-- Aktualizacja zainstalowanych programów przez **winget** (Menedżer pakietów Windows), z automatyczną instalacją winget, jeśli go brakuje, z obsługą programów przenośnych i z powodem pominięcia przy każdym programie, którego nie udało się zaktualizować
+- Aktualizacja zainstalowanych programów przez **winget** (Menedżer pakietów Windows) **z wyborem, co zaktualizować**, z automatyczną instalacją winget, jeśli go brakuje, z obsługą programów przenośnych i z powodem pominięcia przy każdym programie, którego nie udało się zaktualizować
 - Utwardzanie bezpieczeństwa: reguły ASR, ochrona LSA, zabezpieczenie SMB, blokada autoodtwarzania i makr Office, przywrócenie UAC, audyt persystencji i diagnostyka zdrowia systemu
 - Debloat: usuwanie zbędnych aplikacji Windows, wyłączanie zbędnych funkcji, procesów w tle i programów startowych
 - Strojenie sieci: DNS, DNS over HTTPS, parametry TCP oraz reset proxy
@@ -137,7 +153,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 ## Jak wygląda praca z programem
 
-1. **Wybierz tryb** na ekranie startowym (karty: Pełny, Szybki, Własny, Opcje dodatkowe). Przed startem program przypomina, że zostaną zamknięte przeglądarki, a folder `Windows.old` (jeśli istnieje) zostanie trwale usunięty.
+1. **Wybierz tryb** na ekranie startowym (karty: Pełny, Szybki, Własny, Opcje dodatkowe). Karty Pełny i Szybki pokazują na dole datę ostatniego dokończonego przebiegu danego trybu. Przed startem program przypomina, że zostaną zamknięte przeglądarki, a folder `Windows.old` (jeśli istnieje) zostanie trwale usunięty.
 2. **Obserwuj postęp** na stronie „Postęp”: pierścień pokazuje ogólny postęp, lista pokazuje wszystkie etapy i ich stany, a licznik — „Krok k z N”. Możesz przerwać operację przyciskiem „Przerwij”, ale przerwanie w trakcie pracy może zostawić część ustawień w stanie pośrednim (np. usługi Windows Update), więc zalecane jest dokończenie. Widżet temperatur w pasku bocznym działa przez cały czas.
 3. **Przeczytaj wynik**: ekran „Wszystko gotowe” lub „Zakończono z uwagami” pokazuje wykonane i pominięte operacje, elementy wymagające restartu, błędy, czas oraz kartę temperatur. Panel „Uwagi i podpowiedzi” tłumaczy, co oznacza każdy problem i co z nim zrobić — najechanie na operację z dzwonkiem przewija go do właściwej uwagi. Każde podsumowanie trafia też do strony „Historia”.
 4. **Zrestartuj komputer** przyciskiem na ekranie podsumowania, jeśli program to zaleca (czyszczenie zmieniło system albo Windows czeka na restart).
@@ -231,16 +247,16 @@ Brak odczytu jest szary. Kliknięcie widżetu wstrzymuje i wznawia odczyt, a w p
 
 Biblioteka LibreHardwareMonitor jest pobierana raz do trwałego folderu, a proces pomocniczy działa przez cały czas pracy widżetu.
 
-**Karta „Temperatury” w podsumowaniu** to jedna cienka linia: **Temperatury  CPU X  GPU X** — średnia z całego przebiegu, każda wartość w kolorze progu (gdy nie ma statystyk, pokazywany jest odczyt z kroku „Temperatury”). Mała ikona „i” na końcu linii podpowiada, że **po najechaniu na kartę** otwiera się duży dymek ze szczegółami: najniższa i najwyższa temperatura z godziną pomiaru, średnia z liczbą odczytów, okres pomiarów i legenda kolorów. Gdy nie uda się odczytać ani temperatury procesora, ani karty graficznej, karty nie ma wcale.
+**Karta „Temperatury” w podsumowaniu** to jedna cienka linia: **Temperatury  CPU X  GPU X** — średnia z całego przebiegu, każda wartość w kolorze progu (gdy nie ma statystyk, pokazywany jest odczyt z kroku „Temperatury”). Mała ikona „i” na końcu linii (pulsuje tylko do pierwszego najechania) podpowiada, że **po najechaniu na kartę** otwiera się duży dymek ze szczegółami: najniższa i najwyższa temperatura z godziną pomiaru, średnia z liczbą odczytów, okres pomiarów i legenda kolorów. Gdy nie uda się odczytać ani temperatury procesora, ani karty graficznej, karty nie ma wcale.
 
 Statystyki są zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Opcjach dodatkowych”. Przywracanie ich nie liczy. Zapisują się w historii podsumowań oraz w dzienniku (sekcja „Temperatury w trakcie przebiegu”).
 
 ## Opcje dodatkowe
 
-Dostępne na osobnej stronie „Opcje dodatkowe” (w dowolnej chwili, bez czyszczenia systemu) oraz jako propozycja po zakończeniu czyszczenia — wynik widzisz wtedy od razu, a pytanie o przejście dalej pojawia się dopiero na ekranie podsumowania. Kliknięcie „Uruchom” przy wybranej opcji startuje właśnie tę jedną opcję, bez dalszych pytań. Skany Malwarebytes i KVRT są pokazywane jako lista kart etapów (Malwarebytes: 4 etapy, KVRT: 3 etapy), a pierścień „Etapy skanu” i nakładka pokazują numer bieżącego etapu.
+Dostępne na osobnej stronie „Opcje dodatkowe” (w dowolnej chwili, bez czyszczenia systemu) oraz jako propozycja po zakończeniu czyszczenia — wynik widzisz wtedy od razu, a pytanie o przejście dalej pojawia się dopiero na ekranie podsumowania. Kafelki Malwarebytes i KVRT pokazują pod opisem datę ostatniego skanu („Ostatni test: rrrr-mm-dd (N dni temu)” albo „nigdy”), zgodną z tym, co pamięta silnik. Kliknięcie „Uruchom” przy wybranej opcji startuje właśnie tę jedną opcję, bez dalszych pytań. Skany Malwarebytes i KVRT są pokazywane jako lista kart etapów (Malwarebytes: 4 etapy, KVRT: 3 etapy), a pierścień „Etapy skanu” i nakładka pokazują numer bieżącego etapu.
 
 - **Malwarebytes** (obsługa ręczna) — pobiera instalator, instaluje program i otwiera go do ręcznego skanu, a po zamknięciu okna automatycznie go odinstalowuje. Jeśli Malwarebytes był już zainstalowany, program po prostu go otwiera (niczego nie pobiera ani nie usuwa). Gdy proces po zamknięciu okna nadal wisi w tle, możesz użyć przycisku **„Wymuś zamknięcie”** (program próbuje kolejno kilku metod, w tym zamknięcia przez ikonę w zasobniku) albo skorzystać z instrukcji „Jak zamknąć ręcznie”.
-- **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie aktualizuje po kolei wszystkie zainstalowane programy. Każdy program ma własny kafelek (w kolejce → pobieranie → instalowanie → gotowe) z wersją obecną i dostępną oraz paskiem pobierania, w którym procent jest odczytywany z usługi Delivery Optimization (a gdy jest niedostępna — z rozmiaru pobieranego pliku).
+- **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie wyszukuje dostępne aktualizacje i **pokazuje je na liście do wyboru** (nazwa, ID pakietu, wersja zainstalowana → dostępna; domyślnie wszystkie zaznaczone, z przyciskami „Zaznacz wszystko” i „Odznacz wszystko”). Dopiero po kliknięciu **„Aktualizuj zaznaczone”** program aktualizuje wybrane programy po kolei, każdy osobno, a „Pomiń aktualizację” kończy krok bez ruszania czegokolwiek. Postęp pokazuje „k z N” i nazwę bieżącego programu, a na końcu jest podsumowanie (zaktualizowano / nie udało się / nie wybrano). Każdy program ma własny kafelek (w kolejce → pobieranie → instalowanie → gotowe) z wersją obecną i dostępną oraz paskiem pobierania, w którym procent jest odczytywany z usługi Delivery Optimization (a gdy jest niedostępna — z rozmiaru pobieranego pliku).
   - Jeśli program nie zostanie zaktualizowany, kafelek wyjaśnia dlaczego (np. program jest uruchomiony, brak pasującej aktualizacji, wymagana ręczna reinstalacja albo błąd pobierania).
   - **Programy przenośne** (np. yt-dlp, FFmpeg) zmienione poza wingetem — np. przez własną samoaktualizację — są aktualizowane po jednorazowej ponownej próbie w trybie wymuszonym; skrót instalatora jest nadal weryfikowany. Jeśli i to się nie uda, program podpowiada zamknięcie aplikacji lub ponowną instalację.
   - Gdy winget nie znajduje żadnej aktualizacji, ekran wyniku pokazuje **„Aktualizacja programów: wszystkie aktualne”** wraz z uwagą informacyjną (nie zmienia ona podsumowania „Wszystko gotowe”).
@@ -274,7 +290,7 @@ Przycisk **„Zgłoś problem”** w pasku bocznym otwiera okno, w którym opisu
 - **zrzut ekranu okna programu** (z podglądem),
 - **dziennik** z ostatniego przebiegu,
 - **podsumowanie wyniku** (dane ekranu wyniku, żeby autor mógł go odtworzyć),
-- **informacje o systemie** (wersja programu i Windows, architektura, uprawnienia administratora, tryb ostatniego przebiegu oraz — gdy widżet nie widzi temperatury procesora — jedna linia diagnostyczna z przyczyną).
+- **informacje o systemie** (wersja programu i Windows, architektura komputera i informacja, czy program działa w emulacji, uprawnienia administratora, tryb ostatniego przebiegu oraz — gdy widżet nie widzi temperatury procesora — jedna linia diagnostyczna z przyczyną).
 
 Pozycji, których jeszcze nie ma (np. dziennik przed pierwszym przebiegiem), nie da się wybrać. Z zaznaczonych elementów program składa **paczkę ZIP** i zapisuje ją w folderze `Dokumenty\CLEANER by MAG\Zgloszenia`. Przyciskiem **„Wyślij do autora”** wysyłasz ją bez zakładania konta i bez logowania, opcjonalnie z kontaktem do siebie, jeśli chcesz dostać odpowiedź. Każde zgłoszenie dostaje **sześcioznakowy numer** (np. `AB12CD`), który jest w nazwie pliku ZIP, w notatce w środku i w wiadomości u autora. Zgłoszenia nie trafiają na GitHub.
 
@@ -288,6 +304,7 @@ Pozycji, których jeszcze nie ma (np. dziennik przed pierwszym przebiegiem), nie
 - Po zwykłej aktualizacji obok numeru wersji pojawia się ikona „Co nowego” — znika po otwarciu okna nowości. Przy świeżej instalacji ikony nie ma, bo nowości są wtedy w oknie powitalnym.
 - Jeśli samodzielna podmiana nie jest możliwa (np. wydanie zawiera tylko archiwum `.zip`), plik zostaje zapisany w folderze „Pobrane” albo otwierana jest strona wydania.
 - Pobieranie jest dozwolone wyłącznie z domen `github.com` i `githubusercontent.com`; przekierowania poza GitHub są odrzucane.
+- Pobrany plik musi mieć dokładnie tyle bajtów, ile zapowiedział serwer i ile podaje wydanie GitHuba. Urwane pobieranie jest odrzucane, a dotychczasowy plik zostaje nietknięty, więc niepełny plik nigdy nie podmieni działającego programu.
 - Brak połączenia z internetem nie blokuje działania — sprawdzanie aktualizacji jest po prostu pomijane, a wskaźnik pozwala spróbować ponownie.
 
 ## Przywracanie i odinstalowanie
@@ -325,4 +342,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **2.1.1** (05/11/2026)
+Autor: **MAG** | Wersja: **2.1.2** (06/11/2026)
