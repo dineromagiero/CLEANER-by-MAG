@@ -5,24 +5,47 @@
 <h1 align="center">CLEANER by MAG</h1>
 
 <p align="center">
-  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1.3-blue">
+  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1.4-blue">
   <img alt="Platforma" src="https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6">
   <img alt="Technologia" src="https://img.shields.io/badge/aplikacja-Python%20%2B%20Qt%20%2B%20PowerShell-lightgrey">
 </p>
 
 **Aplikacja do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z przejrzystym oknem zamiast konsoli, temperaturami na żywo, podglądem tego, ile miejsca zwolni czyszczenie, odczytem zdrowia dysku, samoaktualizacją, raportami i historią podsumowań otwieranymi w programie, zgłaszaniem problemów prosto z aplikacji oraz opcjonalnymi skanerami antywirusowymi. Dostarczana jako jeden plik `.exe`.
 
-Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, 2.0 i 2.1.x, więc kroki i ich kolejność pozostają takie, jakie znasz (w 2.1.3 doszedł jeden nowy, tylko odczytowy krok: zdrowie dysku).
+Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, 2.0 i 2.1.x, więc kroki i ich kolejność pozostają takie, jakie znasz (w 2.1.3 doszedł jeden nowy, tylko odczytowy krok: zdrowie dysku; wersja 2.1.4 nie zmienia liczby kroków).
 
 <p align="center">
-  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/47a283c9-e24a-44ca-9f5f-7d8e4c2e92c1" width="760" />
+  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/a162cbfa-bd66-4694-a5b5-d6cf56dad432" width="760" />
 <br>
   <em>Ekran startowy: wybór trybu czyszczenia (Windows 10).</em>
 </p>
 
-## Co nowego w wersji 2.1.3
+## Co nowego w wersji 2.1.4
 
-Wersja 2.1.3 dodaje nowy krok **„Zdrowie dysku (SMART)”** (silnik ma teraz **38 kroków** zamiast 37) oraz trzy narzędzia w „Opcjach dodatkowych”, które **niczego nie usuwają**: **podgląd przed czyszczeniem**, **zajęte miejsce na dysku** i **zarządzanie autostartem**. Podsumowanie pokazuje, **ile miejsca zwolniono**. Poprawiono też raport energii, okno powitalne i dymek temperatur.
+Wersja 2.1.4 to **temperatura procesora AMD Ryzen bez ręcznej instalacji sterownika**, **dokładna karta „Zwolniono”**, **własne obrazki w „Zgłoś problem”** i **filtrowanie wyniku kafelkami**. Naprawia też awarię silnika w kroku 10, fałszywe „Do restartu” w kroku 27 oraz błąd „Brak połączenia” przy sprawdzaniu wersji. Silnik nadal ma **38 kroków** (tryb Szybki: 29).
+
+- **Temperatura procesora bez ręcznej instalacji PawnIO**: na komputerach z procesorem AMD Ryzen odczyt temperatury wymaga sterownika PawnIO. Gdy go w systemie nie ma, program pobiera go sam na czas działania (z weryfikacją skrótu SHA256) i usuwa po zamknięciu, także po awaryjnym zamknięciu programu. Jeśli zainstalowałeś PawnIO wcześniej, program go nie dotyka. Zintegrowana grafika Radeon pokazuje temperaturę tej samej kostki co procesor. Wyłącznik: pusty plik `Tools\PawnIO\disabled.txt`.
+- **Dokładne „Zwolniono”**: karta pokazuje sumę rozmiaru faktycznie usuniętych plików, mierzoną tuż przed i po każdym usunięciu, a nie różnicę wolnego miejsca przed i po przebiegu (ta bywała 0 MB, bo w trakcie czyszczenia powstają nowe dane: punkt przywracania, DISM, Defender). W Dzienniku widać, co ile dało.
+- **Własny obrazek w „Zgłoś problem”**: do zgłoszenia możesz dołączyć dodatkowo do 3 obrazków (PNG, JPG, BMP, GIF, WEBP), np. zrzut innego okna albo komunikatu o błędzie. Program usuwa z nich metadane (m.in. lokalizację GPS) i nazwę pliku, a zbyt duże zmniejsza. Zawartości obrazka nie zmienia, więc nazwa użytkownika widoczna na zrzucie nie jest ukrywana.
+- **Kafelki wyniku filtrują listę**: kafelki Wykonane / Pominięte / Do restartu / Błędy są przyciskami. Kliknięcie zostawia na liście tylko operacje tej kategorii (można zaznaczyć kilka), a filtr obejmuje też panel „Uwagi i podpowiedzi”.
+- **Dziennik z konsolą silnika**: każda linia konsoli (także komunikaty cmd.exe) trafia do Dziennika, a przy nieoczekiwanym końcu silnika na końcu jest kod wyjścia i ostatnie 30 linii konsoli.
+- **Sprawdzanie wersji podaje prawdziwą przyczynę porażki**: zamiast „Brak połączenia” widać np. „Limit GitHuba”, „Błąd certyfikatu”, „Nie znaleziono wydania” albo „GitHub niedostępny”. Program próbuje trzech dróg (API, strona wydania, PowerShell), a po awarii sam ponawia sprawdzenie za 5 minut (najwyżej 3 razy).
+- **Krok 27 wykrywa oczekujący restart od razu** i kończy się „Do restartu”, zamiast czekać do 10 minut na DISM. Poprawiono też fałszywy „restart” zgłaszany przy samym istnieniu klucza `SessionsPending`.
+- **Poprawki błędów**:
+  - silnik nie kończy już pracy kodem 255 w kroku 10 (nawias w etykiecie `cleanmgr`),
+  - karta „Zwolniono” nie pokazuje 0 MB, gdy dziennik jest blisko limitu 1 MB,
+  - godziny pracy dysku NVMe w „Zdrowiu dysku” i mniej fałszywych błędów SMART w dzienniku,
+  - rozpakowanie biblioteki do odczytu temperatur (`.part`) i odczyt „poza zakresem” na AMD Ryzen,
+  - mniej fałszywych alarmów w audycie certyfikatów, w sieci i DNS (klasa WMI karty sieciowej) oraz w dzienniku,
+  - komunikat o aktualizacji Edge WebView2 z kodem instalatora i jedną ponowną próbą,
+  - okno powitalne na niskich ekranach ma przewijaną listę, a komunikaty mówią o „Dzienniku” zamiast o pliku `.devlog.txt`.
+
+Pełna lista zmian: [wydanie 2.1.4 na GitHubie](https://github.com/dineromagiero/CLEANER-by-MAG/releases/tag/2.1.4).
+
+<details>
+<summary>Co wprowadziła wersja 2.1.3 (kliknij, aby rozwinąć)</summary>
+
+Wersja 2.1.3 dodała nowy krok **„Zdrowie dysku (SMART)”** (silnik ma od niej **38 kroków** zamiast 37) oraz trzy narzędzia w „Opcjach dodatkowych”, które **niczego nie usuwają**: **podgląd przed czyszczeniem**, **zajęte miejsce na dysku** i **zarządzanie autostartem**. Podsumowanie pokazuje, **ile miejsca zwolniono**. Poprawiono też raport energii, okno powitalne i dymek temperatur.
 
 - **Podgląd przed czyszczeniem**: tryb „na sucho”, który liczy, ile miejsca zwolniłoby czyszczenie (pliki tymczasowe, cache przeglądarek i aplikacji, dzienniki, Kosz, pliki Windows Update, Windows.old i inne). Otwierasz go w „Opcjach dodatkowych” albo przyciskiem „Podgląd” w pytaniu „Rozpocząć tryb …?” przed trybem Pełnym i Szybkim. Wyniki pojawiają się na bieżąco, a wolny odczyt WinSxS (DISM) działa w tle i nie blokuje przycisku „Zmierz ponownie”. To oszacowanie, a nie dokładny bilans.
 - **Zajęte miejsce na dysku**: pasek zajętości dysku, skan dysku systemowego albo wybranego folderu, widoki „Foldery” (z wchodzeniem w głąb) i „Największe pliki” (40 największych) oraz przycisk „Pokaż”, który otwiera Eksplorer z zaznaczonym elementem. Skan można zatrzymać, a ostatni wynik jest pamiętany do zamknięcia programu (nie jest zapisywany na dysk).
@@ -34,9 +57,11 @@ Wersja 2.1.3 dodaje nowy krok **„Zdrowie dysku (SMART)”** (silnik ma teraz *
 - **Okno powitalne przy dużej skali ekranu** (np. 200%): znikła pusta przestrzeń między nagłówkiem a opisem.
 - **Dymek temperatur** ma szerokość karty i nie ucina już legendy kolorów, także w dużym i w wąskim oknie.
 - **„Opcje dodatkowe”**: niższe kafelki, które mieszczą się bez przewijania, a po najechaniu unoszą się jak karty na Start i nie zmieniają wysokości.
-- **Kompilacja programu**: „O programie”, dziennik i paczka zgłoszenia pokazują dokładną kompilację (np. 2.1.3.22). Po uruchomieniu nowej kompilacji znów pojawia się ikona „Co nowego”.
+- **Kompilacja programu**: „O programie”, dziennik i paczka zgłoszenia pokazują dokładną kompilację. Po uruchomieniu nowej kompilacji znów pojawia się ikona „Co nowego”.
 
 > **Uwaga:** numeracja kroków przesunęła się o 1 od kroku 12 wzwyż (dawne 12–37 to teraz 13–38). Stare wpisy w historii przechowują tylko tytuły kroków, więc nie ma to na nie wpływu.
+
+</details>
 
 <details>
 <summary>Co wprowadziła wersja 2.1.2 (kliknij, aby rozwinąć)</summary>
@@ -77,7 +102,7 @@ Zmiany dotyczyły przede wszystkim **temperatur**, **uwag przy krokach**, **zgł
 - **Temperatury na żywo w pasku bocznym**: widżet pokazuje aktualną temperaturę procesora i karty graficznej (odświeżanie co 2 s), także w trakcie czyszczenia. Kolor odczytu zmienia się wraz z progiem, a czerwony delikatnie pulsuje. Kliknięcie widżetu wstrzymuje i wznawia odczyt, a podpowiedź pokazuje źródło wartości albo powód, dla którego czegoś brakuje.
 - **Minimalistyczna karta „Temperatury” w podsumowaniu**: jedna cienka linia (**Temperatury  CPU X  GPU X**) ze średnią z całego przebiegu, każda wartość w kolorze progu. Po najechaniu na kartę otwiera się duży dymek ze szczegółami.
 - **Statystyki temperatur z całego przebiegu**: zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Opcjach dodatkowych”. Trafiają do historii podsumowań i do dziennika diagnostycznego.
-- **Niezawodniejszy odczyt temperatur**: źródła są ułożone warstwowo, a każdy odczyt jest sprawdzany pod kątem sensowności. Krok „Temperatury” w silniku bierze wartości z widżetu.
+- **Niezawodniejszy odczyt temperatur**: źródła są ułożone warstwowo, a każdy odczyt jest sprawdzany pod kątem sensowności.
 - **Uwagi przy krokach**: krok z uwagą ma ikonę dzwonka (w kolorze ważności), a po najechaniu pokazuje dymek z opisem i wskazówką. W podsumowaniu najechanie na operację przewija panel „Uwagi i podpowiedzi” do odpowiedniej karty.
 - **Zgłaszanie problemów**: przycisk **„Zgłoś problem”** w pasku bocznym składa paczkę ZIP z opisem i wybranymi plikami diagnostycznymi, którą wysyłasz autorowi jednym kliknięciem — bez zakładania konta i bez GitHuba.
 - **Przywracanie ustawień z wyborem elementów**: zaznaczasz, które z **17 elementów** mają wrócić do stanu sprzed optymalizacji, z postępem na żywo i podsumowaniem takim jak po czyszczeniu.
@@ -107,7 +132,7 @@ CLEANER by MAG przestał być skryptem `.bat` w oknie konsoli i stał się pełn
 
 ## Spis treści
 
-- [Co nowego w wersji 2.1.3](#co-nowego-w-wersji-213)
+- [Co nowego w wersji 2.1.4](#co-nowego-w-wersji-214)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -138,15 +163,16 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 - **Podgląd przed czyszczeniem** — tryb „na sucho”, który liczy, ile miejsca zwolniłoby czyszczenie, niczego nie kasując
 - **Zajęte miejsce na dysku** — zestawienie największych folderów i plików z otwarciem lokalizacji w Eksploratorze (tylko odczyt)
 - **Zarządzanie autostartem** — włączanie i wyłączanie programów uruchamianych z Windows bez usuwania wpisów
-- **Zwolnione miejsce w podsumowaniu** — karta „Zwolniono X GB”, zapisywana także w historii
+- **Dokładne „Zwolniono”** — karta „Zwolniono X GB” to suma rozmiaru faktycznie usuniętych plików, zapisywana także w historii
 - **Zdrowie dysku (SMART)** — odczyt stanu nośnika (zużycie SSD, sektory, temperatura, czas pracy, błędy) z ostrzeżeniami i radami; tylko odczyt
-- **Temperatury procesora i karty graficznej na żywo** w pasku bocznym, z osobnymi progami kolorów dla CPU i GPU oraz wyjaśnieniem, gdy odczyt jest niemożliwy
-- **Statystyki temperatur z przebiegu** (średnia na karcie, najniższa i najwyższa z godziną w dymku) w podsumowaniu, historii i dzienniku
+- **Temperatury procesora i karty graficznej na żywo** w pasku bocznym, z osobnymi progami kolorów dla CPU i GPU oraz wyjaśnieniem, gdy odczyt jest niemożliwy; na procesorach AMD Ryzen bez ręcznej instalacji sterownika PawnIO
+- **Statystyki temperatur z przebiegu** (średnia na karcie, najniższa, najwyższa i średnia w dymku) w podsumowaniu, historii i dzienniku
 - Uwagi przy krokach z ikoną dzwonka i dymkiem z opisem oraz powiązaniem z kartą uwag w podsumowaniu
-- **Zgłaszanie problemów** z poziomu programu (paczka ZIP z opisem, zrzutem okna i dziennikiem, z ukrywaniem nazwy użytkownika)
+- **Filtrowanie wyniku kafelkami** (Wykonane / Pominięte / Do restartu / Błędy) — filtr obejmuje listę operacji i panel uwag
+- **Zgłaszanie problemów** z poziomu programu (paczka ZIP z opisem, zrzutem okna, własnymi obrazkami i dziennikiem, z ukrywaniem nazwy użytkownika)
 - **Przywracanie ustawień z wyborem elementów** (17 pozycji) z postępem na żywo oraz osobne usuwanie raportów i historii
 - **Historia podsumowań** dostępna w programie (ostatnie 100 wpisów) — odporna na chwilowe blokady pliku, z **importem** z dziennika, paczki zgłoszenia lub pliku JSON oraz z **odtwarzaniem z dziennika**
-- Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases (z kontrolą rozmiaru pobranego pliku), z samopodmianą pliku `.exe`; stała kopia programu i stały skrót w Menu Start
+- Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases (trzy drogi sprawdzenia, prawdziwa przyczyna porażki, kontrola rozmiaru pobranego pliku), z samopodmianą pliku `.exe`; stała kopia programu i stały skrót w Menu Start
 - Tworzenie punktu przywracania systemu przed zmianami
 - Wbudowane skanowanie Windows Defender i AdwCleaner
 - Opcjonalne skanery na żądanie: **Malwarebytes** i **KVRT** (Kaspersky Virus Removal Tool) — pobierane, uruchamiane i sprzątane automatycznie
@@ -156,6 +182,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 - Strojenie sieci: DNS, DNS over HTTPS, parametry TCP oraz reset proxy
 - Czytelne podpowiedzi przy ponad 50 typowych problemach (brak internetu, wyłączona ochrona systemu, blokada przez antywirus, błędy SFC/DISM i wiele innych)
 - Szczegółowy raport HTML (z awaryjnym trybem `.txt`) po każdym przebiegu, otwierany w programie, z dołączonym raportem wydajności energetycznej Windows (a na laptopach też raportem baterii i uśpienia)
+- **Dziennik diagnostyczny z konsolą silnika** — przy nieoczekiwanym końcu pracy przyczynę widać na samym końcu dziennika
 - Pływająca nakładka z licznikiem kroków, widoczna, gdy okno programu jest zminimalizowane lub nie ma fokusu
 - Blokada uśpienia komputera („keep-awake”) na czas długich operacji
 - Samoinstalacja w Menu Start (aplikacja, skrót do raportów, skrót „Odinstaluj”)
@@ -167,11 +194,11 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 - Windows 10 lub Windows 11
 - Uprawnienia administratora (program sam o nie poprosi przez okno UAC, jeśli ich zabraknie; bez nich nie da się też odczytać temperatury procesora)
 - PowerShell (wbudowany w system — silnik intensywnie z niego korzysta)
-- Połączenie z internetem — potrzebne do sprawdzania aktualizacji, skanów AdwCleaner/Defender, pobierania Malwarebytes/KVRT oraz jednorazowego pobrania biblioteki czujników LibreHardwareMonitor (odczyt temperatur procesora)
+- Połączenie z internetem — potrzebne do sprawdzania aktualizacji, skanów AdwCleaner/Defender, pobierania Malwarebytes/KVRT oraz jednorazowego pobrania biblioteki czujników LibreHardwareMonitor (odczyt temperatur procesora) i, na procesorach AMD Ryzen bez zainstalowanego sterownika, instalatora PawnIO
 
 ## Instalacja i pierwsze uruchomienie
 
-1. Pobierz najnowszy plik `.exe` z zakładki [Releases](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest) i uruchom go z dowolnego folderu.
+1. Pobierz najnowszy plik `.exe` (`CLEANER.by.MAG.v<wersja>.exe`) z zakładki [Releases](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest) i uruchom go z dowolnego folderu.
 2. Jeśli program nie ma uprawnień administratora, pokaże przycisk **Uruchom jako administrator** i poprosi o potwierdzenie w oknie UAC (albo kliknij plik prawym przyciskiem myszy → **Uruchom jako administrator**).
 3. Przy pierwszym uruchomieniu program kopiuje się do `C:\Program Files\CLEANER by MAG\CLEANER by MAG.exe` (nazwa pliku jest zawsze taka sama, bez numeru wersji) i tworzy wpisy w Menu Start (`CLEANER by MAG`): skrót do aplikacji, do folderu raportów oraz **„Odinstaluj”**. Zobaczysz też krótkie okno powitalne z opisem nowej odsłony (pokazuje się tylko raz; później znajdziesz nowości w „O programie” → „Co nowego”).
 4. Kolejne uruchomienia wykonuj ze skrótu w Menu Start — program sam sprawdzi, czy jest aktualny. Skróty (także przypięty do Start) wskazują na stałą kopię, więc pobrany plik możesz usunąć. Uruchomienie nowszego pliku `.exe` (z dowolnej nazwy i folderu) tylko podmienia tę kopię; starszy plik nigdy nie nadpisze nowszej kopii.
@@ -181,7 +208,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 1. **Wybierz tryb** na ekranie startowym (karty: Pełny, Szybki, Własny, Opcje dodatkowe). Karty Pełny i Szybki pokazują na dole datę ostatniego dokończonego przebiegu danego trybu. Przed startem program przypomina, że zostaną zamknięte przeglądarki, a folder `Windows.old` (jeśli istnieje) zostanie trwale usunięty. W pytaniu „Rozpocząć tryb …?” przycisk **„Podgląd”** pokazuje, ile miejsca zwolniłoby czyszczenie — po jego zamknięciu wraca to samo pytanie.
 2. **Obserwuj postęp** na stronie „Postęp”: pierścień pokazuje ogólny postęp, lista pokazuje wszystkie etapy i ich stany, a licznik — „Krok k z N”. Możesz przerwać operację przyciskiem „Przerwij”, ale przerwanie w trakcie pracy może zostawić część ustawień w stanie pośrednim (np. usługi Windows Update), więc zalecane jest dokończenie. Widżet temperatur w pasku bocznym działa przez cały czas.
-3. **Przeczytaj wynik**: ekran „Wszystko gotowe” lub „Zakończono z uwagami” pokazuje wykonane i pominięte operacje, elementy wymagające restartu, błędy, czas, kartę temperatur oraz kartę „Zwolniono”. Panel „Uwagi i podpowiedzi” tłumaczy, co oznacza każdy problem i co z nim zrobić — najechanie na operację z dzwonkiem przewija go do właściwej uwagi. Każde podsumowanie trafia też do strony „Historia”.
+3. **Przeczytaj wynik**: ekran „Wszystko gotowe” lub „Zakończono z uwagami” pokazuje wykonane i pominięte operacje, elementy wymagające restartu, błędy, czas, kartę temperatur oraz kartę „Zwolniono”. Kafelki liczników (Wykonane / Pominięte / Do restartu / Błędy) są przyciskami: kliknięcie zostawia na liście i w panelu uwag tylko operacje danej kategorii (można zaznaczyć kilka, ponowne kliknięcie odznacza). Panel „Uwagi i podpowiedzi” tłumaczy, co oznacza każdy problem i co z nim zrobić — najechanie na operację z dzwonkiem przewija go do właściwej uwagi. Każde podsumowanie trafia też do strony „Historia”.
 4. **Zrestartuj komputer** przyciskiem na ekranie podsumowania, jeśli program to zaleca (czyszczenie zmieniło system albo Windows czeka na restart).
 
 Podczas operacji pozostałe pozycje menu są zablokowane, a pasek boczny pokazuje, że operacja trwa. Przycisk „Dziennik” i zakładka „Dziennik” na stronie „Postęp” pozwalają zajrzeć w szczegóły techniczne bez opuszczania programu.
@@ -190,8 +217,8 @@ Podczas operacji pozostałe pozycje menu są zablokowane, a pasek boczny pokazuj
 
 | Tryb | Opis |
 |---|---|
-| **Pełny** (zalecany) | wszystkie 38 kroków, plus odczyt temperatur na końcu |
-| **Szybki** (na co dzień) | 29 kroków: pomija skany antywirusowe, naprawę systemu (DISM/SFC), czyszczenie starych sterowników, naprawę Windows Update, optymalizację dysku C: i krok odczytu temperatur; krok prywatności i reklam (bez wstępnej kontroli plików systemowych) wykonuje |
+| **Pełny** (zalecany) | wszystkie 38 kroków |
+| **Szybki** (na co dzień) | 29 kroków: pomija skany antywirusowe, naprawę systemu (DISM/SFC), czyszczenie starych sterowników, naprawę Windows Update i optymalizację dysku C:; krok prywatności i reklam (bez wstępnej kontroli plików systemowych) wykonuje |
 | **Własny** (ty decydujesz) | wykonuje wyłącznie zaznaczone kategorie (lista niżej) — na stronie postępu widzisz tylko je |
 | **Opcje dodatkowe** | osobna strona z Malwarebytes, KVRT, aktualizacją programów oraz narzędziami tylko do odczytu (podgląd przed czyszczeniem, zajęte miejsce, autostart), uruchamiana niezależnie od czyszczenia |
 
@@ -239,7 +266,7 @@ Poniższe pozycje odpowiadają krokom pokazywanym na liście postępu — częś
 24. Optymalizacja dostarczania aktualizacji, wyłączenie śledzenia i sugestii, blokowanie reklam i cichych instalacji, wyłączenie historii aktywności, Recall i Copilot oraz wstępne sprawdzenie plików systemowych (SFC)
 25. DISM RestoreHealth (naprawa obrazu systemu)
 26. SFC — kontrola plików systemowych
-27. Oczyszczenie bazy składników (porządki w WinSxS)
+27. Oczyszczenie bazy składników (porządki w WinSxS) — gdy system czeka na restart, krok wykrywa to od razu i kończy się wynikiem „Do restartu”
 28. Głęboka naprawa i reset Windows Update
 29. Optymalizacja Funkcji Windows i logi CBS
 30. Trwałe usunięcie folderu `Windows.old` (jeśli istnieje)
@@ -252,9 +279,11 @@ Poniższe pozycje odpowiadają krokom pokazywanym na liście postępu — częś
 37. Diagnostyka stanu systemu (na laptopach dodatkowo raport kondycji baterii i raport uśpienia, dołączane do raportu końcowego)
 38. Finalizacja i raport — zbędne programy startowe, cache ikon/miniatur/czcionek, naprawa Eksploratora Windows, baza WMI oraz zapis raportu
 
-Po kroku 38 tryb Pełny wykonuje jeszcze odczyt temperatur procesora i karty graficznej — bierze bieżące wartości z widżetu (wynik trafia na ekran podsumowania i do raportu).
+W oknie programu temperatury nie mają osobnego kroku: statystyki z całego przebiegu (najniższa, najwyższa, średnia) zbiera widżet i trafiają one na ekran podsumowania i do raportu. Dodatkowy, końcowy odczyt temperatur wykonuje tylko silnik uruchamiany z konsoli (bez okna programu).
 
-**Krok 12 (zdrowie dysku)** sprawdza dysk systemowy: zużycie SSD, rezerwę, realokowane i oczekujące sektory, temperaturę, czas pracy i błędy nośnika. Gdy wszystko jest w porządku, w „Uwagach i podpowiedziach” pojawia się zielona karta „Dysk jest w dobrym stanie” z odczytanymi wartościami. Gdy coś budzi niepokój (m.in. zużycie SSD od 80%, realokowane lub oczekujące sektory, stan „Warning” / „Unhealthy” według Windows, przewidywana awaria), dostajesz osobną uwagę z radą o kopii ważnych plików. Jeśli odczyt się nie uda (np. maszyna wirtualna, kontroler RAID, część dysków USB), pojawia się informacyjna uwaga, która nie psuje wyniku.
+**Krok 12 (zdrowie dysku)** sprawdza dysk systemowy: zużycie SSD, rezerwę, realokowane i oczekujące sektory, temperaturę, czas pracy i błędy nośnika. Gdy wszystko jest w porządku, w „Uwagach i podpowiedziach” pojawia się zielona karta „Dysk jest w dobrym stanie” z odczytanymi wartościami (w tym z godzinami pracy dysku NVMe). Gdy coś budzi niepokój (m.in. zużycie SSD od 80%, realokowane lub oczekujące sektory, stan „Warning” / „Unhealthy” według Windows, przewidywana awaria), dostajesz osobną uwagę z radą o kopii ważnych plików. Jeśli odczyt się nie uda (np. maszyna wirtualna, kontroler RAID, część dysków USB), pojawia się informacyjna uwaga, która nie psuje wyniku.
+
+**Krok 27 (porządki w składnikach systemu)**: przed uruchomieniem DISM silnik sprawdza, czy system czeka na restart (plik `WinSxS\pending.xml` albo klucz `RebootPending`). Jeśli tak, krok kończy się od razu wynikiem „Do restartu” (zamiast czekać do 10 minut na DISM), a program proponuje restart komputera.
 
 </details>
 
@@ -268,16 +297,24 @@ Po kroku 38 tryb Pełny wykonuje jeszcze odczyt temperatur procesora i karty gra
 | pomarańczowy | od 65 °C | od 60 °C |
 | czerwony | od 80 °C | od 75 °C |
 
-Brak odczytu jest szary. Kliknięcie widżetu wstrzymuje i wznawia odczyt, a w podpowiedzi widać źródło wartości oraz — gdy czegoś brakuje — przyczynę (np. brak uprawnień administratora, nieudane załadowanie biblioteki czujników, procesor wykryty bez udostępnionej temperatury).
+Brak odczytu jest szary. Kliknięcie widżetu wstrzymuje i wznawia odczyt, a w podpowiedzi widać źródło wartości oraz — gdy czegoś brakuje — przyczynę (np. brak uprawnień administratora, nieudane załadowanie biblioteki czujników, brak sterownika PawnIO, procesor wykryty bez udostępnionej temperatury).
 
-**Skąd pochodzą odczyty** (źródła są sprawdzane po kolei, a każdy odczyt trafia przez test sensowności; wartości spoza zakresu 1–125 °C są odrzucane):
+**Skąd pochodzą odczyty** (źródła są sprawdzane po kolei, a każdy odczyt trafia przez test sensowności; wartości spoza zakresu, w tym zerowe i od 125 °C wzwyż, są odrzucane):
 
-- **karta graficzna**: NVML (biblioteka sterownika NVIDIA) → LibreHardwareMonitor (AMD / Intel) → `nvidia-smi`,
+- **karta graficzna**: NVML (biblioteka sterownika NVIDIA) → LibreHardwareMonitor (AMD / Intel) → `nvidia-smi`; zintegrowana grafika Radeon (APU) nie ma własnego czujnika, więc pokazuje temperaturę tej samej kostki co procesor,
 - **procesor**: LibreHardwareMonitor (Package / Tdie / Tctl) → strefy termiczne ACPI (wartość przybliżona).
 
 Biblioteka LibreHardwareMonitor jest pobierana raz do trwałego folderu, a proces pomocniczy działa przez cały czas pracy widżetu.
 
-**Karta „Temperatury” w podsumowaniu** to jedna cienka linia: **Temperatury  CPU X  GPU X** — średnia z całego przebiegu, każda wartość w kolorze progu (gdy nie ma statystyk, pokazywany jest odczyt z kroku „Temperatury”). Mała ikona „i” na końcu linii (pulsuje tylko do pierwszego najechania) podpowiada, że **po najechaniu na kartę** otwiera się duży dymek ze szczegółami: najniższa i najwyższa temperatura z godziną pomiaru, średnia z liczbą odczytów, okres pomiarów i legenda kolorów. Dymek ma co najmniej szerokość karty i jest tak szeroki, żeby legenda mieściła się w jednej linii. Gdy nie uda się odczytać ani temperatury procesora, ani karty graficznej, karty nie ma wcale.
+**Procesory AMD Ryzen i sterownik PawnIO.** Na Ryzenach LibreHardwareMonitor czyta temperaturę przez sterownik PawnIO. Gdy go w systemie nie ma, program:
+
+- pobiera oficjalny instalator PawnIO (raz, do `Tools\PawnIO`) i sprawdza jego skrót SHA256,
+- instaluje sterownik po cichu na czas działania programu i usuwa go po zamknięciu (także po awaryjnym zamknięciu — pilnuje tego ukryty „stróż”, a po awarii sprząta następne uruchomienie),
+- **nie dotyka** sterownika, jeśli zainstalowałeś go sam.
+
+Wymaga to uprawnień administratora. Instalowanie sterownika wyłączysz pustym plikiem `Tools\PawnIO\disabled.txt`.
+
+**Karta „Temperatury” w podsumowaniu** to jedna cienka linia: **Temperatury  CPU X  GPU X** — średnia z całego przebiegu, każda wartość w kolorze progu. Mała ikona „i” na końcu linii (pulsuje tylko do pierwszego najechania) podpowiada, że **po najechaniu na kartę** otwiera się duży dymek ze szczegółami: tabela z trzema kolumnami (**Najniższa, Najwyższa, Średnia**), godziny pomiarów, liczba odczytów, okres pomiarów i legenda kolorów. Dymek ma szerokość karty (legenda zawija się w razie potrzeby do dwóch linii), a w najwęższym oknie wystaje po równo z obu stron. Karta opiera się wyłącznie na pomiarach zebranych w trakcie całego przebiegu — gdy ich nie ma (np. nie udało się odczytać ani temperatury procesora, ani karty graficznej), karty nie ma wcale.
 
 Statystyki są zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Opcjach dodatkowych”. Przywracanie ich nie liczy. Zapisują się w historii podsumowań oraz w dzienniku (sekcja „Temperatury w trakcie przebiegu”).
 
@@ -311,6 +348,7 @@ Trzy poniższe opcje działają w oknie programu, bez udziału silnika czyszczen
 - **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie wyszukuje dostępne aktualizacje i **pokazuje je na liście do wyboru** (nazwa, ID pakietu, wersja zainstalowana → dostępna; domyślnie wszystkie zaznaczone, z przyciskami „Zaznacz wszystko” i „Odznacz wszystko”). Dopiero po kliknięciu **„Aktualizuj zaznaczone”** program aktualizuje wybrane programy po kolei, każdy osobno, a „Pomiń aktualizację” kończy krok bez ruszania czegokolwiek. Postęp pokazuje „k z N” i nazwę bieżącego programu, a na końcu jest podsumowanie (zaktualizowano / nie udało się / nie wybrano). Każdy program ma własny kafelek (w kolejce → pobieranie → instalowanie → gotowe) z wersją obecną i dostępną oraz paskiem pobierania, w którym procent jest odczytywany z usługi Delivery Optimization (a gdy jest niedostępna — z rozmiaru pobieranego pliku).
   - Jeśli program nie zostanie zaktualizowany, kafelek wyjaśnia dlaczego (np. program jest uruchomiony, brak pasującej aktualizacji, wymagana ręczna reinstalacja albo błąd pobierania).
   - **Programy przenośne** (np. yt-dlp, FFmpeg) zmienione poza wingetem — np. przez własną samoaktualizację — są aktualizowane po jednorazowej ponownej próbie w trybie wymuszonym; skrót instalatora jest nadal weryfikowany. Jeśli i to się nie uda, program podpowiada zamknięcie aplikacji lub ponowną instalację.
+  - **Microsoft Edge WebView2 Runtime**: gdy instalator zakończy się błędem z zakresu `0x80040700`–`0x800407FF`, program czeka 20 s i ponawia próbę raz. Komunikat podaje właściwą nazwę pakietu i kod instalatora oraz radzi restart komputera.
   - Gdy winget nie znajduje żadnej aktualizacji, ekran wyniku pokazuje **„Aktualizacja programów: wszystkie aktualne”** wraz z uwagą informacyjną (nie zmienia ona podsumowania „Wszystko gotowe”).
 - **KVRT (Kaspersky Virus Removal Tool)** — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi (folder `KVRT_Data` jest sprzątany, chyba że na komputerze wykryto zainstalowany pełny produkt Kaspersky — wtedy zostaje nietknięty). Skan, który nie zakończy się w ciągu 90 minut, jest przerywany, a wynik skanu można obejrzeć przyciskiem „Pokaż wynik skanu”.
 
@@ -321,19 +359,23 @@ Trzy poniższe opcje działają w oknie programu, bez udziału silnika czyszczen
 - Po każdym przebiegu zapisywany jest raport:
   `Dokumenty\CLEANER by MAG\Raport_<data>_<godzina>.html` — czytelny, stylizowany raport HTML. Jeśli jego wygenerowanie się nie powiedzie, program automatycznie zapisuje w zamian awaryjną wersję `Raport_<data>_<godzina>.txt`.
 - Strona **„Raporty”** w programie pokazuje listę wszystkich zapisanych raportów (data i godzina, rozmiar) z przyciskami „Otwórz”, „Wersja TXT” i „Otwórz folder”. Raport otwiera się w oknie aplikacji; z podglądu można go nadal otworzyć w przeglądarce.
-- Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca na dysku C:, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD` / `REST` — wymaga restartu). Jeśli krok 36 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu, a w programie otwierasz ją przyciskiem „Pokaż listę”.
+- Raport zawiera m.in.: datę i tryb, czas trwania, ilość zwolnionego miejsca, dane sprzętowe (CPU/GPU/dysk), wersję i build Windows oraz status każdej operacji (`OK` / `SKIP` / `BŁĄD` / `REST` — wymaga restartu). Jeśli krok 36 (audyt) znajdzie pozycje do przejrzenia, ich lista trafia do tego samego raportu, a w programie otwierasz ją przyciskiem „Pokaż listę”.
 - Na końcu raportu dołączany jest raport wydajności energetycznej Windows (`powercfg /energy`), generowany dopiero po zakończeniu pracy i przywróceniu oryginalnych ustawień uśpienia/wygaszania ekranu, dzięki czemu odzwierciedla rzeczywisty stan systemu. Gdy polecenie nie utworzy pliku, program ponawia próbę w kolejnych folderach, a jeśli i to się nie uda, dodaje do raportu sekcję zastępczą „Zasilanie” z komunikatami i podstawowymi danymi o planie zasilania. Na laptopach dołączane są też raport kondycji baterii i raport uśpienia.
 - Skrót **„Raporty”** w Menu Start prowadzi bezpośrednio do folderu z raportami.
 - Silnik nadal generuje historię ostatnich 20 sesji (ile miejsca zwalniano i ile trwało czyszczenie) na podstawie zapisanych raportów.
-- **Dziennik** (`.devlog.txt`) otwierasz w programie przyciskiem „Dziennik” w „O programie”. Jest zapisywany podczas czyszczenia i kasowany przy starcie następnego przebiegu, więc zawsze dotyczy ostatniej operacji. Nagłówek dziennika podaje wersję i dokładną kompilację programu.
+- **Dziennik** (`.devlog.txt`) otwierasz w programie przyciskiem „Dziennik” w „O programie”. Jest zapisywany podczas czyszczenia, a jego rozmiar jest ograniczony do 1 MB (najstarsze wpisy są przycinane). Zawiera m.in. wpisy silnika, sekcję „Sprawdzanie wersji (GitHub)” i — od wersji 2.1.4 — każdą linię konsoli silnika (`[KONSOLA]`, razem z komunikatami cmd.exe). Gdy silnik skończy pracę nieoczekiwanie, na końcu dziennika jest kod wyjścia i ostatnie 30 linii konsoli (`[KONSOLA-KONIEC]`), więc przyczynę widać także w paczce zgłoszenia. Nagłówek dziennika podaje wersję i dokładną kompilację programu.
 
 ### Karta „Zwolniono”
 
-Po przebiegu w trybie Pełnym, Szybkim lub Własnym podsumowanie pokazuje kartę **„Zwolniono X GB”** obok karty „Temperatury” (pod kafelkiem „Błędy”). Program mierzy wolne miejsce na dysku systemowym na początku i na końcu przebiegu, a różnica nigdy nie jest poniżej 0. To nie jest dokładny bilans czyszczenia: w tym czasie na dysku pracuje też Windows i inne programy, więc wynik jest orientacyjny. Gdy pomiaru nie ma (Opcje dodatkowe, Przywracanie, starsze wpisy historii), karty nie ma, a temperatury zajmują całą szerokość.
+Po przebiegu w trybie Pełnym, Szybkim lub Własnym podsumowanie pokazuje kartę **„Zwolniono X GB”** obok karty „Temperatury” (pod kafelkiem „Błędy”). Od wersji 2.1.4 to **suma rozmiaru faktycznie usuniętych plików**: silnik mierzy rozmiar bezpośrednio przed i po każdym usunięciu i sumuje to, co zniknęło, więc pliki zablokowane i nieusunięte się nie liczą. Dla Oczyszczania dysku (`cleanmgr`) i DISM `/StartComponentCleanup`, których celów nie widać, liczony jest przyrost wolnego miejsca w trakcie tej jednej operacji (od 20 MB). Nie liczą się pliki własne programu (AdwCleaner, KVRT, Malwarebytes, LibreHardwareMonitor, raporty) ani końcowe sprzątanie Temp.
+
+- **Szczegóły w Dzienniku**: `[ZWOLNIONO-POZ]` (co ile dało, od 1 MB), `[ZWOLNIONO]` (suma) i `[ZWOLNIONO-NETTO]` (dawna różnica wolnego miejsca).
+- **To rozmiar logiczny plików**, nie „rozmiar na dysku”, więc realnie zwolnione miejsce bywa większe. Suma nie jest zmianą zajętości dysku: może pokazać np. 1 GB, gdy wolne miejsce w tym samym czasie spadło, bo Windows tworzy w trakcie przebiegu punkt przywracania i inne dane.
+- Gdy silnik nie poda sumy, karta wraca do różnicy wolnego miejsca na dysku systemowym przed i po przebiegu (nigdy poniżej 0). Gdy pomiaru nie ma (Opcje dodatkowe, Przywracanie, starsze wpisy historii), karty nie ma, a temperatury zajmują całą szerokość.
 
 ### Historia podsumowań
 
-Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pełny, Szybki, Własny i Opcje dodatkowe), razem ze statystykami temperatur, zwolnionym miejscem i powiązaniami operacji z uwagami. Przycisk „Pokaż” otwiera wybrane podsumowanie w tym samym widoku co zaraz po przebiegu (tylko do odczytu), a pojedyncze wpisy lub całą historię można usunąć („Wyczyść historię”). Program przechowuje ostatnie 100 wpisów w pliku `Historia_podsumowan.json` w folderze raportów (`Dokumenty\CLEANER by MAG`). Usunięcie historii nie kasuje raportów z folderu Dokumenty.
+Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pełny, Szybki, Własny i Opcje dodatkowe), razem ze statystykami temperatur, zwolnionym miejscem i powiązaniami operacji z uwagami. Przycisk „Pokaż” otwiera wybrane podsumowanie w tym samym widoku co zaraz po przebiegu (tylko do odczytu, z kafelkami filtrującymi listę), a pojedyncze wpisy lub całą historię można usunąć („Wyczyść historię”). Program przechowuje ostatnie 100 wpisów w pliku `Historia_podsumowan.json` w folderze raportów (`Dokumenty\CLEANER by MAG`). Usunięcie historii nie kasuje raportów z folderu Dokumenty.
 
 - **Importuj** — wczytuje podsumowania z dziennika (`.txt`), paczki zgłoszenia (`.zip`) lub pliku `podsumowanie.json` (można zaznaczyć kilka plików naraz) i dopisuje je do historii **na stałe**. Zaimportowane wpisy mają inny odcień i ikonę „i”. Podsumowania, które już są w historii, nie są dublowane, a dwa różne przebiegi o tym samym czasie zakończenia nie są traktowane jako duplikat. Jedno znalezione podsumowanie otwiera się od razu. To przydatne m.in. przy analizie zgłoszeń przysłanych przez innych użytkowników.
 - **Odtwórz z dziennika** — dopisuje do historii podsumowania zapisane w bieżącym dzienniku, których w niej brakuje. Istniejących wpisów nie zmienia i można go klikać wielokrotnie. Odtworzy tylko tyle, ile jest w dzienniku (dziennik jest przycinany do 1 MB, a starsze wersje programu nie zapisywały w nim podsumowań).
@@ -344,6 +386,7 @@ Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pe
 Przycisk **„Zgłoś problem”** w pasku bocznym otwiera okno, w którym opisujesz, co poszło nie tak (na którym kroku, co się stało, czego się spodziewałeś) i wybierasz, co dołączyć do zgłoszenia:
 
 - **zrzut ekranu okna programu** (z podglądem),
+- **własny obrazek (dodatkowo)** — do 3 obrazków (PNG, JPG, BMP, GIF, WEBP), np. zrzut innego okna albo komunikatu o błędzie; miniatury widać w oknie, a „Usuń” czyści wybór,
 - **dziennik** z ostatniego przebiegu,
 - **podsumowanie wyniku** (dane ekranu wyniku, żeby autor mógł go odtworzyć),
 - **informacje o systemie** (wersja i kompilacja programu, wersja Windows, architektura komputera i informacja, czy program działa w emulacji, uprawnienia administratora, tryb ostatniego przebiegu oraz — gdy widżet nie widzi temperatury procesora — jedna linia diagnostyczna z przyczyną).
@@ -351,11 +394,15 @@ Przycisk **„Zgłoś problem”** w pasku bocznym otwiera okno, w którym opisu
 Pozycji, których jeszcze nie ma (np. dziennik przed pierwszym przebiegiem), nie da się wybrać. Z zaznaczonych elementów program składa **paczkę ZIP** i zapisuje ją w folderze `Dokumenty\CLEANER by MAG\Zgloszenia`. Przyciskiem **„Wyślij do autora”** wysyłasz ją bez zakładania konta i bez logowania, opcjonalnie z kontaktem do siebie, jeśli chcesz dostać odpowiedź. Każde zgłoszenie dostaje **sześcioznakowy numer** (np. `AB12CD`), który jest w nazwie pliku ZIP, w notatce w środku i w wiadomości u autora. Zgłoszenia nie trafiają na GitHub.
 
 - **Prywatność**: nic nie wychodzi z komputera automatycznie, tylko po kliknięciu „Wyślij do autora”. Przełącznik **„Ukryj nazwę użytkownika”** (domyślnie włączony) zamienia nazwę użytkownika Windows w dzienniku i podsumowaniu na `<uzytkownik>`, a nazwę komputera na `<komputer>`. Po jego wyłączeniu okno ostrzega, że nazwa zostanie w paczce w niezmienionej postaci, a zrzut ekranu pokazuje to, co widać w oknie.
+- **Własne obrazki**: program wczytuje obraz i zapisuje go od nowa, więc znikają metadane (m.in. lokalizacja GPS z EXIF) i nazwa pliku źródłowego. **Zawartość obrazka nie jest zmieniana**, więc nazwa użytkownika widoczna na zrzucie nie jest ukrywana — pod listą jest o tym ostrzeżenie. Obrazek po przygotowaniu może mieć do 3 MB (większy jest zmniejszany), plik źródłowy do 60 MB, a całość paczki mieści się w limicie wysyłki 15 MB. GIF-y animowane trafiają jako pierwsza klatka. Obrazki są w paczce jako `obraz_1.png`, `obraz_2.jpg` itd. i są wymienione w notatce.
 - **Wygoda**: niewysłany opis jest zapamiętywany, więc po zamknięciu okna nie musisz pisać go od nowa. Błąd zapisu lub wysyłki kończy się komunikatem, a nie awarią programu.
 
 ## Automatyczna aktualizacja
 
-- Program sprawdza w tle, czy w repozytorium [`dineromagiero/CLEANER-by-MAG`](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest) jest nowsze wydanie. Wskaźnik w lewym dolnym rogu paska bocznego pokazuje stan: łączenie, brak połączenia, najnowsza wersja albo dostępna aktualizacja.
+- Program sprawdza w tle, czy w repozytorium [`dineromagiero/CLEANER-by-MAG`](https://github.com/dineromagiero/CLEANER-by-MAG/releases/latest) jest nowsze wydanie. Wskaźnik w lewym dolnym rogu paska bocznego pokazuje stan: łączenie, problem ze sprawdzeniem (z prawdziwą przyczyną), najnowsza wersja albo dostępna aktualizacja.
+- **Trzy drogi sprawdzenia**: API GitHuba, strona `github.com/<repo>/releases/latest` (bez API, daje sam numer wersji) i PowerShell (ten sam sposób co silnik: magazyn certyfikatów Windows, proxy systemowe z PAC i logowaniem). Każda ma własny limit czasu (10 s, 6 s i 25 s), a droga, która nie ma szans, jest pomijana.
+- **Prawdziwa przyczyna zamiast „Brak połączenia”**: wskaźnik i „O programie” rozróżniają m.in. brak sieci, błąd DNS, przekroczenie czasu (zapora, antywirus, VPN), błąd certyfikatu, limit zapytań GitHuba, brak wydania i awarię serwera GitHuba („GitHub niedostępny · spróbuj później”). Szczegóły każdej próby (a po porażce także wynik sondy sieci: DNS, czas połączenia TCP, wersja TLS i wystawca certyfikatu) trafiają do Dziennika, do sekcji „Sprawdzanie wersji (GitHub)”.
+- **Automatyczne ponowienie**: po błędzie serwera, przekroczeniu czasu, braku sieci albo błędzie DNS program sprawdza wersję ponownie sam za 5 minut (najwyżej 3 razy, tylko gdy wskaźnik nadal pokazuje błąd i nic się nie pobiera).
 - Gdy jest nowsza wersja, program pyta, czy ją zainstalować. Przy „Tak” pobiera nowy plik `.exe` (obok bieżącego, z paskiem postępu), zamyka się, podmienia plik za pomocą ukrytego pomocnika i uruchamia nową wersję. Wybierając „Nie”, możesz zaktualizować później, klikając wskaźnik aktualizacji.
 - Po zwykłej aktualizacji (a także po uruchomieniu nowej kompilacji programu) obok numeru wersji pojawia się ikona „Co nowego” — znika po otwarciu okna nowości. Przy świeżej instalacji ikony nie ma, bo nowości są wtedy w oknie powitalnym.
 - Jeśli samodzielna podmiana nie jest możliwa (np. wydanie zawiera tylko archiwum `.zip`), plik zostaje zapisany w folderze „Pobrane” albo otwierana jest strona wydania.
@@ -384,6 +431,7 @@ Pełne odinstalowanie usuwa też wpisy w Harmonogramie zadań i w rejestrze doda
 - Odczyt zdrowia dysku (SMART), podgląd przed czyszczeniem i zajęte miejsce są **tylko do odczytu** — niczego nie usuwają ani nie zmieniają w systemie. Zarządzanie autostartem wyłącza programy bez kasowania ich wpisów, więc każdą zmianę można cofnąć. Progi ostrzeżeń SMART są ustawione „na wyczucie” i mogą być jeszcze korygowane na podstawie zgłoszeń.
 - Po zakończeniu wszystkich kroków program uruchamia krótką (ok. 10 sekund) diagnostykę wydajności energetycznej Windows (`powercfg /energy`) na potrzeby raportu końcowego — to nieszkodliwy, wyłącznie odczytowy pomiar.
 - Odczyt temperatur korzysta z biblioteki LibreHardwareMonitor pobieranej jednorazowo z internetu; jeśli Windows Defender ją zablokuje, widżet podaje przyczynę zamiast pustego pola.
+- Na procesorach AMD Ryzen program może na czas swojego działania zainstalować sterownik **PawnIO** (oficjalny instalator, weryfikacja SHA256) i usunąć go po zamknięciu. Jeśli sterownik był już w systemie, program go nie zmienia. Możesz to wyłączyć plikiem `Tools\PawnIO\disabled.txt`.
 - Aplikacja nie jest podpisana cyfrowo — Windows SmartScreen lub antywirus może wyświetlić ostrzeżenie przy pierwszym uruchomieniu. Pobieraj ją wyłącznie z oficjalnego repozytorium.
 - Zamknij ważne, niezapisane prace przed uruchomieniem — zwłaszcza przed skanem KVRT (patrz wyżej) i przed ewentualnym restartem na końcu przebiegu. Zamknięcie okna w trakcie czyszczenia pyta o potwierdzenie, bo przerwanie operacji może zostawić część ustawień w stanie pośrednim.
 - Program działa wyłącznie w Windows 10 i 11 — korzysta z narzędzi systemowych (SFC, DISM, PowerShell).
@@ -399,4 +447,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **2.1.3** (07/11/2026)
+Autor: **MAG** | Wersja: **2.1.4** (08/11/2026)
