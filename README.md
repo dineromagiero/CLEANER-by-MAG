@@ -5,22 +5,38 @@
 <h1 align="center">CLEANER by MAG</h1>
 
 <p align="center">
-  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1.4-blue">
+  <img alt="Wersja" src="https://img.shields.io/badge/wersja-2.1.5-blue">
   <img alt="Platforma" src="https://img.shields.io/badge/platforma-Windows%2010%20%2F%2011-0078D6">
   <img alt="Technologia" src="https://img.shields.io/badge/aplikacja-Python%20%2B%20Qt%20%2B%20PowerShell-lightgrey">
 </p>
 
 **Aplikacja do głębokiego czyszczenia, naprawy, optymalizacji i zabezpieczania systemu Windows** — z przejrzystym oknem zamiast konsoli, temperaturami na żywo, podglądem tego, ile miejsca zwolni czyszczenie, odczytem zdrowia dysku, samoaktualizacją, raportami i historią podsumowań otwieranymi w programie, zgłaszaniem problemów prosto z aplikacji oraz opcjonalnymi skanerami antywirusowymi. Dostarczana jako jeden plik `.exe`.
 
-Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, 2.0 i 2.1.x, więc kroki i ich kolejność pozostają takie, jakie znasz (w 2.1.3 doszedł jeden nowy, tylko odczytowy krok: zdrowie dysku; wersja 2.1.4 nie zmienia liczby kroków).
+Za całe czyszczenie odpowiada ten sam sprawdzony silnik co w wersjach 1.x, 2.0 i 2.1.x, więc kroki i ich kolejność pozostają takie, jakie znasz (w 2.1.3 doszedł jeden nowy, tylko odczytowy krok: zdrowie dysku; wersje 2.1.4 i 2.1.5 nie zmieniają liczby kroków).
 
 <p align="center">
-  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/a162cbfa-bd66-4694-a5b5-d6cf56dad432" width="760" />
+  <img alt="Ekran startowy CLEANER by MAG z wyborem trybu" src="https://github.com/user-attachments/assets/9cdafa9c-92a8-4fe1-9b35-3bf0bb05430e" width="760" />
 <br>
   <em>Ekran startowy: wybór trybu czyszczenia (Windows 10).</em>
 </p>
 
-## Co nowego w wersji 2.1.4
+## Co nowego w wersji 2.1.5
+
+Wersja 2.1.5 to **nowa strona „Narzędzia”** (dawne „Opcje dodatkowe”) z działami i przyciskami, **jedna temperatura przy zintegrowanej karcie graficznej** oraz poprawki okna **„Zgłoś problem”**: przeciąganie plików, wklejanie obrazów, niskie pole opisu i przycisk „Dodaj”, który wreszcie działa. Silnik nadal ma **38 kroków** (tryb Szybki: 29).
+
+- **Strona „Narzędzia” (dawniej „Opcje dodatkowe”)**: pozycje są podzielone na trzy działy z nagłówkami: **Bezpieczeństwo** (Malwarebytes, Kaspersky KVRT), **Programy i uruchamianie** (aktualizacja programów, autostart) oraz **Tylko podgląd, nic nie zmienia** (podgląd przed czyszczeniem, zajęte miejsce na dysku). Nazwy są prostsze („Skan antywirusowy – Malwarebytes”, „Autostart – programy włączane razem z Windows”), a zamiast plakietek i strzałki każda pozycja ma przycisk z czasownikiem: „Uruchom”, „Sprawdź” albo „Otwórz”. Ikony mają kolor działu (czerwone, pomarańczowe, zielone), autostart ma nową ikonę zasilania, a opis pod tytułem jest krótki: „Kliknij wybraną pozycję, a ruszy od razu!”. Nowa nazwa obowiązuje w menu bocznym, na ekranie Start, w Historii, w Dzienniku i w komunikatach programu.
+- **Jedna temperatura przy zintegrowanej grafice**: gdy karta graficzna jest zintegrowana z procesorem i nie ma własnego czujnika (np. Intel HD / UHD / Iris, część APU AMD), program nie pokazuje już „CPU 48 °C | GPU —”. Widżet w pasku bocznym, karta „Temperatury” w podsumowaniu, dymek, Historia i Dziennik pokazują **jedną wartość „CPU i GPU”**. Komputery z kartą dedykowaną albo ze zintegrowaną kartą, która ma własny czujnik, pokazują CPU i GPU osobno jak dotąd.
+- **Przeciąganie i wklejanie obrazków w „Zgłoś problem”**: własne obrazki dodasz przyciskiem „Dodaj”, **przeciągając plik** na okno zgłoszenia albo **wklejając obraz ze schowka** (Ctrl+V w polu opisu, np. zrzut z Win+Shift+S). Pliki ponad limit trzech obrazków nie znikają po cichu, program mówi, ile pominął.
+- **Niskie pole opisu w „Zgłoś problem”**: po otwarciu okna pole ma ok. 3 wierszy i nie ma paska przewijania, a rośnie razem z tekstem (do ok. 300 px, potem dostaje własny pasek). Po skasowaniu tekstu wraca do małego rozmiaru.
+- **Okno „Zgłoś problem” mieści się na niskich ekranach** (np. laptop 1366 × 768): zawartość się przewija, a nagłówek i przyciski „Anuluj / Zapisz / Wyślij” są zawsze widoczne.
+- **Poprawki błędów**:
+  - przycisk „Dodaj” (własny obrazek) w „Zgłoś problem” nic nie robił od wersji 2.1.4,
+  - napisy w oknie „Zgłoś problem” wchodziły na siebie na niskim oknie.
+
+Pełna lista zmian: [wydanie 2.1.5 na GitHubie](https://github.com/dineromagiero/CLEANER-by-MAG/releases/tag/2.1.5).
+
+<details>
+<summary>Co wprowadziła wersja 2.1.4 (kliknij, aby rozwinąć)</summary>
 
 Wersja 2.1.4 to **temperatura procesora AMD Ryzen bez ręcznej instalacji sterownika**, **dokładna karta „Zwolniono”**, **własne obrazki w „Zgłoś problem”** i **filtrowanie wyniku kafelkami**. Naprawia też awarię silnika w kroku 10, fałszywe „Do restartu” w kroku 27 oraz błąd „Brak połączenia” przy sprawdzaniu wersji. Silnik nadal ma **38 kroków** (tryb Szybki: 29).
 
@@ -41,6 +57,8 @@ Wersja 2.1.4 to **temperatura procesora AMD Ryzen bez ręcznej instalacji sterow
   - okno powitalne na niskich ekranach ma przewijaną listę, a komunikaty mówią o „Dzienniku” zamiast o pliku `.devlog.txt`.
 
 Pełna lista zmian: [wydanie 2.1.4 na GitHubie](https://github.com/dineromagiero/CLEANER-by-MAG/releases/tag/2.1.4).
+
+</details>
 
 <details>
 <summary>Co wprowadziła wersja 2.1.3 (kliknij, aby rozwinąć)</summary>
@@ -132,7 +150,7 @@ CLEANER by MAG przestał być skryptem `.bat` w oknie konsoli i stał się pełn
 
 ## Spis treści
 
-- [Co nowego w wersji 2.1.4](#co-nowego-w-wersji-214)
+- [Co nowego w wersji 2.1.5](#co-nowego-w-wersji-215)
 - [O programie](#o-programie)
 - [Funkcje](#funkcje)
 - [Wymagania](#wymagania)
@@ -141,7 +159,7 @@ CLEANER by MAG przestał być skryptem `.bat` w oknie konsoli i stał się pełn
 - [Tryby pracy](#tryby-pracy)
 - [Co dokładnie robi tryb Pełny](#co-dokładnie-robi-tryb-pełny)
 - [Temperatury](#temperatury)
-- [Opcje dodatkowe](#opcje-dodatkowe)
+- [Narzędzia](#narzędzia)
 - [Raporty i historia czyszczeń](#raporty-i-historia-czyszczeń)
 - [Zgłaszanie problemów](#zgłaszanie-problemów)
 - [Automatyczna aktualizacja](#automatyczna-aktualizacja)
@@ -159,17 +177,17 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 - **38 kroków** czyszcząco-naprawczo-optymalizacyjnych i zabezpieczających w jednym przebiegu (pełna lista niżej)
 - Graficzny interfejs z postępem krok po kroku, pierścieniem postępu i kartami uwag
-- 3 tryby czyszczenia (Pełny / Szybki / Własny) oraz osobna strona Opcji dodatkowych, z datą ostatniego dokończonego testu przy trybach Pełny i Szybki oraz ostatniego skanu przy Malwarebytes i KVRT
+- 3 tryby czyszczenia (Pełny / Szybki / Własny) oraz osobna strona **„Narzędzia”** (skany, aktualizacja programów, podgląd, zajęte miejsce i autostart) podzielona na działy, z datą ostatniego dokończonego testu przy trybach Pełny i Szybki oraz ostatniego skanu przy Malwarebytes i KVRT
 - **Podgląd przed czyszczeniem** — tryb „na sucho”, który liczy, ile miejsca zwolniłoby czyszczenie, niczego nie kasując
 - **Zajęte miejsce na dysku** — zestawienie największych folderów i plików z otwarciem lokalizacji w Eksploratorze (tylko odczyt)
 - **Zarządzanie autostartem** — włączanie i wyłączanie programów uruchamianych z Windows bez usuwania wpisów
 - **Dokładne „Zwolniono”** — karta „Zwolniono X GB” to suma rozmiaru faktycznie usuniętych plików, zapisywana także w historii
 - **Zdrowie dysku (SMART)** — odczyt stanu nośnika (zużycie SSD, sektory, temperatura, czas pracy, błędy) z ostrzeżeniami i radami; tylko odczyt
-- **Temperatury procesora i karty graficznej na żywo** w pasku bocznym, z osobnymi progami kolorów dla CPU i GPU oraz wyjaśnieniem, gdy odczyt jest niemożliwy; na procesorach AMD Ryzen bez ręcznej instalacji sterownika PawnIO
+- **Temperatury procesora i karty graficznej na żywo** w pasku bocznym, z osobnymi progami kolorów dla CPU i GPU oraz wyjaśnieniem, gdy odczyt jest niemożliwy; na procesorach AMD Ryzen bez ręcznej instalacji sterownika PawnIO, a przy zintegrowanej karcie graficznej — jako jedna temperatura „CPU i GPU”
 - **Statystyki temperatur z przebiegu** (średnia na karcie, najniższa, najwyższa i średnia w dymku) w podsumowaniu, historii i dzienniku
 - Uwagi przy krokach z ikoną dzwonka i dymkiem z opisem oraz powiązaniem z kartą uwag w podsumowaniu
 - **Filtrowanie wyniku kafelkami** (Wykonane / Pominięte / Do restartu / Błędy) — filtr obejmuje listę operacji i panel uwag
-- **Zgłaszanie problemów** z poziomu programu (paczka ZIP z opisem, zrzutem okna, własnymi obrazkami i dziennikiem, z ukrywaniem nazwy użytkownika)
+- **Zgłaszanie problemów** z poziomu programu (paczka ZIP z opisem, zrzutem okna, własnymi obrazkami — dodawanymi przyciskiem, przeciąganiem albo Ctrl+V — i dziennikiem, z ukrywaniem nazwy użytkownika)
 - **Przywracanie ustawień z wyborem elementów** (17 pozycji) z postępem na żywo oraz osobne usuwanie raportów i historii
 - **Historia podsumowań** dostępna w programie (ostatnie 100 wpisów) — odporna na chwilowe blokady pliku, z **importem** z dziennika, paczki zgłoszenia lub pliku JSON oraz z **odtwarzaniem z dziennika**
 - Automatyczne sprawdzanie i pobieranie aktualizacji z GitHub Releases (trzy drogi sprawdzenia, prawdziwa przyczyna porażki, kontrola rozmiaru pobranego pliku), z samopodmianą pliku `.exe`; stała kopia programu i stały skrót w Menu Start
@@ -206,7 +224,7 @@ CLEANER by MAG to darmowe narzędzie do porządkowania i optymalizacji Windowsa,
 
 ## Jak wygląda praca z programem
 
-1. **Wybierz tryb** na ekranie startowym (karty: Pełny, Szybki, Własny, Opcje dodatkowe). Karty Pełny i Szybki pokazują na dole datę ostatniego dokończonego przebiegu danego trybu. Przed startem program przypomina, że zostaną zamknięte przeglądarki, a folder `Windows.old` (jeśli istnieje) zostanie trwale usunięty. W pytaniu „Rozpocząć tryb …?” przycisk **„Podgląd”** pokazuje, ile miejsca zwolniłoby czyszczenie — po jego zamknięciu wraca to samo pytanie.
+1. **Wybierz tryb** na ekranie startowym (karty: Pełny, Szybki, Własny, Narzędzia). Karty Pełny i Szybki pokazują na dole datę ostatniego dokończonego przebiegu danego trybu. Przed startem program przypomina, że zostaną zamknięte przeglądarki, a folder `Windows.old` (jeśli istnieje) zostanie trwale usunięty. W pytaniu „Rozpocząć tryb …?” przycisk **„Podgląd”** pokazuje, ile miejsca zwolniłoby czyszczenie — po jego zamknięciu wraca to samo pytanie.
 2. **Obserwuj postęp** na stronie „Postęp”: pierścień pokazuje ogólny postęp, lista pokazuje wszystkie etapy i ich stany, a licznik — „Krok k z N”. Możesz przerwać operację przyciskiem „Przerwij”, ale przerwanie w trakcie pracy może zostawić część ustawień w stanie pośrednim (np. usługi Windows Update), więc zalecane jest dokończenie. Widżet temperatur w pasku bocznym działa przez cały czas.
 3. **Przeczytaj wynik**: ekran „Wszystko gotowe” lub „Zakończono z uwagami” pokazuje wykonane i pominięte operacje, elementy wymagające restartu, błędy, czas, kartę temperatur oraz kartę „Zwolniono”. Kafelki liczników (Wykonane / Pominięte / Do restartu / Błędy) są przyciskami: kliknięcie zostawia na liście i w panelu uwag tylko operacje danej kategorii (można zaznaczyć kilka, ponowne kliknięcie odznacza). Panel „Uwagi i podpowiedzi” tłumaczy, co oznacza każdy problem i co z nim zrobić — najechanie na operację z dzwonkiem przewija go do właściwej uwagi. Każde podsumowanie trafia też do strony „Historia”.
 4. **Zrestartuj komputer** przyciskiem na ekranie podsumowania, jeśli program to zaleca (czyszczenie zmieniło system albo Windows czeka na restart).
@@ -220,7 +238,7 @@ Podczas operacji pozostałe pozycje menu są zablokowane, a pasek boczny pokazuj
 | **Pełny** (zalecany) | wszystkie 38 kroków |
 | **Szybki** (na co dzień) | 29 kroków: pomija skany antywirusowe, naprawę systemu (DISM/SFC), czyszczenie starych sterowników, naprawę Windows Update i optymalizację dysku C:; krok prywatności i reklam (bez wstępnej kontroli plików systemowych) wykonuje |
 | **Własny** (ty decydujesz) | wykonuje wyłącznie zaznaczone kategorie (lista niżej) — na stronie postępu widzisz tylko je |
-| **Opcje dodatkowe** | osobna strona z Malwarebytes, KVRT, aktualizacją programów oraz narzędziami tylko do odczytu (podgląd przed czyszczeniem, zajęte miejsce, autostart), uruchamiana niezależnie od czyszczenia |
+| **Narzędzia** | osobna strona z działami **Bezpieczeństwo** (Malwarebytes, KVRT), **Programy i uruchamianie** (aktualizacja programów, autostart) oraz **Tylko podgląd, nic nie zmienia** (podgląd przed czyszczeniem, zajęte miejsce), uruchamiana niezależnie od czyszczenia |
 
 W trybie **Własnym** zaznaczasz przełącznikami (są przyciski „Zaznacz wszystko” i „Wyczyść”):
 1. skan antywirusowy (Windows Defender + AdwCleaner),
@@ -231,7 +249,7 @@ W trybie **Własnym** zaznaczasz przełącznikami (są przyciski „Zaznacz wszy
 6. sprawdzenie dysku C: (CHKDSK) — z pominięciem limitu „raz na 30 dni”,
 7. zdrowie dysku (SMART) — odczyt stanu nośnika (zużycie SSD, sektory, temperatura); tylko odczyt, niezależny od CHKDSK.
 
-Temperatur nie trzeba wybierać — pokazuje je widżet w pasku bocznym, a statystyki z przebiegu pojawiają się w podsumowaniu w każdym trybie. Punkt przywracania systemu (krok 1) jest tworzony, gdy wybierzesz cokolwiek z powyższej listy, z wyjątkiem samego odczytu SMART, który niczego w systemie nie zmienia. Jeśli nie zaznaczysz żadnej kategorii, program od razu przechodzi do dodatkowych opcji. Blok utwardzania bezpieczeństwa i końcowych porządków (kroki 32–38) nie ma jeszcze osobnej kategorii — w trybie Własnym jest zawsze pomijany.
+Temperatur nie trzeba wybierać — pokazuje je widżet w pasku bocznym, a statystyki z przebiegu pojawiają się w podsumowaniu w każdym trybie. Punkt przywracania systemu (krok 1) jest tworzony, gdy wybierzesz cokolwiek z powyższej listy, z wyjątkiem samego odczytu SMART, który niczego w systemie nie zmienia. Dopóki nie zaznaczysz żadnej kategorii, przycisk „Rozpocznij” jest nieaktywny, a podpowiedź przypomina, że skany i aktualizacja programów są w menu „Narzędzia”. Blok utwardzania bezpieczeństwa i końcowych porządków (kroki 32–38) nie ma jeszcze osobnej kategorii — w trybie Własnym jest zawsze pomijany.
 
 ## Co dokładnie robi tryb Pełny
 
@@ -306,6 +324,8 @@ Brak odczytu jest szary. Kliknięcie widżetu wstrzymuje i wznawia odczyt, a w p
 
 Biblioteka LibreHardwareMonitor jest pobierana raz do trwałego folderu, a proces pomocniczy działa przez cały czas pracy widżetu.
 
+**Zintegrowana karta graficzna — jedna temperatura.** Gdy w komputerze są wyłącznie karty zintegrowane z procesorem (Intel HD / UHD / Iris / Arc w procesorach, AMD „Radeon Graphics”, Vega, 780M i podobne), a żadna z nich nie ma własnego czujnika, GPU leży w tym samym układzie co CPU i osobny odczyt nie istnieje. Program pokazuje wtedy **jedną temperaturę „CPU i GPU”**: w pasku bocznym jedna pozycja na całą szerokość z linijką „Zintegrowana karta graficzna”, w podsumowaniu i w Historii jedna wartość na karcie „Temperatury”, a w dymku jeden wiersz „Procesor i grafika” z jedną legendą progów (65 / 80 °C). Dziennik ma wtedy jeden wiersz „Procesor i zintegrowana karta graficzna (CPU + GPU)”. Komputery z kartą dedykowaną (NVIDIA, AMD Radeon RX, Intel Arc A / B), z kartą zintegrowaną i dedykowaną naraz (laptop Intel + NVIDIA) oraz ze zintegrowaną kartą, która ma własny czujnik, pokazują CPU i GPU osobno jak dotąd. Gdy program nie zna sprzętu, niczego nie zgaduje. Starsze wpisy Historii (sprzed 2.1.5) zostają bez zmian. Przy jednej temperaturze odczyt jest zwykle przybliżony (strefy ACPI), a źródło widać w podpowiedzi.
+
 **Procesory AMD Ryzen i sterownik PawnIO.** Na Ryzenach LibreHardwareMonitor czyta temperaturę przez sterownik PawnIO. Gdy go w systemie nie ma, program:
 
 - pobiera oficjalny instalator PawnIO (raz, do `Tools\PawnIO`) i sprawdza jego skrót SHA256,
@@ -314,17 +334,25 @@ Biblioteka LibreHardwareMonitor jest pobierana raz do trwałego folderu, a proce
 
 Wymaga to uprawnień administratora. Instalowanie sterownika wyłączysz pustym plikiem `Tools\PawnIO\disabled.txt`.
 
-**Karta „Temperatury” w podsumowaniu** to jedna cienka linia: **Temperatury  CPU X  GPU X** — średnia z całego przebiegu, każda wartość w kolorze progu. Mała ikona „i” na końcu linii (pulsuje tylko do pierwszego najechania) podpowiada, że **po najechaniu na kartę** otwiera się duży dymek ze szczegółami: tabela z trzema kolumnami (**Najniższa, Najwyższa, Średnia**), godziny pomiarów, liczba odczytów, okres pomiarów i legenda kolorów. Dymek ma szerokość karty (legenda zawija się w razie potrzeby do dwóch linii), a w najwęższym oknie wystaje po równo z obu stron. Karta opiera się wyłącznie na pomiarach zebranych w trakcie całego przebiegu — gdy ich nie ma (np. nie udało się odczytać ani temperatury procesora, ani karty graficznej), karty nie ma wcale.
+**Karta „Temperatury” w podsumowaniu** to jedna cienka linia: **Temperatury  CPU X  GPU X** (przy zintegrowanej grafice: **CPU i GPU X**) — średnia z całego przebiegu, każda wartość w kolorze progu. Mała ikona „i” na końcu linii (pulsuje tylko do pierwszego najechania) podpowiada, że **po najechaniu na kartę** otwiera się duży dymek ze szczegółami: tabela z trzema kolumnami (**Najniższa, Najwyższa, Średnia**), godziny pomiarów, liczba odczytów, okres pomiarów i legenda kolorów. Dymek ma szerokość karty (legenda zawija się w razie potrzeby do dwóch linii), a w najwęższym oknie wystaje po równo z obu stron. Karta opiera się wyłącznie na pomiarach zebranych w trakcie całego przebiegu — gdy ich nie ma (np. nie udało się odczytać ani temperatury procesora, ani karty graficznej), karty nie ma wcale.
 
-Statystyki są zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Opcjach dodatkowych”. Przywracanie ich nie liczy. Zapisują się w historii podsumowań oraz w dzienniku (sekcja „Temperatury w trakcie przebiegu”).
+Statystyki są zbierane od startu silnika do końca przebiegu, także w trybie Szybkim i w „Narzędziach”. Przywracanie ich nie liczy. Zapisują się w historii podsumowań oraz w dzienniku (sekcja „Temperatury w trakcie przebiegu”).
 
-## Opcje dodatkowe
+## Narzędzia
 
-Dostępne na osobnej stronie „Opcje dodatkowe” (w dowolnej chwili, bez czyszczenia systemu). Kafelki są niskie, mieszczą się na stronie bez przewijania, a po najechaniu unoszą się jak karty na stronie Start. Skan Malwarebytes, skan KVRT i aktualizacja programów są też proponowane po zakończeniu czyszczenia — wynik widzisz wtedy od razu, a pytanie o przejście dalej pojawia się dopiero na ekranie podsumowania. Kafelki Malwarebytes i KVRT pokazują pod opisem datę ostatniego skanu („Ostatni test: rrrr-mm-dd (N dni temu)” albo „nigdy”), zgodną z tym, co pamięta silnik. Kliknięcie „Uruchom” przy wybranej opcji startuje właśnie tę jedną opcję, bez dalszych pytań. Skany Malwarebytes i KVRT są pokazywane jako lista kart etapów (Malwarebytes: 4 etapy, KVRT: 3 etapy), a pierścień „Etapy skanu” i nakładka pokazują numer bieżącego etapu.
+Dostępne na osobnej stronie „Narzędzia” (dawniej „Opcje dodatkowe”) — w dowolnej chwili, bez czyszczenia systemu. Pod tytułem jest krótka wskazówka: „Kliknij wybraną pozycję, a ruszy od razu!”. Pozycje są podzielone na trzy działy z nagłówkami, a ikona każdej ma kolor działu:
 
-### Narzędzia tylko do odczytu i zmiany odwracalne
+| Dział | Pozycje | Przycisk |
+|---|---|---|
+| **Bezpieczeństwo** (czerwony) | Skan antywirusowy – Malwarebytes; Skan antywirusowy – Kaspersky (KVRT) | „Uruchom” |
+| **Programy i uruchamianie** (pomarańczowy) | Aktualizacja programów; Autostart – programy włączane razem z Windows | „Sprawdź”; „Otwórz” |
+| **Tylko podgląd, nic nie zmienia** (zielony) | Podgląd przed czyszczeniem; Zajęte miejsce na dysku | „Sprawdź”; „Otwórz” |
 
-Trzy poniższe opcje działają w oknie programu, bez udziału silnika czyszczenia. Niczego nie usuwają: podgląd i zajęte miejsce tylko odczytują, a autostart wyłącza programy w sposób, który można cofnąć. Nie otwierają się w czasie pracy silnika ani nad innym oknem.
+Kliknąć możesz cały kafelek (myszą, Enterem albo Spacją), przycisk z czasownikiem po prawej tylko podpowiada, co się stanie. Kafelki są niskie i unoszą się po najechaniu jak karty na stronie Start. Skan Malwarebytes, skan KVRT i aktualizacja programów są też proponowane po zakończeniu czyszczenia — wynik widzisz wtedy od razu, a pytanie o przejście dalej pojawia się dopiero na ekranie podsumowania. Kafelki Malwarebytes i KVRT pokazują pod opisem datę ostatniego skanu („Ostatni test: rrrr-mm-dd (N dni temu)” albo „nigdy”), zgodną z tym, co pamięta silnik. Kliknięcie „Uruchom” przy wybranej opcji startuje właśnie tę jedną opcję, bez dalszych pytań. Skany Malwarebytes i KVRT są pokazywane jako lista kart etapów (Malwarebytes: 4 etapy, KVRT: 3 etapy), a pierścień „Etapy skanu” i nakładka pokazują numer bieżącego etapu.
+
+### Podgląd, zajęte miejsce i autostart
+
+Te trzy pozycje działają w oknie programu, bez udziału silnika czyszczenia. Niczego nie usuwają: podgląd i zajęte miejsce tylko odczytują, a autostart wyłącza programy w sposób, który można cofnąć. Nie otwierają się w czasie pracy silnika ani nad innym oknem.
 
 - **Podgląd przed czyszczeniem** — tryb „na sucho”: liczy, ile miejsca zwolniłoby czyszczenie, odwzorowując to, co naprawdę robi silnik. Otwierasz go tutaj albo przyciskiem „Podgląd” w pytaniu przed trybem Pełnym i Szybkim.
   - **Kategorie**: pliki tymczasowe (Temp wszystkich profili i systemu, Downloaded Program Files), cache przeglądarek (Chromium, Opera, Gecko) i aplikacji (m.in. Discord, Slack, Spotify, Epic, Battle.net, Steam, Teams), cache GPU i zrzuty awarii, Minidump i WER, dzienniki, dzienniki zdarzeń (wartość przybliżona, oznaczona „~”), Kosz, pliki Windows Update (SoftwareDistribution i catroot2) oraz Windows.old.
@@ -337,20 +365,20 @@ Trzy poniższe opcje działają w oknie programu, bez udziału silnika czyszczen
   - **„Pokaż”** otwiera Eksplorer z zaznaczonym plikiem lub folderem.
   - **Pamięć wyniku**: po „Zamknij” i ponownym otwarciu okno pokazuje ten sam wynik, w tym samym widoku i folderze, z dopiskiem o godzinie skanu. Wynik żyje tylko, dopóki działa program, i nie jest zapisywany na dysk.
   - **Pod listą**: liczba plików, czas, liczba folderów bez dostępu, a przy skanie całego dysku uwaga, gdy różnica względem zajętego miejsca przekracza 1 GB (np. System Volume Information). Do dziennika trafiają tylko liczby, bez nazw folderów.
-- **Zarządzanie autostartem** — lista programów uruchamianych razem z Windows z przełącznikiem przy każdym. Zmiana zapisuje się od razu (tak jak w Menedżerze zadań), a gdy zapis się nie uda, przełącznik wraca i pod listą pojawia się powód.
+- **Autostart – programy włączane razem z Windows** (okno „Zarządzanie autostartem”) — lista programów uruchamianych razem z Windows z przełącznikiem przy każdym. Zmiana zapisuje się od razu (tak jak w Menedżerze zadań), a gdy zapis się nie uda, przełącznik wraca i pod listą pojawia się powód.
   - **Źródła**: rejestr (`Run` użytkownika i komputera, także 32-bitowy) oraz foldery Autostart (użytkownika i wspólny).
   - **Nic nie jest usuwane**: wyłączony program po prostu nie startuje, a jego wpis zostaje, więc możesz go włączyć z powrotem tutaj, w Menedżerze zadań albo w Ustawieniach Windows. Zmiana działa od następnego logowania, uruchomionych programów program nie zamyka.
   - **Zabezpieczenia**: wpisy ochrony Windows (SecurityHealth i Windows Defender) są zablokowane. Martwe wpisy (plik z polecenia nie istnieje) mają żółtą uwagę. Każda zmiana trafia do dziennika.
 
 ### Skany i aktualizacja programów
 
-- **Malwarebytes** (obsługa ręczna) — pobiera instalator, instaluje program i otwiera go do ręcznego skanu, a po zamknięciu okna automatycznie go odinstalowuje. Jeśli Malwarebytes był już zainstalowany, program po prostu go otwiera (niczego nie pobiera ani nie usuwa). Gdy proces po zamknięciu okna nadal wisi w tle, możesz użyć przycisku **„Wymuś zamknięcie”** (program próbuje kolejno kilku metod, w tym zamknięcia przez ikonę w zasobniku) albo skorzystać z instrukcji „Jak zamknąć ręcznie”.
+- **Skan antywirusowy – Malwarebytes** (obsługa ręczna) — pobiera instalator, instaluje program i otwiera go do ręcznego skanu, a po zamknięciu okna automatycznie go odinstalowuje. Jeśli Malwarebytes był już zainstalowany, program po prostu go otwiera (niczego nie pobiera ani nie usuwa). Gdy proces po zamknięciu okna nadal wisi w tle, możesz użyć przycisku **„Wymuś zamknięcie”** (program próbuje kolejno kilku metod, w tym zamknięcia przez ikonę w zasobniku) albo skorzystać z instrukcji „Jak zamknąć ręcznie”.
 - **Aktualizacja programów przez winget** — sprawdza, czy Menedżer pakietów Windows (winget) jest dostępny; jeśli go brakuje (np. na edycjach LTSC), oferuje instalację nieoficjalnym sposobem — pobranie najnowszego wydania bezpośrednio z repozytorium `microsoft/winget-cli` na GitHubie. Następnie wyszukuje dostępne aktualizacje i **pokazuje je na liście do wyboru** (nazwa, ID pakietu, wersja zainstalowana → dostępna; domyślnie wszystkie zaznaczone, z przyciskami „Zaznacz wszystko” i „Odznacz wszystko”). Dopiero po kliknięciu **„Aktualizuj zaznaczone”** program aktualizuje wybrane programy po kolei, każdy osobno, a „Pomiń aktualizację” kończy krok bez ruszania czegokolwiek. Postęp pokazuje „k z N” i nazwę bieżącego programu, a na końcu jest podsumowanie (zaktualizowano / nie udało się / nie wybrano). Każdy program ma własny kafelek (w kolejce → pobieranie → instalowanie → gotowe) z wersją obecną i dostępną oraz paskiem pobierania, w którym procent jest odczytywany z usługi Delivery Optimization (a gdy jest niedostępna — z rozmiaru pobieranego pliku).
   - Jeśli program nie zostanie zaktualizowany, kafelek wyjaśnia dlaczego (np. program jest uruchomiony, brak pasującej aktualizacji, wymagana ręczna reinstalacja albo błąd pobierania).
   - **Programy przenośne** (np. yt-dlp, FFmpeg) zmienione poza wingetem — np. przez własną samoaktualizację — są aktualizowane po jednorazowej ponownej próbie w trybie wymuszonym; skrót instalatora jest nadal weryfikowany. Jeśli i to się nie uda, program podpowiada zamknięcie aplikacji lub ponowną instalację.
   - **Microsoft Edge WebView2 Runtime**: gdy instalator zakończy się błędem z zakresu `0x80040700`–`0x800407FF`, program czeka 20 s i ponawia próbę raz. Komunikat podaje właściwą nazwę pakietu i kod instalatora oraz radzi restart komputera.
   - Gdy winget nie znajduje żadnej aktualizacji, ekran wyniku pokazuje **„Aktualizacja programów: wszystkie aktualne”** wraz z uwagą informacyjną (nie zmienia ona podsumowania „Wszystko gotowe”).
-- **KVRT (Kaspersky Virus Removal Tool)** — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi (folder `KVRT_Data` jest sprzątany, chyba że na komputerze wykryto zainstalowany pełny produkt Kaspersky — wtedy zostaje nietknięty). Skan, który nie zakończy się w ciągu 90 minut, jest przerywany, a wynik skanu można obejrzeć przyciskiem „Pokaż wynik skanu”.
+- **Skan antywirusowy – Kaspersky (KVRT)** (Kaspersky Virus Removal Tool) — pobiera najnowszą wersję i uruchamia w pełni automatyczny skan w tle, a po zakończeniu sam się usuwa wraz z danymi tymczasowymi (folder `KVRT_Data` jest sprzątany, chyba że na komputerze wykryto zainstalowany pełny produkt Kaspersky — wtedy zostaje nietknięty). Skan, który nie zakończy się w ciągu 90 minut, jest przerywany, a wynik skanu można obejrzeć przyciskiem „Pokaż wynik skanu”.
 
 > ⚠️ **Uwaga:** KVRT może w trakcie skanowania wykryć poważne zagrożenie i **zrestartować komputer bez pytania o zgodę**. Zapisz pracę przed uruchomieniem tej opcji — program blokuje nieoczekiwany restart tylko na czas własnego działania i ostrzega, jeśli KVRT próbował go wymusić.
 
@@ -371,11 +399,11 @@ Po przebiegu w trybie Pełnym, Szybkim lub Własnym podsumowanie pokazuje kartę
 
 - **Szczegóły w Dzienniku**: `[ZWOLNIONO-POZ]` (co ile dało, od 1 MB), `[ZWOLNIONO]` (suma) i `[ZWOLNIONO-NETTO]` (dawna różnica wolnego miejsca).
 - **To rozmiar logiczny plików**, nie „rozmiar na dysku”, więc realnie zwolnione miejsce bywa większe. Suma nie jest zmianą zajętości dysku: może pokazać np. 1 GB, gdy wolne miejsce w tym samym czasie spadło, bo Windows tworzy w trakcie przebiegu punkt przywracania i inne dane.
-- Gdy silnik nie poda sumy, karta wraca do różnicy wolnego miejsca na dysku systemowym przed i po przebiegu (nigdy poniżej 0). Gdy pomiaru nie ma (Opcje dodatkowe, Przywracanie, starsze wpisy historii), karty nie ma, a temperatury zajmują całą szerokość.
+- Gdy silnik nie poda sumy, karta wraca do różnicy wolnego miejsca na dysku systemowym przed i po przebiegu (nigdy poniżej 0). Gdy pomiaru nie ma (Narzędzia, Przywracanie, starsze wpisy historii), karty nie ma, a temperatury zajmują całą szerokość.
 
 ### Historia podsumowań
 
-Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pełny, Szybki, Własny i Opcje dodatkowe), razem ze statystykami temperatur, zwolnionym miejscem i powiązaniami operacji z uwagami. Przycisk „Pokaż” otwiera wybrane podsumowanie w tym samym widoku co zaraz po przebiegu (tylko do odczytu, z kafelkami filtrującymi listę), a pojedyncze wpisy lub całą historię można usunąć („Wyczyść historię”). Program przechowuje ostatnie 100 wpisów w pliku `Historia_podsumowan.json` w folderze raportów (`Dokumenty\CLEANER by MAG`). Usunięcie historii nie kasuje raportów z folderu Dokumenty.
+Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pełny, Szybki, Własny i Narzędzia), razem ze statystykami temperatur, zwolnionym miejscem i powiązaniami operacji z uwagami. Przycisk „Pokaż” otwiera wybrane podsumowanie w tym samym widoku co zaraz po przebiegu (tylko do odczytu, z kafelkami filtrującymi listę), a pojedyncze wpisy lub całą historię można usunąć („Wyczyść historię”). Program przechowuje ostatnie 100 wpisów w pliku `Historia_podsumowan.json` w folderze raportów (`Dokumenty\CLEANER by MAG`). Usunięcie historii nie kasuje raportów z folderu Dokumenty.
 
 - **Importuj** — wczytuje podsumowania z dziennika (`.txt`), paczki zgłoszenia (`.zip`) lub pliku `podsumowanie.json` (można zaznaczyć kilka plików naraz) i dopisuje je do historii **na stałe**. Zaimportowane wpisy mają inny odcień i ikonę „i”. Podsumowania, które już są w historii, nie są dublowane, a dwa różne przebiegi o tym samym czasie zakończenia nie są traktowane jako duplikat. Jedno znalezione podsumowanie otwiera się od razu. To przydatne m.in. przy analizie zgłoszeń przysłanych przez innych użytkowników.
 - **Odtwórz z dziennika** — dopisuje do historii podsumowania zapisane w bieżącym dzienniku, których w niej brakuje. Istniejących wpisów nie zmienia i można go klikać wielokrotnie. Odtworzy tylko tyle, ile jest w dzienniku (dziennik jest przycinany do 1 MB, a starsze wersje programu nie zapisywały w nim podsumowań).
@@ -383,10 +411,10 @@ Strona **„Historia”** przechowuje podsumowania zakończonych przebiegów (Pe
 
 ## Zgłaszanie problemów
 
-Przycisk **„Zgłoś problem”** w pasku bocznym otwiera okno, w którym opisujesz, co poszło nie tak (na którym kroku, co się stało, czego się spodziewałeś) i wybierasz, co dołączyć do zgłoszenia:
+Przycisk **„Zgłoś problem”** w pasku bocznym otwiera okno, w którym opisujesz, co poszło nie tak (na którym kroku, co się stało, czego się spodziewałeś) i wybierasz, co dołączyć do zgłoszenia. Pole opisu jest na początku niskie (ok. 3 wierszy, bez paska przewijania) i rośnie razem z tekstem, a na niskich ekranach zawartość okna się przewija, podczas gdy przyciski „Anuluj / Zapisz / Wyślij” są zawsze widoczne. Do wyboru masz:
 
 - **zrzut ekranu okna programu** (z podglądem),
-- **własny obrazek (dodatkowo)** — do 3 obrazków (PNG, JPG, BMP, GIF, WEBP), np. zrzut innego okna albo komunikatu o błędzie; miniatury widać w oknie, a „Usuń” czyści wybór,
+- **własny obrazek (dodatkowo)** — do 3 obrazków (PNG, JPG, BMP, GIF, WEBP), np. zrzut innego okna albo komunikatu o błędzie; miniatury widać w oknie, a „Usuń” czyści wybór. Obrazki dodasz **przyciskiem „Dodaj”**, **przeciągając plik** na okno zgłoszenia albo **wklejając obraz ze schowka** (Ctrl+V w polu opisu, także plik skopiowany w Eksploratorze),
 - **dziennik** z ostatniego przebiegu,
 - **podsumowanie wyniku** (dane ekranu wyniku, żeby autor mógł go odtworzyć),
 - **informacje o systemie** (wersja i kompilacja programu, wersja Windows, architektura komputera i informacja, czy program działa w emulacji, uprawnienia administratora, tryb ostatniego przebiegu oraz — gdy widżet nie widzi temperatury procesora — jedna linia diagnostyczna z przyczyną).
@@ -394,7 +422,8 @@ Przycisk **„Zgłoś problem”** w pasku bocznym otwiera okno, w którym opisu
 Pozycji, których jeszcze nie ma (np. dziennik przed pierwszym przebiegiem), nie da się wybrać. Z zaznaczonych elementów program składa **paczkę ZIP** i zapisuje ją w folderze `Dokumenty\CLEANER by MAG\Zgloszenia`. Przyciskiem **„Wyślij do autora”** wysyłasz ją bez zakładania konta i bez logowania, opcjonalnie z kontaktem do siebie, jeśli chcesz dostać odpowiedź. Każde zgłoszenie dostaje **sześcioznakowy numer** (np. `AB12CD`), który jest w nazwie pliku ZIP, w notatce w środku i w wiadomości u autora. Zgłoszenia nie trafiają na GitHub.
 
 - **Prywatność**: nic nie wychodzi z komputera automatycznie, tylko po kliknięciu „Wyślij do autora”. Przełącznik **„Ukryj nazwę użytkownika”** (domyślnie włączony) zamienia nazwę użytkownika Windows w dzienniku i podsumowaniu na `<uzytkownik>`, a nazwę komputera na `<komputer>`. Po jego wyłączeniu okno ostrzega, że nazwa zostanie w paczce w niezmienionej postaci, a zrzut ekranu pokazuje to, co widać w oknie.
-- **Własne obrazki**: program wczytuje obraz i zapisuje go od nowa, więc znikają metadane (m.in. lokalizacja GPS z EXIF) i nazwa pliku źródłowego. **Zawartość obrazka nie jest zmieniana**, więc nazwa użytkownika widoczna na zrzucie nie jest ukrywana — pod listą jest o tym ostrzeżenie. Obrazek po przygotowaniu może mieć do 3 MB (większy jest zmniejszany), plik źródłowy do 60 MB, a całość paczki mieści się w limicie wysyłki 15 MB. GIF-y animowane trafiają jako pierwsza klatka. Obrazki są w paczce jako `obraz_1.png`, `obraz_2.jpg` itd. i są wymienione w notatce.
+- **Własne obrazki**: program wczytuje obraz i zapisuje go od nowa, więc znikają metadane (m.in. lokalizacja GPS z EXIF) i nazwa pliku źródłowego. **Zawartość obrazka nie jest zmieniana**, więc nazwa użytkownika widoczna na zrzucie nie jest ukrywana — pod listą jest o tym ostrzeżenie. Obrazek po przygotowaniu może mieć do 3 MB (większy jest zmniejszany), plik źródłowy do 60 MB, a całość paczki mieści się w limicie wysyłki 15 MB. GIF-y animowane trafiają jako pierwsza klatka. Obrazki są w paczce jako `obraz_1.png`, `obraz_2.jpg` itd. i są wymienione w notatce. Pliki ponad limit trzech obrazków nie znikają po cichu — program pokazuje, ile pominął.
+- **Przeciąganie plików**: program działa jako administrator, a Windows nie pozwala wtedy przeciągać plików z Eksploratora do jego okna. Dlatego program odblokowuje przeciąganie tylko na czas otwartego okna „Zgłoś problem” i wyłącza je po jego zamknięciu. Wklejanie (Ctrl+V) działa zawsze, więc jest pewną drogą, gdyby przeciąganie z jakiegoś powodu nie zadziałało.
 - **Wygoda**: niewysłany opis jest zapamiętywany, więc po zamknięciu okna nie musisz pisać go od nowa. Błąd zapisu lub wysyłki kończy się komunikatem, a nie awarią programu.
 
 ## Automatyczna aktualizacja
@@ -447,4 +476,4 @@ Projekt udostępniony na licencji MIT. Możesz swobodnie używać, modyfikować 
 
 ## Autor
 
-Autor: **MAG** | Wersja: **2.1.4** (08/11/2026)
+Autor: **MAG** | Wersja: **2.1.5** (09/11/2026)
